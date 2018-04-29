@@ -135,7 +135,7 @@ public class IncidentDBHelper extends SQLiteOpenHelper implements Serializable {
 
         List<String> types = new ArrayList<>(10);
 
-        Cursor cursor = myDataBase.rawQuery("SELECT locatioName from locations", null);
+        Cursor cursor = myDataBase.rawQuery("SELECT locationName from locations", null);
         cursor.moveToFirst();
 
         while (!cursor.isAfterLast()) {
