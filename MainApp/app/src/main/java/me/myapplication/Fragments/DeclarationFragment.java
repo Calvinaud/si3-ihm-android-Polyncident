@@ -6,6 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import me.myapplication.Helpers.IncidentDBHelper;
 import me.myapplication.R;
 
 /**
@@ -15,11 +20,14 @@ import me.myapplication.R;
 public class DeclarationFragment extends android.support.v4.app.Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
+    private static final String ARG_DB_HELPER = "dbhelper_object";
 
-    public static DeclarationFragment newInstance(int sectionNumber) {
+
+    public static DeclarationFragment newInstance(int sectionNumber, IncidentDBHelper dbHelper) {
         DeclarationFragment fragment = new DeclarationFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+        args.putSerializable(ARG_DB_HELPER, dbHelper);
         fragment.setArguments(args);
         return fragment;
     }
@@ -32,6 +40,7 @@ public class DeclarationFragment extends android.support.v4.app.Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
     }
 
     @Override

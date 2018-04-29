@@ -17,10 +17,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import me.myapplication.Fragments.DeclarationFragment;
 import me.myapplication.Fragments.VisualizationFragment;
+import me.myapplication.Helpers.IncidentDBHelper;
 
 public class MainActivity extends AppCompatActivity {
+
+    private IncidentDBHelper dbHelper;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -65,6 +72,16 @@ public class MainActivity extends AppCompatActivity {
 //                        .setAction("Action", null).show();
 //            }
 //        });
+
+        dbHelper = new IncidentDBHelper(this);
+        try{
+            dbHelper.createDataBase();
+            dbHelper.openDataBase();
+            dbHelper.initLocations();
+            dbHelper.initTypes();
+        }catch (Exception e){
+            Logger.getAnonymousLogger().log(Level.WARNING, e.toString());
+        }
 
     }
 
@@ -140,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
 
             if(position == 0)
-                return DeclarationFragment.newInstance(1);
+                return DeclarationFragment.newInstance(1, dbHelper);
 
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
