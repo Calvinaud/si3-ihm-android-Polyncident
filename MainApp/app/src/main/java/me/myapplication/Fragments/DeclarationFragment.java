@@ -7,7 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.GridView;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 
 import java.util.List;
@@ -15,6 +17,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import me.myapplication.Helpers.IncidentDBHelper;
+import me.myapplication.MainActivity;
+import me.myapplication.Models.Importance;
 import me.myapplication.R;
 
 /**
@@ -27,7 +31,10 @@ public class DeclarationFragment extends android.support.v4.app.Fragment {
     private static final String ARG_DB_HELPER = "dbhelper_object";
 
     private Spinner typeSpinner;
-    private Spinner locationSpiner;
+    private Spinner locationSpinner;
+    private SeekBar importanceSeekBar;
+    private Button submitButton;
+
     private IncidentDBHelper dbHelper;
 
     public static DeclarationFragment newInstance(int sectionNumber, IncidentDBHelper dbHelper) {
@@ -50,14 +57,21 @@ public class DeclarationFragment extends android.support.v4.app.Fragment {
         super.onActivityCreated(savedInstanceState);
         fillTypes();
         fillDeclarations();
+        this.importanceSeekBar.setMax(Importance.values().length);
+        this.submitButton.setOnClickListener(new SubmissionListener());
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_declaration, container, false);
-        this.locationSpiner = rootView.findViewById(R.id.declaration_location_spinner);
+
+        this.locationSpinner = rootView.findViewById(R.id.declaration_location_spinner);
         this.typeSpinner = rootView.findViewById(R.id.declaration_type_spinner);
+        this.importanceSeekBar = rootView.findViewById(R.id.declaration_importance_seekBar);
+        this.submitButton = rootView.findViewById(R.id.declaration_submit_button);
+
         return rootView;
     }
 
@@ -74,6 +88,17 @@ public class DeclarationFragment extends android.support.v4.app.Fragment {
                                                               android.R.layout.simple_spinner_item,
                                                               this.dbHelper.getLocations());
         locations.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        this.locationSpiner.setAdapter(locations);
+        this.locationSpinner.setAdapter(locations);
     }
+
+    private class SubmissionListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+            Logger.getAnonymousLogger().log(Level.WARNING, typeSpinner.getSelectedItem().toString());
+            ((MainActivity)getActivity()).getViewPager().setCurrentItem(2);
+        }
+    }
+
+
 }

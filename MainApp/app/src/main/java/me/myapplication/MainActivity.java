@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         try{
             dbHelper.createDataBase();
             dbHelper.openDataBase();
+            dbHelper.initIncidents();
             dbHelper.initLocations();
             dbHelper.initTypes();
         }catch (Exception e){
@@ -106,6 +107,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public ViewPager getViewPager() {
+        return mViewPager;
     }
 
     /**
