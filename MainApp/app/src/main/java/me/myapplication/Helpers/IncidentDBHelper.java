@@ -86,31 +86,30 @@ public class IncidentDBHelper extends SQLiteOpenHelper implements Serializable {
 
     //drop the location table, re-create it and inserts mock data
     public void initLocations(){
-        myDataBase.rawQuery("DROP TABLE IF EXISTS locations", null);
-        myDataBase.rawQuery("CREATE TABLE locations (locationId INT PRIMARY KEY AUTOINCREMENT,"+
-                                                        "locationName VARCHAR(30))",
-                            null);
-        myDataBase.rawQuery("INSERT INTO locations VALUES('E130')",null);
-        myDataBase.rawQuery("INSERT INTO locations VALUES('E131')",null);
-        myDataBase.rawQuery("INSERT INTO locations VALUES('E132')",null);
 
-        myDataBase.rawQuery("INSERT INTO locations VALUES('O108')",null);
-        myDataBase.rawQuery("INSERT INTO locations VALUES('0109')",null);
-        myDataBase.rawQuery("INSERT INTO locations VALUES('0110')",null);
+        myDataBase.execSQL("CREATE TABLE locations (locationId INTEGER PRIMARY KEY AUTOINCREMENT,"+
+                                                        "locationName VARCHAR(30))");
 
-        myDataBase.rawQuery("INSERT INTO locations VALUES('Parking')",null);
+        myDataBase.execSQL("INSERT INTO locations (locationName) VALUES('E130')");
+        myDataBase.execSQL("INSERT INTO locations (locationName) VALUES('E131')");
+        myDataBase.execSQL("INSERT INTO locations (locationName) VALUES('E132')");
+
+        myDataBase.execSQL("INSERT INTO locations (locationName) VALUES('O108')");
+        myDataBase.execSQL("INSERT INTO locations (locationName) VALUES('0109')");
+        myDataBase.execSQL("INSERT INTO locations (locationName) VALUES('0110')");
+
+        myDataBase.execSQL("INSERT INTO locations (locationName) VALUES('Parking')");
     }
 
     //drop the types table, re-create it and inserts mock data
     public void initTypes() {
-        myDataBase.rawQuery("DROP TABLE IF EXISTS types", null);
-        myDataBase.rawQuery("CREATE TABLE locations (typeId INT PRIMARY KEY AUTOINCREMENT," +
-                                                        "typeName VARCHAR(30))",
-                            null);
 
-        myDataBase.rawQuery("INSERT INTO types VALUES('Fournitures')",null);
-        myDataBase.rawQuery("INSERT INTO types VALUES('Matériel cassé')",null);
-        myDataBase.rawQuery("INSERT INTO types VALUES('Aures')",null);
+        myDataBase.execSQL("CREATE TABLE types (typeId INTEGER PRIMARY KEY AUTOINCREMENT," +
+                                                        "typeName VARCHAR(30))");
+
+        myDataBase.execSQL("INSERT INTO types (typeName) VALUES('Fournitures')");
+        myDataBase.execSQL("INSERT INTO types (typeName) VALUES('Matériel cassé')");
+        myDataBase.execSQL("INSERT INTO types (typeName) VALUES('Autres')");
     }
 
     public List<String> getTypes(){
