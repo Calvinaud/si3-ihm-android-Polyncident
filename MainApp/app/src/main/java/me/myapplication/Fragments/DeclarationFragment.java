@@ -12,6 +12,9 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -31,12 +34,15 @@ public class DeclarationFragment extends android.support.v4.app.Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
     private static final String ARG_DB_HELPER = "dbhelper_object";
 
+    //GUI components
     private Spinner typeSpinner;
     private Spinner locationSpinner;
     private SeekBar importanceSeekBar;
     private Button submitButton;
     private EditText titleEditText;
     private EditText descriptionEditText;
+    private TextView typeLabel;
+    private TextView locationLabel;
 
     private IncidentDBHelper dbHelper;
 
@@ -76,6 +82,8 @@ public class DeclarationFragment extends android.support.v4.app.Fragment {
         this.submitButton = rootView.findViewById(R.id.declaration_submit_button);
         this.titleEditText = rootView.findViewById(R.id.declaration_title_input);
         this.descriptionEditText = rootView.findViewById(R.id.declaration_description_input);
+        this.typeLabel = rootView.findViewById(R.id.declaration_type_label);
+        this.locationLabel = rootView.findViewById(R.id.declaration_location_label);
 
         return rootView;
     }

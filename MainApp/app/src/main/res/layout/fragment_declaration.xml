@@ -19,7 +19,7 @@
 
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/declaration_type_label"
         android:layout_width="50dp"
         android:layout_height="20dp"
         android:layout_marginStart="32dp"
@@ -35,11 +35,11 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView1"></Spinner>
+        app:layout_constraintTop_toBottomOf="@+id/declaration_type_label"></Spinner>
 
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/declaration_location_label"
         android:layout_width="50dp"
         android:layout_height="20dp"
         android:layout_marginStart="32dp"
@@ -48,16 +48,6 @@
         app:layout_constraintTop_toBottomOf="@+id/declaration_type_spinner"
         android:text="@string/declaration_location_label" />
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="100dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="32dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/declaration_importance_seekBar"
-        tools:text="@string/declaration_description_label" />
-
     <Spinner
         android:id="@+id/declaration_location_spinner"
         android:layout_width="150dp"
@@ -65,13 +55,13 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"></Spinner>
+        app:layout_constraintTop_toBottomOf="@+id/declaration_location_label"></Spinner>
 
     <SeekBar
         android:id="@+id/declaration_importance_seekBar"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1"
+        android:layout_below="@+id/declaration_type_label"
         android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
@@ -86,13 +76,13 @@
         android:layout_height="90dp"
         android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:gravity="bottom"
         android:hint="@string/declaration_description_label"
         android:inputType="text|textMultiLine"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintTop_toBottomOf="@+id/declaration_importance_seekBar" />
 
     <Button
         android:id="@+id/declaration_submit_button"
