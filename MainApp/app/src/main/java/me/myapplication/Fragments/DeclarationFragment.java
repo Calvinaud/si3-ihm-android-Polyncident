@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
@@ -34,6 +35,8 @@ public class DeclarationFragment extends android.support.v4.app.Fragment {
     private Spinner locationSpinner;
     private SeekBar importanceSeekBar;
     private Button submitButton;
+    private EditText titleEditText;
+    private EditText descriptionEditText;
 
     private IncidentDBHelper dbHelper;
 
@@ -71,6 +74,8 @@ public class DeclarationFragment extends android.support.v4.app.Fragment {
         this.typeSpinner = rootView.findViewById(R.id.declaration_type_spinner);
         this.importanceSeekBar = rootView.findViewById(R.id.declaration_importance_seekBar);
         this.submitButton = rootView.findViewById(R.id.declaration_submit_button);
+        this.titleEditText = rootView.findViewById(R.id.declaration_title_input);
+        this.descriptionEditText = rootView.findViewById(R.id.declaration_description_input);
 
         return rootView;
     }
@@ -95,10 +100,18 @@ public class DeclarationFragment extends android.support.v4.app.Fragment {
 
         @Override
         public void onClick(View view) {
-            Logger.getAnonymousLogger().log(Level.WARNING, typeSpinner.getSelectedItem().toString());
+
+            if(titleEditText.getText().toString().equals("")
+               || descriptionEditText.getText().toString().equals(""))
+                return;
+
+            dbHelper.insertIncident(0, locationSpinner.getSelectedItemPosition()+1,
+                                    typeSpinner.getSelectedItemPosition()+1,importanceSeekBar.getProgress(),
+                                    titleEditText.getText().toString(), descriptionEditText.getText().toString()
+            );
+
             ((MainActivity)getActivity()).getViewPager().setCurrentItem(2);
         }
     }
-
 
 }

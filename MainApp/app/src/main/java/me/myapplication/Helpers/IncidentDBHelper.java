@@ -1,5 +1,6 @@
 package me.myapplication.Helpers;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -18,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import me.myapplication.Models.Importance;
 
 /**
  * Created by Aurelien on 29/04/2018.
@@ -84,7 +87,19 @@ public class IncidentDBHelper extends SQLiteOpenHelper implements Serializable {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     }
 
-    //drop the location table, re-create it and inserts mock data
+    public void initIncidents(){
+        myDataBase.execSQL("DROP TABLE IF EXISTS incidents");
+        myDataBase.execSQL("CREATE TABLE incidents (incidentID INTEGER PRIMARY KEY AUTOINCREMENT,"+
+                                                    "reporterId INTEGER,"+
+                                                    "locationId INTEGER,"+
+                                                    "typeId INETEGER,"+
+                                                    "importance INTEGER,"+
+                                                    "title VARCHAR(30),"+
+                                                    "description TEXT)"
+                          );
+
+    }
+
     public void initLocations(){
 
         myDataBase.execSQL("CREATE TABLE locations (locationId INTEGER PRIMARY KEY AUTOINCREMENT,"+
@@ -101,7 +116,6 @@ public class IncidentDBHelper extends SQLiteOpenHelper implements Serializable {
         myDataBase.execSQL("INSERT INTO locations (locationName) VALUES('Parking')");
     }
 
-    //drop the types table, re-create it and inserts mock data
     public void initTypes() {
 
         myDataBase.execSQL("CREATE TABLE types (typeId INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -148,6 +162,20 @@ public class IncidentDBHelper extends SQLiteOpenHelper implements Serializable {
         cursor.close();
 
         return types;
+    }
+
+    public void insertIncident(int reporterdID, int locationID, int typeID,
+                            int importance, String title, String description){
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("reporterId", reporterdID);
+        contentValues.put("locationId", locationID);
+        contentValues.put("typeId", typeID);
+        contentValues.put("importance", importance);
+        contentValues.put("title", title);
+        contentValues.put("description", description);
+
+        myDataBase.insert("incidents",null, contentValues);
     }
 
 }
