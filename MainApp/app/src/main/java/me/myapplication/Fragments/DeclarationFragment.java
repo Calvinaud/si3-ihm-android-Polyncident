@@ -1,22 +1,17 @@
 package me.myapplication.Fragments;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.recyclerview.extensions.ListAdapter;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -44,6 +39,8 @@ public class DeclarationFragment extends android.support.v4.app.Fragment {
     private TextView typeLabel;
     private TextView locationLabel;
 
+    private View[] collapsibleViews;
+
     private IncidentDBHelper dbHelper;
 
     public static DeclarationFragment newInstance(int sectionNumber, IncidentDBHelper dbHelper) {
@@ -68,7 +65,7 @@ public class DeclarationFragment extends android.support.v4.app.Fragment {
         fillDeclarations();
         this.importanceSeekBar.setMax(Importance.values().length);
         this.submitButton.setOnClickListener(new SubmissionListener());
-
+        this.descriptionEditText.setOnFocusChangeListener(new DescriptionListener());
     }
 
     @Override
@@ -84,6 +81,9 @@ public class DeclarationFragment extends android.support.v4.app.Fragment {
         this.descriptionEditText = rootView.findViewById(R.id.declaration_description_input);
         this.typeLabel = rootView.findViewById(R.id.declaration_type_label);
         this.locationLabel = rootView.findViewById(R.id.declaration_location_label);
+
+        this.collapsibleViews = new View[]{locationLabel, typeLabel, locationSpinner,
+                                           typeSpinner, titleEditText, importanceSeekBar};
 
         return rootView;
     }
@@ -102,6 +102,27 @@ public class DeclarationFragment extends android.support.v4.app.Fragment {
                                                               this.dbHelper.getLocations());
         locations.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         this.locationSpinner.setAdapter(locations);
+    }
+
+    private class DescriptionListener implements EditText.OnFocusChangeListener {
+
+        @Override
+        public void onFocusChange(View view, boolean hasFocus) {
+
+            if(hasFocus){
+                for (View collapsibleView : collapsibleViews) {
+                    collapsibleView.setVisibility(View.GONE);
+                }
+            }
+            else{
+                Logger.getAnonymousLogger().log(Level.WARNING, "lol");
+                for (View collapsibleView : collapsibleViews) {
+                    collapsibleView.setVisibility(View.VISIBLE);
+                }
+            }
+
+        }
+
     }
 
     private class SubmissionListener implements View.OnClickListener {
