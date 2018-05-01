@@ -138,7 +138,7 @@ public class DeclarationFragment extends android.support.v4.app.Fragment {
                                     typeSpinner.getSelectedItemPosition()+1,importanceSeekBar.getProgress(),
                                     titleEditText.getText().toString(), descriptionEditText.getText().toString()
             );
-
+            dbHelper.logIncidents();
             ((MainActivity)getActivity()).getViewPager().setCurrentItem(2);
         }
     }

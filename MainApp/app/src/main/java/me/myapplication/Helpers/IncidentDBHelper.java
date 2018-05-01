@@ -178,4 +178,29 @@ public class IncidentDBHelper extends SQLiteOpenHelper implements Serializable {
         myDataBase.insert("incidents",null, contentValues);
     }
 
+    public void logIncidents(){
+        Cursor cursor = myDataBase.rawQuery("SELECT * FROM incidents", null);
+        String s = "";
+
+        //prints the columns' names
+        for(String name : cursor.getColumnNames()){
+            s += " " + name;
+        }
+        Logger.getAnonymousLogger().warning(s);
+
+        //print the columns
+        s = "";
+        cursor.moveToFirst();
+        while(!cursor.isAfterLast()){
+            for (int i = 0; i < 7; i++) {
+                s += " " + cursor.getString(i) + " ";
+            }
+            Logger.getAnonymousLogger().warning(s);
+
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+    }
+
 }
