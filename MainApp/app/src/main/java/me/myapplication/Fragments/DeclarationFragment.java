@@ -47,7 +47,6 @@ public class DeclarationFragment extends android.support.v4.app.Fragment {
         DeclarationFragment fragment = new DeclarationFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-        args.putSerializable(ARG_DB_HELPER, dbHelper);
         fragment.setArguments(args);
         return fragment;
     }
@@ -55,7 +54,7 @@ public class DeclarationFragment extends android.support.v4.app.Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        this.dbHelper = (IncidentDBHelper)getArguments().getSerializable(ARG_DB_HELPER);
+        this.dbHelper = ((MainActivity)getContext()).getDBHelper();
     }
 
     @Override

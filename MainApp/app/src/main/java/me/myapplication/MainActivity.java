@@ -193,5 +193,9 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.dispatchTouchEvent( event );
     }
+
+    public IncidentDBHelper getDBHelper(){
+        return dbHelper;
+    }
     
 }

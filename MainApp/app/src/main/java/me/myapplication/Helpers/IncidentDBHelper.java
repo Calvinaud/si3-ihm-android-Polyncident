@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  * Created by Aurelien on 29/04/2018.
  */
 
-public class IncidentDBHelper extends SQLiteOpenHelper implements Serializable {
+public class IncidentDBHelper extends SQLiteOpenHelper  {
 
     private static String DB_NAME = "database";
 

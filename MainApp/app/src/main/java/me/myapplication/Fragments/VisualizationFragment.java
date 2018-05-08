@@ -12,6 +12,7 @@ import java.util.List;
 
 import me.myapplication.Adapters.VisualizationCustomAdapter;
 import me.myapplication.Helpers.IncidentDBHelper;
+import me.myapplication.MainActivity;
 import me.myapplication.Models.Importance;
 import me.myapplication.Models.Incident;
 import me.myapplication.R;
@@ -23,7 +24,6 @@ import me.myapplication.R;
 public class VisualizationFragment extends android.support.v4.app.Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
-    private static final String ARG_DB_HELPER = "dbhelper_object";
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
@@ -35,7 +35,6 @@ public class VisualizationFragment extends android.support.v4.app.Fragment {
         VisualizationFragment fragment = new VisualizationFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-        args.putSerializable(ARG_DB_HELPER, dbHelper);
         fragment.setArguments(args);
         return fragment;
     }
@@ -44,7 +43,7 @@ public class VisualizationFragment extends android.support.v4.app.Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        this.dbHelper = (IncidentDBHelper)getArguments().getSerializable(ARG_DB_HELPER);
+        this.dbHelper = ((MainActivity)getContext()).getDBHelper();
     }
 
     @Override
