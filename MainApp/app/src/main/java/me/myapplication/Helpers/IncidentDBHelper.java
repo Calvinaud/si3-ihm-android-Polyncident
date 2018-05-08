@@ -164,6 +164,26 @@ public class IncidentDBHelper extends SQLiteOpenHelper implements Serializable {
         return types;
     }
 
+    public Cursor getIncidentCursor(int reporterId, int typeId, int importance, int rowNumber){
+
+        String queryString = "SELECT * FROM incidents WHERE ";
+
+        queryString += " reporterId ";
+        queryString += (reporterId != -1 ? "="+reporterId : "<> -1");
+
+        queryString += " AND typeId ";
+        queryString += (typeId != -1 ? "="+typeId : "<> -1");
+
+        queryString += " AND importance ";
+        queryString += (importance != -1 ? "="+importance : "<> -1");
+
+        queryString += " LIMIT " + rowNumber;
+
+        Logger.getAnonymousLogger().warning(queryString);
+
+        return myDataBase.rawQuery(queryString, null);
+    }
+
     public void insertIncident(int reporterdID, int locationID, int typeID,
                             int importance, String title, String description){
 
