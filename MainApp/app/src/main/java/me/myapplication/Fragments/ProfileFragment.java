@@ -24,10 +24,12 @@ public class ProfileFragment extends Fragment {
     private static final String ARG_DB_HELPER = "dbhelper_object";
 
     private IncidentDBHelper dbHelper;
-    private ImageButton callButton;
 
     //GUI components
     private TextView nameLabel;
+    private ImageButton callButton;
+    private  ImageButton smsButton;
+    private  ImageButton mailButton;
 
     public static DeclarationFragment newInstance(int sectionNumber, IncidentDBHelper dbHelper) {
         DeclarationFragment fragment = new DeclarationFragment();
@@ -56,6 +58,8 @@ public class ProfileFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_declaration, container, false);
         this.nameLabel = rootView.findViewById(R.id.profile_name_label);
         this.callButton = rootView.findViewById(R.id.profile_call_button);
+        this.smsButton = rootView.findViewById(R.id.profile_sms_button);
+        this.mailButton = rootView.findViewById(R.id.profile_mail_button);
 
         return rootView;
     }
