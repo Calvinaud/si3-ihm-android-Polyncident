@@ -4,10 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Parcel;
-import android.os.Parcelable;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -17,10 +14,7 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import me.myapplication.Models.Importance;
 
 /**
  * Created by Aurelien on 29/04/2018.

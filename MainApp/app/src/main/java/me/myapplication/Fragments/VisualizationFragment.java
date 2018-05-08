@@ -6,12 +6,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import me.myapplication.Adapters.VisualizationCustomAdapter;
+import me.myapplication.Helpers.IncidentDBHelper;
 import me.myapplication.Models.Importance;
 import me.myapplication.Models.Incident;
 import me.myapplication.R;
@@ -23,19 +23,19 @@ import me.myapplication.R;
 public class VisualizationFragment extends android.support.v4.app.Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
+    private static final String ARG_DB_HELPER = "dbhelper_object";
+
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     List<Incident> incidentList;
+    private IncidentDBHelper dbHelper;
 
 
-
-    public VisualizationFragment() {
-    }
-
-    public static VisualizationFragment newInstance(int sectionNumber) {
+    public static VisualizationFragment newInstance(int sectionNumber, IncidentDBHelper dbHelper) {
         VisualizationFragment fragment = new VisualizationFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+        args.putSerializable(ARG_DB_HELPER, dbHelper);
         fragment.setArguments(args);
         return fragment;
     }
@@ -44,6 +44,7 @@ public class VisualizationFragment extends android.support.v4.app.Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        this.dbHelper = (IncidentDBHelper)getArguments().getSerializable(ARG_DB_HELPER);
     }
 
     @Override
@@ -61,8 +62,8 @@ public class VisualizationFragment extends android.support.v4.app.Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
         incidentList= new ArrayList<>();
-        incidentList.add(new Incident(1,1,1, Importance.CRITICAL,"OK","0"));
-        adapter= new VisualizationCustomAdapter(incidentList,getContext());
+        this.dbHelper.insertIncident(1,2,2,3,"title","desc");
+        adapter= new VisualizationCustomAdapter(getContext(), dbHelper);
         recyclerView.setAdapter(adapter);
         return rootView;
     }

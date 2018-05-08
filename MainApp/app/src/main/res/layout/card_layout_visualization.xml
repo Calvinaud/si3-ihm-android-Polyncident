@@ -30,57 +30,58 @@
 
             <ImageView
                 android:id="@+id/commentsView"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_above="@+id/emergencyTextView"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_alignParentEnd="true"
-                android:layout_marginEnd="26dp"
+                android:layout_alignTop="@+id/descView"
+                android:layout_marginEnd="15dp"
                 app:srcCompat="@drawable/ic_sms_black_24dp" />
 
             <TextView
                 android:id="@+id/incidentTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/commentsView"
-                android:layout_marginStart="34dp"
+                android:layout_alignTop="@+id/commentNumberTextView"
+                android:layout_marginStart="32dp"
                 android:layout_toEndOf="@+id/statusView"
-                android:text="Un incident" />
+                android:text="Un incident"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/dateTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/incidentTextView"
-                android:layout_below="@+id/statusView"
-                android:text="00/00/0000" />
+                android:layout_alignEnd="@+id/timeTextView"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="40dp"
+                android:text="00/00/0000"
+                android:textSize="10sp" />
 
             <TextView
                 android:id="@+id/timeTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/dateTextView"
-                android:layout_marginStart="27dp"
-                android:layout_toEndOf="@+id/dateTextView"
-                android:text="00h00" />
+                android:layout_alignParentBottom="true"
+                android:layout_toStartOf="@+id/emergencyTextView"
+                android:text="00h00"
+                android:textSize="10sp" />
 
             <TextView
                 android:id="@+id/emergencyTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/timeTextView"
-                android:layout_alignBottom="@+id/timeTextView"
+                android:layout_alignBottom="@+id/incidentTextView"
                 android:layout_alignEnd="@+id/commentsView"
                 android:text="Urgence" />
 
             <TextView
-                android:id="@+id/commentNumberTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/statusView"
-                android:layout_alignEnd="@+id/commentsView"
-                android:text="0"
-                android:textColor="@color/colorAccent"
-                android:visibility="invisible" />
+                android:id="@+id/descView"
+                android:layout_width="40dp"
+                android:layout_height="30dp"
+                android:layout_alignBottom="@+id/statusView"
+                android:layout_alignStart="@+id/incidentTextView"
+                android:layout_toStartOf="@+id/emergencyTextView"
+                android:text="Une description" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 </android.support.constraint.ConstraintLayout>
