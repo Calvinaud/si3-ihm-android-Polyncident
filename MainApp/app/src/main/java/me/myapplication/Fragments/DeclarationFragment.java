@@ -28,6 +28,8 @@ public class DeclarationFragment extends android.support.v4.app.Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
     private static final String ARG_DB_HELPER = "dbhelper_object";
 
+    private IncidentDBHelper dbHelper;
+
     //GUI components
     private Spinner typeSpinner;
     private Spinner locationSpinner;
@@ -40,7 +42,6 @@ public class DeclarationFragment extends android.support.v4.app.Fragment {
 
     private View[] collapsibleViews;
 
-    private IncidentDBHelper dbHelper;
 
     public static DeclarationFragment newInstance(int sectionNumber, IncidentDBHelper dbHelper) {
         DeclarationFragment fragment = new DeclarationFragment();
@@ -82,23 +83,23 @@ public class DeclarationFragment extends android.support.v4.app.Fragment {
         this.locationLabel = rootView.findViewById(R.id.declaration_location_label);
 
         this.collapsibleViews = new View[]{locationLabel, typeLabel, locationSpinner,
-                                           typeSpinner, titleEditText, importanceSeekBar};
+                typeSpinner, titleEditText, importanceSeekBar};
 
         return rootView;
     }
 
     public void fillTypes(){
         ArrayAdapter<String> types = new ArrayAdapter<String>(getContext(),
-                                                              android.R.layout.simple_spinner_item,
-                                                              this.dbHelper.getTypes());
+                                                         android.R.layout.simple_spinner_item,
+                                                         this.dbHelper.getTypes());
         types.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         this.typeSpinner.setAdapter(types);
     }
 
     public void fillDeclarations(){
         ArrayAdapter<String> locations = new ArrayAdapter<String>(getContext(),
-                                                              android.R.layout.simple_spinner_item,
-                                                              this.dbHelper.getLocations());
+                                                                  android.R.layout.simple_spinner_item,
+                                                                  this.dbHelper.getLocations());
         locations.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         this.locationSpinner.setAdapter(locations);
     }
@@ -134,7 +135,7 @@ public class DeclarationFragment extends android.support.v4.app.Fragment {
                 return;
 
             dbHelper.insertIncident(0, locationSpinner.getSelectedItemPosition()+1,
-                                    typeSpinner.getSelectedItemPosition()+1,importanceSeekBar.getProgress(),
+                              typeSpinner.getSelectedItemPosition()+1,importanceSeekBar.getProgress(),
                                     titleEditText.getText().toString(), descriptionEditText.getText().toString()
             );
             dbHelper.logIncidents();
