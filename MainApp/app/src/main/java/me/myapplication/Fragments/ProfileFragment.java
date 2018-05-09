@@ -61,6 +61,16 @@ public class ProfileFragment extends Fragment {
                 startActivity(callIntent);
             }
         });
+
+        this.smsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent smsIntent = new Intent(Intent.ACTION_VIEW);
+                smsIntent.setType("vnd.android-dir/mms-sms");
+                smsIntent.putExtra("address", "0768596940");
+                startActivity(Intent.createChooser(smsIntent, "SMS:"));
+            }
+        });
     }
 
     @Override
