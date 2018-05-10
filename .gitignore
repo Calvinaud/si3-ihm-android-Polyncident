@@ -9,3 +9,5 @@ MainApp/local.properties
 /build
 /captures
 .externalNativeBuild
+MainApp/gradle.properties
+MainApp/gradle/wrapper/gradle-wrapper.properties

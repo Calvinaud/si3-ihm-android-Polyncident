@@ -1,12 +1,16 @@
 package me.myapplication;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -26,10 +30,12 @@ import java.util.logging.Logger;
 import me.myapplication.Fragments.DeclarationFragment;
 import me.myapplication.Fragments.VisualizationFragment;
 import me.myapplication.Helpers.IncidentDBHelper;
+import me.myapplication.Services.NotificationService;
 
 public class MainActivity extends AppCompatActivity {
 
     private IncidentDBHelper dbHelper;
+
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -85,8 +91,10 @@ public class MainActivity extends AppCompatActivity {
         }catch (Exception e){
             Logger.getAnonymousLogger().log(Level.WARNING, e.toString());
         }
-    }
 
+        Intent i= new Intent(this, NotificationService.class);
+        startService(i);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
