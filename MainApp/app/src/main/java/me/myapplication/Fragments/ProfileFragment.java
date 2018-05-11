@@ -71,6 +71,17 @@ public class ProfileFragment extends Fragment {
                 startActivity(Intent.createChooser(smsIntent, "SMS:"));
             }
         });
+
+        this.mailButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent mailIntent = new Intent(Intent.ACTION_SENDTO);
+                mailIntent.setType("message/rfc822");
+                mailIntent.setData(Uri.parse("mailto:test@gmail.com"));
+                mailIntent.putExtra(Intent.EXTRA_SUBJECT, "Incident - Titre incident ");
+                startActivity(Intent.createChooser(mailIntent, "MAIL:"));
+            }
+        });
     }
 
     @Override
