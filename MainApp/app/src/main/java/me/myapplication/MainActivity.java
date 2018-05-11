@@ -28,6 +28,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import me.myapplication.Fragments.DeclarationFragment;
+import me.myapplication.Fragments.PlanningFragment;
 import me.myapplication.Fragments.VisualizationFragment;
 import me.myapplication.Helpers.IncidentDBHelper;
 import me.myapplication.Services.NotificationService;
@@ -170,18 +171,24 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
 
-            if(position == 0)
-                return DeclarationFragment.newInstance(1, dbHelper);
+            switch (position) {
+                case 0:
+                    return DeclarationFragment.newInstance(1, dbHelper);
+
+                case 3:
+                    return PlanningFragment.newInstance(4,dbHelper);
+
+            }
 
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return VisualizationFragment.newInstance(position+1, dbHelper);
+             return VisualizationFragment.newInstance(position+1, dbHelper);
         }
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 3;
+            // Show 4 total pages.
+            return 4;
         }
     }
 
