@@ -24,7 +24,7 @@ import me.myapplication.R;
  * Created by Aurelien on 29/04/2018.
  */
 
-public class PlanningFragment extends Fragment {
+public class SlotFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
     private static final String ARG_DB_HELPER = "dbhelper_object";
@@ -32,8 +32,8 @@ public class PlanningFragment extends Fragment {
     private IncidentDBHelper dbHelper;
 
 
-    public static PlanningFragment newInstance(int sectionNumber, IncidentDBHelper dbHelper) {
-        PlanningFragment fragment = new PlanningFragment();
+    public static SlotFragment newInstance(int sectionNumber, IncidentDBHelper dbHelper) {
+        SlotFragment fragment = new SlotFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
@@ -54,7 +54,7 @@ public class PlanningFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_planning, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_slot, container, false);
 
         return rootView;
     }
