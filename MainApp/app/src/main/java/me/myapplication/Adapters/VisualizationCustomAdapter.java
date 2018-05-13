@@ -52,12 +52,22 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         this.cursor.moveToPosition(position);
+
+        String title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
+        String desc = cursor.getString(cursor.getColumnIndex("description"));
+        //Importance importance; A FAIRE
+        String urgence = cursor.getString(cursor.getColumnIndex("importance")); //temp
+        int reporterId = cursor.getInt(cursor.getColumnIndexOrThrow("reporterId"));
+        int locationId = cursor.getInt(cursor.getColumnIndexOrThrow("locationId"));
+        int typeId = cursor.getInt(cursor.getColumnIndexOrThrow("typeId"));
+
+        this.incident=new Incident(reporterId,locationId,typeId,Importance.MINOR,title,desc);
         holder.cardView.setOnClickListener(new DetailsListener());
-        holder.incident.setText(cursor.getString(cursor.getColumnIndexOrThrow("title")));
+        holder.incident.setText(title);
         holder.date.setText("0");
         holder.heure.setText("0");
-        holder.urgence.setText(cursor.getString(cursor.getColumnIndex("importance")));
-        holder.description.setText(cursor.getString(cursor.getColumnIndex("description")));
+        holder.urgence.setText(urgence);
+        holder.description.setText(desc);
     }
 
     @Override
