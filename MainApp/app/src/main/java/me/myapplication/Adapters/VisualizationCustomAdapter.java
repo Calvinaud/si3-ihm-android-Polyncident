@@ -39,7 +39,7 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
     public VisualizationCustomAdapter(Context context, IncidentDBHelper incidentDBHelper){
         this.context=context;
         this.incidentDBHelper = incidentDBHelper;
-        this.cursor=incidentDBHelper.getIncidentCursor(-1,-1,-1,2);
+        this.cursor=incidentDBHelper.getIncidentCursor(-1,-1,-1,100);
     }
 
     @NonNull
@@ -52,7 +52,6 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         this.cursor.moveToPosition(position);
-        this.incident=new Incident(1,2,2,Importance.MINOR,"TITLE","CONTENT");
         holder.cardView.setOnClickListener(new DetailsListener());
         holder.incident.setText(cursor.getString(cursor.getColumnIndexOrThrow("title")));
         holder.date.setText("0");
