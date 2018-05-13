@@ -1,10 +1,12 @@
 package me.myapplication.Models;
 
+import java.io.Serializable;
+
 /**
  * Created by Aurelien on 28/04/2018.
  */
 
-public class Incident {
+public class Incident implements Serializable{
 
     final private int reporterdID;
     final private int locationID;

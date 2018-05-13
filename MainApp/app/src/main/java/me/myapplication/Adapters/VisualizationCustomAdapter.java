@@ -21,6 +21,7 @@ import me.myapplication.DisplayIncidentActivity;
 import me.myapplication.Fragments.VisualizationFragment;
 import me.myapplication.Helpers.IncidentDBHelper;
 import me.myapplication.MainActivity;
+import me.myapplication.Models.Importance;
 import me.myapplication.Models.Incident;
 import me.myapplication.R;
 
@@ -33,6 +34,7 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
     private Context context;
     private IncidentDBHelper incidentDBHelper;
     private Cursor cursor;
+    private Incident incident;
 
     public VisualizationCustomAdapter(Context context, IncidentDBHelper incidentDBHelper){
         this.context=context;
@@ -50,7 +52,7 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         this.cursor.moveToPosition(position);
-
+        this.incident=new Incident(1,2,2,Importance.MINOR,"TITLE","CONTENT");
         holder.cardView.setOnClickListener(new DetailsListener());
         holder.incident.setText(cursor.getString(cursor.getColumnIndexOrThrow("title")));
         holder.date.setText("0");
@@ -100,6 +102,7 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
         public void onClick(View view)  {
             Log.i("heu","yghefjn");
             Intent intent = new Intent(context,DisplayIncidentActivity.class);
+            intent.putExtra("incident",incident);
             context.startActivity(intent);
         }
     }
