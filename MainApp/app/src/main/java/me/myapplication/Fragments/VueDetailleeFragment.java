@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,7 +63,12 @@ public class VueDetailleeFragment extends android.support.v4.app.Fragment {
         View rootView = inflater.inflate(R.layout.fragment_vue_detaillee, container, false);
         Intent intent = getActivity().getIntent();
         incident = (Incident)intent.getSerializableExtra("incident");
-        Log.i("proof",incident.getTitle());
+        TextView title = rootView.findViewById(R.id.titleDetail);
+        TextView description = rootView.findViewById(R.id.description);
+
+        title.setText(incident.getTitle());
+        description.setText(incident.getDescription());
+
         return rootView;
     }
 
