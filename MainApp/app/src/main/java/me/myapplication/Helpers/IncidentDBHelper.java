@@ -217,4 +217,11 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
         cursor.close();
     }
 
+    public int getIncidentNumber(){
+        Cursor cursor = myDataBase.rawQuery("SELECT incidentID FROM incidents", null);
+        int i = cursor.getCount();
+        cursor.close();
+        return i;
+    }
+
 }

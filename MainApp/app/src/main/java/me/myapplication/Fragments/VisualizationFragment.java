@@ -65,7 +65,6 @@ public class VisualizationFragment extends android.support.v4.app.Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
         incidentList = new ArrayList<>();
-        this.dbHelper.insertIncident(1, 2, 2, 3, "title", "desc");
         adapter = new VisualizationCustomAdapter(getContext(), dbHelper);
         recyclerView.setAdapter(adapter);
         return rootView;

@@ -8,13 +8,19 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.view.View;
 
+import java.io.IOException;
+import java.sql.SQLException;
+
+import me.myapplication.Helpers.IncidentDBHelper;
 import me.myapplication.MainActivity;
+import me.myapplication.Models.Incident;
 import me.myapplication.R;
 
 public class NotificationService extends Service {
 
     NotificationCompat.Builder notification;
     private static final int uniqueID = 1234;
+    private IncidentDBHelper dbHelper;
 
     public NotificationService() {
     }
@@ -30,25 +36,35 @@ public class NotificationService extends Service {
         super.onCreate();
         notification= new NotificationCompat.Builder(this, "1234");
         notification.setAutoCancel(true);
+        dbHelper = new IncidentDBHelper(this);
+        try {
+            dbHelper.openDataBase();
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
+
         Runnable r = new Runnable() {
             @Override
             public void run() {
+                int prev = dbHelper.getIncidentNumber();
                 for(int i = 0; i<5; i++){
                     long futureTime=System.currentTimeMillis()+5000;
                     while(System.currentTimeMillis() < futureTime){
                         synchronized (this){
                             try{
                                 wait(futureTime-System.currentTimeMillis());
-                                sendNotif();
-                            }catch (Exception e){}
+                                if(prev < dbHelper.getIncidentNumber()){
+                                    sendNotif(""+dbHelper.getIncidentNumber());
+                                }
+                                prev=dbHelper.getIncidentNumber();
+                            }catch (Exception ignored){}
                         }
                     }
-
                 }
             }
         };
@@ -62,11 +78,11 @@ public class NotificationService extends Service {
         super.onDestroy();
     }
 
-    public void sendNotif(){
+    public void sendNotif(String title){
         notification.setSmallIcon(R.drawable.ic_notifications_black_24dp);
         notification.setTicker("this is the ticker");
         notification.setWhen(System.currentTimeMillis());
-        notification.setContentTitle("Here is the title");
+        notification.setContentTitle(title);
         notification.setContentText("I am the body");
 
         Intent intent = new Intent(this, MainActivity.class);
