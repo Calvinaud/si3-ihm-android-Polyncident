@@ -1,9 +1,14 @@
 package me.myapplication.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +17,10 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import me.myapplication.DisplayIncidentActivity;
+import me.myapplication.Fragments.VisualizationFragment;
 import me.myapplication.Helpers.IncidentDBHelper;
+import me.myapplication.MainActivity;
 import me.myapplication.Models.Incident;
 import me.myapplication.R;
 
@@ -43,6 +51,7 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         this.cursor.moveToPosition(position);
 
+        holder.cardView.setOnClickListener(new DetailsListener());
         holder.incident.setText(cursor.getString(cursor.getColumnIndexOrThrow("title")));
         holder.date.setText("0");
         holder.heure.setText("0");
@@ -67,10 +76,13 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
         TextView heure;
         TextView urgence;
         TextView description;
+        CardView cardView;
 
         ViewHolder(View itemView) {
+
             super(itemView);
 
+            cardView = (CardView) itemView.findViewById(R.id.card);
             status=(ImageView) itemView.findViewById(R.id.statusView);
             comments=(ImageView) itemView.findViewById(R.id.commentsView);
 
@@ -79,6 +91,16 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
             heure=(TextView) itemView.findViewById(R.id.timeTextView);
             urgence=(TextView) itemView.findViewById(R.id.emergencyTextView);
             description=(TextView) itemView.findViewById(R.id.descView);
+        }
+    }
+
+    public class DetailsListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view)  {
+            Log.i("heu","yghefjn");
+            Intent intent = new Intent(context,DisplayIncidentActivity.class);
+            context.startActivity(intent);
         }
     }
 }
