@@ -11,49 +11,48 @@
     <TextView
         android:id="@+id/titleDetail"
         android:layout_width="59dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="56dp"
-        android:layout_marginStart="116dp"
-        android:layout_marginTop="27dp"
+        android:layout_height="20dp"
+        android:layout_marginBottom="25dp"
+        android:layout_marginStart="130dp"
         android:text="edrtfyg"
-        app:layout_constraintBottom_toTopOf="@+id/imageView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/imageView2"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imageView2"
         android:layout_width="126dp"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/appbar2"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="34dp"
-        android:layout_marginStart="59dp"
+        android:layout_marginBottom="30dp"
         android:contentDescription="incident"
         app:layout_constraintBottom_toTopOf="@+id/description"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/titleDetail"
         app:layout_constraintTop_toBottomOf="@+id/titleDetail"
         app:srcCompat="@mipmap/ic_launcher_round" />
 
     <TextView
         android:id="@+id/description"
         android:layout_width="185dp"
-        android:layout_height="148dp"
-        android:layout_marginBottom="57dp"
-        android:text="x gh"
+        android:layout_height="100dp"
+        android:layout_marginBottom="30dp"
+        android:text="C LA DESCRIPTION DE L'INCIDENT"
+        app:layout_constraintBottom_toTopOf="@+id/commentTitle"
+        app:layout_constraintStart_toStartOf="@+id/imageView2"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+    <TextView
+        android:id="@+id/commentTitle"
+        android:layout_width="100dp"
+        android:layout_height="20dp"
+        android:layout_marginBottom="4dp"
+        android:text="@string/commentaires"
         app:layout_constraintBottom_toTopOf="@+id/recyclerView2"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintStart_toStartOf="@+id/description"
+        app:layout_constraintTop_toBottomOf="@+id/description" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="284dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/description" />
+        app:layout_constraintTop_toBottomOf="@+id/commentTitle" />
+
 </android.support.constraint.ConstraintLayout>
