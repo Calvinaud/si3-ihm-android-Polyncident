@@ -18,7 +18,6 @@ import android.widget.TextView;
 import java.util.List;
 
 import me.myapplication.DisplayDetailsIncidentActivity;
-import me.myapplication.DisplayIncidentActivity;
 import me.myapplication.Fragments.VisualizationFragment;
 import me.myapplication.Helpers.IncidentDBHelper;
 import me.myapplication.MainActivity;
