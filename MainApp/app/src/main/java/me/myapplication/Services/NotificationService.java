@@ -5,6 +5,8 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.view.View;
@@ -86,6 +88,7 @@ public class NotificationService extends Service {
         //Logger.getAnonymousLogger().log(Level.WARNING,"ok" + cursor.getString(cursor.getColumnIndexOrThrow("title")));
 
         notification.setSmallIcon(R.drawable.ic_notifications_black_24dp);
+        notification.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.logo));
         notification.setTicker("ok");
         notification.setWhen(System.currentTimeMillis());
         notification.setContentTitle("Un incident a été ajouté");
