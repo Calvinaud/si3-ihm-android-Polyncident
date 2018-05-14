@@ -26,7 +26,17 @@
         <service
             android:name=".Services.NotificationService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
+
+        <activity
+            android:name=".DisplayDetailsIncidentActivity"
+            android:label="@string/title_activity_display_details_incident"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="me.myapplication.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

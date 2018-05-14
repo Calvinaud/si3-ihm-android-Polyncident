@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import me.myapplication.DisplayDetailsIncidentActivity;
 import me.myapplication.DisplayIncidentActivity;
 import me.myapplication.Fragments.VisualizationFragment;
 import me.myapplication.Helpers.IncidentDBHelper;
@@ -110,7 +111,7 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
         @Override
         public void onClick(View view)  {
             Log.i("heu","yghefjn");
-            Intent intent = new Intent(context,DisplayIncidentActivity.class);
+            Intent intent = new Intent(context,DisplayDetailsIncidentActivity.class);
             intent.putExtra("incident",incident);
             context.startActivity(intent);
         }
