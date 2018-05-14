@@ -4,12 +4,15 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.view.View;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import me.myapplication.Helpers.IncidentDBHelper;
 import me.myapplication.MainActivity;
@@ -52,21 +55,22 @@ public class NotificationService extends Service {
             @Override
             public void run() {
                 int prev = dbHelper.getIncidentNumber();
-                for(int i = 0; i<5; i++){
-                    long futureTime=System.currentTimeMillis()+5000;
-                    while(System.currentTimeMillis() < futureTime){
+                while(true){
                         synchronized (this){
                             try{
-                                wait(futureTime-System.currentTimeMillis());
+                                wait(5000);
+                                Cursor cursor = dbHelper.getLastIncidentCursor();
                                 if(prev < dbHelper.getIncidentNumber()){
-                                    sendNotif(""+dbHelper.getIncidentNumber());
+                                    sendNotif();
+                                    try {
+                                        Logger.getAnonymousLogger().log(Level.WARNING, cursor.getString(cursor.getColumnIndexOrThrow("title")));
+                                    }catch (Exception e){Logger.getAnonymousLogger().log(Level.WARNING, e.toString());}
                                 }
                                 prev=dbHelper.getIncidentNumber();
                             }catch (Exception ignored){}
                         }
                     }
                 }
-            }
         };
         Thread notifThread = new Thread(r);
         notifThread.start();
@@ -78,12 +82,14 @@ public class NotificationService extends Service {
         super.onDestroy();
     }
 
-    public void sendNotif(String title){
+    public void sendNotif(){
+        //Logger.getAnonymousLogger().log(Level.WARNING,"ok" + cursor.getString(cursor.getColumnIndexOrThrow("title")));
+
         notification.setSmallIcon(R.drawable.ic_notifications_black_24dp);
-        notification.setTicker("this is the ticker");
+        notification.setTicker("ok");
         notification.setWhen(System.currentTimeMillis());
-        notification.setContentTitle(title);
-        notification.setContentText("I am the body");
+        notification.setContentTitle("Un incident a été ajouté");
+        notification.setContentText("");
 
         Intent intent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
@@ -91,6 +97,5 @@ public class NotificationService extends Service {
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(uniqueID,notification.build());
-
     }
 }

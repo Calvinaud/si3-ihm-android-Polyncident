@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -14,6 +15,7 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -176,6 +178,13 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
         Logger.getAnonymousLogger().warning(queryString);
 
         return myDataBase.rawQuery(queryString, null);
+    }
+
+    public Cursor getLastIncidentCursor(){
+        Logger.getAnonymousLogger().log(Level.WARNING, "ok ?????");
+        Cursor cursor = getIncidentCursor(-1,-1,-1,100);
+        cursor.moveToLast();
+        return cursor;
     }
 
     public void insertIncident(int reporterdID, int locationID, int typeID,
