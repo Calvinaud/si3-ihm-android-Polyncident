@@ -6,19 +6,19 @@ DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS comments;
 DROP TABLE IF EXISTS assignations;
 
-/* ==== Creation of the tables ==== */
+--==== Creation of the tables ====
 
 CREATE TABLE locations (
-    locationId INTEGER PRIMARY KEY AUTO_INCREMENT,
+    locationId INTEGER PRIMARY KEY,
     name VARCHAR(30),
-    description TEXT)
-;
+    description TEXT
+);
 
 CREATE TABLE incidents (
-    incidentId INTEGER PRIMARY KEY AUTO_INCREMENT,
+    incidentId INTEGER PRIMARY KEY,
     reporterId INTEGER REFERENCES users,
     locationId INTEGER REFERENCES locations,
-    categoryId INTEGER REFERENCES categories,
+    typeId INTEGER REFERENCES categories,
     importance INTEGER,
     urlPhoto VARCHAR(100),
     title VARCHAR(30),
@@ -32,20 +32,20 @@ CREATE TABLE followers (
 );
 
 CREATE TABLE types(
-    typeId INTEGER PRIMARY KEY AUTO_INCREMENT,
+    typeId INTEGER PRIMARY KEY,
     name VARCHAR(30),
     description TEXT
 );
 
 CREATE TABLE users (
-    userId INTEGER PRIMARY KEY AUTO_INCREMENT,
+    userId INTEGER PRIMARY KEY,
     username varchar(30) UNIQUE,
     password varchar(100),
-    roles VARCHAR(20) NOT NULL CHECK (roles IN ('UTILISATEUR','ADMINISTRATEUR', 'TECHNICIEN'))
+    role VARCHAR(20) NOT NULL CHECK (roles IN ('UTILISATEUR','ADMINISTRATEUR', 'TECHNICIEN'))
 );
 
 CREATE TABLE comments(
-    commentId INTEGER PRIMARY KEY AUTO_INCREMENT,
+    commentId INTEGER PRIMARY KEY,
     userId INTEGER REFERENCES users,
     incidentId INTEGER REFERENCES incidents,
     date DATE,
@@ -62,9 +62,9 @@ CREATE TABLE assignations (
 );
 
 
-/* ==== Adding of the test data ==== */
+--==== Adding of the test data ====
 
-/*locations*/
+--locations
 
 INSERT INTO locations (name) VALUES('E130');
 INSERT INTO locations (name) VALUES('E131');
@@ -76,14 +76,14 @@ INSERT INTO locations (name) VALUES('0110');
 
 INSERT INTO locations (name) VALUES('Parking');
 
-/*categories*/
+--categories
 
 INSERT INTO types (name) VALUES('Fournitures');
 INSERT INTO types (name) VALUES('Matériel cassé');
 INSERT INTO types (name) VALUES('Autres');
 
-/*users*/
+--users
 
-INSERT INTO users
+INSERT INTO users (username, password, role) VALUES ("Mathieu", "Mathieu", "UTILISATEUR");
 
 INSERT INTO incidents (reporterId, locationId, categoryId) VALUES ();
