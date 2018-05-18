@@ -30,7 +30,6 @@ public class VisualizationFragment extends android.support.v4.app.Fragment {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
-    List<Incident> incidentList;
     private IncidentDBHelper dbHelper;
 
 
@@ -62,7 +61,6 @@ public class VisualizationFragment extends android.support.v4.app.Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
-        incidentList = new ArrayList<>();
         adapter = new VisualizationCustomAdapter(getContext(), dbHelper);
         recyclerView.setAdapter(adapter);
         return rootView;
