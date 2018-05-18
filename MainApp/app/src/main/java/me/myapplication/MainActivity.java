@@ -22,10 +22,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import me.myapplication.Fragments.PlanningFragment;
 import me.myapplication.Fragments.VisualizationFragment;
 import me.myapplication.Helpers.IncidentDBHelper;
 import me.myapplication.Services.NotificationService;
@@ -85,6 +83,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, DeclarationActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        FloatingActionButton planning = (FloatingActionButton) findViewById(R.id.planning);
+        planning.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, PlanningActivity.class);
                 startActivity(intent);
             }
         });
@@ -172,18 +179,14 @@ public class MainActivity extends AppCompatActivity {
                 case 0:
                     return VisualizationFragment.newInstance(position+1, dbHelper);
 
-
-                case 1:
-                    return PlanningFragment.newInstance(2,dbHelper);
-
             }
             return PlaceholderFragment.newInstance(position+1);
         }
 
         @Override
         public int getCount() {
-            // Show 4 total pages.
-            return 4;
+            // Show 1 total pages.
+            return 1;
         }
     }
 
