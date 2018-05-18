@@ -1,6 +1,8 @@
-package me.myapplication.Fragments;
+package me.myapplication;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.logging.Logger;
 
 import me.myapplication.Helpers.IncidentDBHelper;
@@ -19,15 +23,10 @@ import me.myapplication.MainActivity;
 import me.myapplication.Models.Importance;
 import me.myapplication.R;
 
-/**
- * Created by Aurelien on 08/05/2018.
- */
 
-public class ProfileFragment extends Fragment {
+public class ProfileActivity extends Activity {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
-
-    private IncidentDBHelper dbHelper;
 
     //GUI components
     private TextView nameLabel;
@@ -35,24 +34,28 @@ public class ProfileFragment extends Fragment {
     private  ImageButton smsButton;
     private  ImageButton mailButton;
 
-    public static ProfileFragment newInstance(int sectionNumber, IncidentDBHelper dbHelper) {
-        ProfileFragment fragment = new ProfileFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
-        this.dbHelper = ((MainActivity)getContext()).getDBHelper();
+
+        setContentView(R.layout.fragment_profile);
+
+        assignViewMembers();
+
+        addListeners();
+
+        displayUserData();
+
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    private void assignViewMembers(){
+        this.nameLabel = findViewById(R.id.profile_name_label);
+        this.callButton = findViewById(R.id.profile_call_button);
+        this.smsButton = findViewById(R.id.profile_sms_button);
+        this.mailButton = findViewById(R.id.profile_mail_button);
+    }
 
+    private void addListeners(){
         this.callButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,18 +87,23 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+    private void displayUserData(){
+        try {
+            //can
+            int userId = getIntent().getExtras().getInt("userId");
+            Cursor cursor = IncidentDBHelper.getSingleton().getUserCursor(1);
+            this.nameLabel.setText(cursor.getInt(cursor.getColumnIndex("username")));
+            cursor.close();
+        }catch (NullPointerException e){
+            Logger.getAnonymousLogger().severe(
+                    "No <userId> has been provided to "+getClass().getName()
+            );
+        }catch(IncidentDBHelper.NoRecordException e){
+            Logger.getAnonymousLogger().severe(e.toString());
+        }
+        finally {
+            finish();
+        }
 
-        Logger.getAnonymousLogger().warning("onCreateView");
-        View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
-        this.nameLabel = rootView.findViewById(R.id.profile_name_label);
-        this.callButton = rootView.findViewById(R.id.profile_call_button);
-        this.smsButton = rootView.findViewById(R.id.profile_sms_button);
-        this.mailButton = rootView.findViewById(R.id.profile_mail_button);
-
-        return rootView;
     }
-
 }

@@ -24,13 +24,27 @@
 
         <activity
             android:name=".DeclarationActivity"
-            android:label="@string/title_activity_display_details_incident"
+            android:label="@string/declaration_activity_title"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="me.myapplication.MainActivity" />
         </activity>
+
+        <activity
+            android:name=".ProfileActivity"
+            android:label="@string/profile_activity_title"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="me.myapplication.MainActivity" />
+
+        </activity>
+
+
 
         <service
             android:name=".Services.NotificationService"

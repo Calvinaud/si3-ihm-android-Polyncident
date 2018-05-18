@@ -15,5 +15,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_display_details_incident">DisplayDetailsIncidentActivity</string>
+    <string name="declaration_activity_title">Déclaration d\'un incident</string>
+    <string name="profile_activity_title">Profil</string>
     <string name="commentaires">Commentaires</string>
 </resources>
