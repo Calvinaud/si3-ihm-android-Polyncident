@@ -21,7 +21,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".DeclarationActivity"
             android:label="@string/declaration_activity_title"
@@ -31,20 +30,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="me.myapplication.MainActivity" />
         </activity>
-
         <activity
             android:name=".ProfileActivity"
             android:label="@string/profile_activity_title"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
-
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="me.myapplication.MainActivity" />
-
         </activity>
-
-
 
         <service
             android:name=".Services.NotificationService"
@@ -60,6 +54,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="me.myapplication.MainActivity" />
         </activity>
+        <activity
+            android:name=".PlanningActivity"
+            android:label="@string/title_activity_planning"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

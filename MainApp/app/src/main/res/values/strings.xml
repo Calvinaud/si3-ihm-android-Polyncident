@@ -18,4 +18,5 @@
     <string name="declaration_activity_title">Déclaration d\'un incident</string>
     <string name="profile_activity_title">Profil</string>
     <string name="commentaires">Commentaires</string>
+    <string name="title_activity_planning">PlanningActivity</string>
 </resources>
