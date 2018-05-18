@@ -115,4 +115,6 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
             context.startActivity(intent);
         }
     }
+
+
 }

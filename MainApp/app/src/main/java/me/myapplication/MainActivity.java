@@ -169,17 +169,16 @@ public class MainActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
 
             switch (position) {
-                case 0:
-                    return DeclarationFragment.newInstance(1, dbHelper);
 
-                case 3:
-                    return PlanningFragment.newInstance(4,dbHelper);
+                case 0:
+                    return VisualizationFragment.newInstance(position+1, dbHelper);
+
+
+                case 1:
+                    return PlanningFragment.newInstance(2,dbHelper);
 
             }
-
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-             return VisualizationFragment.newInstance(position+1, dbHelper);
+                return PlaceholderFragment.newInstance(position+1);
         }
 
         @Override
