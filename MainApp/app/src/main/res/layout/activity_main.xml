@@ -65,4 +65,15 @@
     app:rippleColor="@color/cardview_light_background"
     app:srcCompat="@drawable/ic_add_circle_black_24dp"/>
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/planning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|bottom"
+        android:layout_margin="@dimen/fab_margin"
+        app:backgroundTint="@android:color/holo_blue_bright"
+        app:rippleColor="@color/cardview_light_background"
+        app:srcCompat="@drawable/ic_perm_contact_calendar_black_24dp"/>
+
+
 </android.support.design.widget.CoordinatorLayout>
