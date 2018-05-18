@@ -7,9 +7,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.sql.SQLException;
@@ -82,51 +86,70 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     }
-
     public void initIncidents(){
         myDataBase.execSQL("DROP TABLE IF EXISTS incidents");
         myDataBase.execSQL("CREATE TABLE incidents (incidentID INTEGER PRIMARY KEY AUTOINCREMENT,"+
-                                                    "reporterId INTEGER,"+
-                                                    "locationId INTEGER,"+
-                                                    "typeId INETEGER,"+
-                                                    "importance INTEGER,"+
-                                                    "title VARCHAR(30),"+
-                                                    "description TEXT)"
-                          );
+                "reporterId INTEGER,"+
+                "locationId INTEGER,"+
+                "typeId INETEGER,"+
+                "importance INTEGER,"+
+                "title VARCHAR(30),"+
+                "description TEXT)"
+        );
 
     }
 
     public void initLocations(){
 
         myDataBase.execSQL("CREATE TABLE locations (locationId INTEGER PRIMARY KEY AUTOINCREMENT,"+
-                                                        "locationName VARCHAR(30))");
+                "name VARCHAR(30))");
 
-        myDataBase.execSQL("INSERT INTO locations (locationName) VALUES('E130')");
-        myDataBase.execSQL("INSERT INTO locations (locationName) VALUES('E131')");
-        myDataBase.execSQL("INSERT INTO locations (locationName) VALUES('E132')");
+        myDataBase.execSQL("INSERT INTO locations (name) VALUES('E130')");
+        myDataBase.execSQL("INSERT INTO locations (name) VALUES('E131')");
+        myDataBase.execSQL("INSERT INTO locations (name) VALUES('E132')");
 
-        myDataBase.execSQL("INSERT INTO locations (locationName) VALUES('O108')");
-        myDataBase.execSQL("INSERT INTO locations (locationName) VALUES('0109')");
-        myDataBase.execSQL("INSERT INTO locations (locationName) VALUES('0110')");
+        myDataBase.execSQL("INSERT INTO locations (name) VALUES('O108')");
+        myDataBase.execSQL("INSERT INTO locations (name) VALUES('0109')");
+        myDataBase.execSQL("INSERT INTO locations (name) VALUES('0110')");
 
-        myDataBase.execSQL("INSERT INTO locations (locationName) VALUES('Parking')");
+        myDataBase.execSQL("INSERT INTO locations (name) VALUES('Parking')");
     }
 
     public void initTypes() {
 
         myDataBase.execSQL("CREATE TABLE types (typeId INTEGER PRIMARY KEY AUTOINCREMENT," +
-                                                        "typeName VARCHAR(30))");
+                "name VARCHAR(30))");
 
         myDataBase.execSQL("INSERT INTO types (typeName) VALUES('Fournitures')");
         myDataBase.execSQL("INSERT INTO types (typeName) VALUES('Matériel cassé')");
         myDataBase.execSQL("INSERT INTO types (typeName) VALUES('Autres')");
     }
 
+    public void initTables() {
+
+        try{
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(myContext.getAssets().open("scriptbd.sql")));
+            StringBuilder strBuilder = new StringBuilder();
+            String line;
+
+            while((line = reader.readLine()) != null){
+                strBuilder.append(line);
+                Logger.getAnonymousLogger().warning(line);
+                myDataBase.execSQL(strBuilder.toString());
+            }
+
+        }catch (IOException e){
+            Logger.getAnonymousLogger().severe("initializing tables : "+e.toString());
+        }
+
+    }
+
     public List<String> getTypes(){
 
         List<String> types = new ArrayList<>(10);
 
-        Cursor cursor = myDataBase.rawQuery("SELECT typeName from types", null);
+        Cursor cursor = myDataBase.rawQuery("SELECT name from types", null);
         cursor.moveToFirst();
 
         while (!cursor.isAfterLast()) {
@@ -145,12 +168,12 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
 
         List<String> types = new ArrayList<>(10);
 
-        Cursor cursor = myDataBase.rawQuery("SELECT locationName from locations", null);
+        Cursor cursor = myDataBase.rawQuery("SELECT name from locations", null);
         cursor.moveToFirst();
 
         while (!cursor.isAfterLast()) {
 
-            int index = cursor.getColumnIndex("locationName");
+            int index = cursor.getColumnIndex("name");
             types.add(cursor.getString(index));
             cursor.moveToNext();
         }
