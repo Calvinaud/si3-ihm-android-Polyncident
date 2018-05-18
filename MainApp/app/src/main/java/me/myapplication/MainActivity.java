@@ -55,6 +55,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        try{
+            IncidentDBHelper.createSingleton(this);
+            IncidentDBHelper.getSingleton().createDataBase();
+            IncidentDBHelper.getSingleton().openDataBase();
+            IncidentDBHelper.getSingleton().initTables();
+
+        }catch (Exception e){
+            Logger.getAnonymousLogger().severe("MainActivity"+e.toString());
+        }
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
@@ -78,17 +88,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        dbHelper = new IncidentDBHelper(this);
-        try{
-            dbHelper.createDataBase();
-            dbHelper.openDataBase();
-            dbHelper.initIncidents();
-            dbHelper.initLocations();
-            dbHelper.initTypes();
-        }catch (Exception e){
-            Logger.getAnonymousLogger().log(Level.WARNING, e.toString());
-        }
 
         Intent i= new Intent(this, NotificationService.class);
         startService(i);
@@ -178,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
                     return PlanningFragment.newInstance(2,dbHelper);
 
             }
-                return PlaceholderFragment.newInstance(position+1);
+            return PlaceholderFragment.newInstance(position+1);
         }
 
         @Override
@@ -208,5 +207,5 @@ public class MainActivity extends AppCompatActivity {
     public IncidentDBHelper getDBHelper(){
         return dbHelper;
     }
-    
+
 }

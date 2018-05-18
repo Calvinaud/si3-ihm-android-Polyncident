@@ -25,7 +25,6 @@ public class NotificationService extends Service {
 
     NotificationCompat.Builder notification;
     private static final int uniqueID = 1234;
-    private IncidentDBHelper dbHelper;
 
     public NotificationService() {
     }
@@ -41,17 +40,13 @@ public class NotificationService extends Service {
         super.onCreate();
         notification= new NotificationCompat.Builder(this, "1234");
         notification.setAutoCancel(true);
-        dbHelper = new IncidentDBHelper(this);
-        try {
-            dbHelper.openDataBase();
-        } catch (SQLException | IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
+
+        final IncidentDBHelper dbHelper = IncidentDBHelper.getSingleton();
 
         Runnable r = new Runnable() {
             @Override

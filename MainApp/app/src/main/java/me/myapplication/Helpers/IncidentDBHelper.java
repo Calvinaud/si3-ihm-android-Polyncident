@@ -29,21 +29,38 @@ import java.util.logging.Logger;
 public class IncidentDBHelper extends SQLiteOpenHelper  {
 
     private static String DB_NAME = "database";
+    private static IncidentDBHelper singleton;
 
     private SQLiteDatabase myDataBase;
     private final Context myContext;
 
-    public IncidentDBHelper(Context context) {
+
+    private IncidentDBHelper(Context context) {
         super(context, DB_NAME, null, 1);
         this.myContext = context;
     }
+
+    /* singleton-related methods */
+
+    public static void createSingleton(Context context){
+        if(singleton != null)
+            throw new IllegalStateException("The singleton is already created.");
+        singleton = new IncidentDBHelper(context);
+    }
+
+    public static IncidentDBHelper getSingleton(){
+        return singleton;
+    }
+
+    /* end */
 
     public void openDataBase() throws SQLException, IOException {
         //Open the database
         String myPath = myContext.getDatabasePath(DB_NAME).getAbsolutePath();
         myDataBase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READWRITE);
-        myDataBase.rawQuery("DROP TABLE IF EXISTS news", null);
     }
+
+
 
     public void createDataBase() throws IOException {
 
@@ -120,27 +137,33 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
         myDataBase.execSQL("CREATE TABLE types (typeId INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "name VARCHAR(30))");
 
-        myDataBase.execSQL("INSERT INTO types (typeName) VALUES('Fournitures')");
-        myDataBase.execSQL("INSERT INTO types (typeName) VALUES('Matériel cassé')");
-        myDataBase.execSQL("INSERT INTO types (typeName) VALUES('Autres')");
+        myDataBase.execSQL("INSERT INTO types (name) VALUES('Fournitures')");
+        myDataBase.execSQL("INSERT INTO types (name) VALUES('Matériel cassé')");
+        myDataBase.execSQL("INSERT INTO types (name) VALUES('Autres')");
     }
 
-    public void initTables() {
+    public void initTables() throws IOException {
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(myContext.getAssets().open("scriptbd.sql")));
+        StringBuilder strBuilder = new StringBuilder();
+        String line;
 
         try{
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(myContext.getAssets().open("scriptbd.sql")));
-            StringBuilder strBuilder = new StringBuilder();
-            String line;
-
             while((line = reader.readLine()) != null){
-                strBuilder.append(line);
-                Logger.getAnonymousLogger().warning(line);
-                myDataBase.execSQL(strBuilder.toString());
+                if(!line.trim().startsWith("--"))
+                    strBuilder.append(line);
             }
+            for(String query : strBuilder.toString().split(";")){
+                Logger.getAnonymousLogger().severe(query);
 
+                if(!query.equals(""))
+                    myDataBase.execSQL(query);
+
+            }
+            Logger.getAnonymousLogger().severe("end");
         }catch (IOException e){
-            Logger.getAnonymousLogger().severe("initializing tables : "+e.toString());
+            Logger.getAnonymousLogger().severe(e.toString());
         }
 
     }
@@ -154,7 +177,7 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
 
         while (!cursor.isAfterLast()) {
 
-            int index = cursor.getColumnIndex("typeName");
+            int index = cursor.getColumnIndex("name");
             types.add(cursor.getString(index));
             cursor.moveToNext();
         }
@@ -255,5 +278,23 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
         cursor.close();
         return i;
     }
+
+    public Cursor getUserCursor(int userId) throws NoRecordException {
+        Cursor cursor = myDataBase.rawQuery("SELECT * FROM users WHERE userId ="+userId,
+                                            null);
+
+        if(!cursor.moveToFirst())
+            throw new NoRecordException("There is no user with and id of "+userId);
+        return cursor;
+    }
+
+    public class NoRecordException extends SQLException {
+
+        NoRecordException(String string){
+            super(string);
+        }
+
+    }
+
 
 }

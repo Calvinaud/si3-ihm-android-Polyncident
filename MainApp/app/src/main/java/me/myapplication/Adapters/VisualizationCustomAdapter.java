@@ -32,14 +32,12 @@ import me.myapplication.R;
 public class VisualizationCustomAdapter extends RecyclerView.Adapter<VisualizationCustomAdapter.ViewHolder> {
 
     private Context context;
-    private IncidentDBHelper incidentDBHelper;
     private Cursor cursor;
     private Incident incident;
 
     public VisualizationCustomAdapter(Context context, IncidentDBHelper incidentDBHelper){
         this.context=context;
-        this.incidentDBHelper = incidentDBHelper;
-        this.cursor=incidentDBHelper.getIncidentCursor(-1,-1,-1,100);
+        this.cursor=IncidentDBHelper.getSingleton().getIncidentCursor(-1,-1,-1,100);
     }
 
     @NonNull

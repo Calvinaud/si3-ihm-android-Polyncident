@@ -28,8 +28,6 @@ import me.myapplication.Models.Importance;
 
 public class DeclarationActivity extends Activity {
 
-    private IncidentDBHelper dbHelper;
-
     //GUI components
     private Spinner typeSpinner;
     private Spinner locationSpinner;
@@ -48,13 +46,6 @@ public class DeclarationActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.fragment_declaration);
-
-        this.dbHelper = new IncidentDBHelper(this);
-        try{
-            dbHelper.openDataBase();
-        }catch (Exception e){
-            Logger.getAnonymousLogger().severe(e.toString());
-        }
 
         initElementReferences();
         initElementListeners();
@@ -86,7 +77,7 @@ public class DeclarationActivity extends Activity {
     private void fillTypes(){
         ArrayAdapter<String> types = new ArrayAdapter<String>(getBaseContext(),
                                                          android.R.layout.simple_spinner_item,
-                                                         this.dbHelper.getTypes());
+                                                         IncidentDBHelper.getSingleton().getTypes());
         types.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         this.typeSpinner.setAdapter(types);
     }
@@ -94,7 +85,7 @@ public class DeclarationActivity extends Activity {
     private void fillDeclarations(){
         ArrayAdapter<String> locations = new ArrayAdapter<String>(getBaseContext(),
                                                              android.R.layout.simple_spinner_item,
-                                                             this.dbHelper.getLocations());
+                                                             IncidentDBHelper.getSingleton().getLocations());
         locations.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         this.locationSpinner.setAdapter(locations);
     }
@@ -126,11 +117,12 @@ public class DeclarationActivity extends Activity {
                || descriptionEditText.getText().toString().equals(""))
                 return;
 
-            dbHelper.insertIncident(0, locationSpinner.getSelectedItemPosition()+1,
+            IncidentDBHelper.getSingleton()
+                    .insertIncident(0, locationSpinner.getSelectedItemPosition()+1,
                     typeSpinner.getSelectedItemPosition()+1,importanceSeekBar.getProgress(),
                     titleEditText.getText().toString(), descriptionEditText.getText().toString()
             );
-            dbHelper.logIncidents();
+            IncidentDBHelper.getSingleton().logIncidents();
 
             finish();
         }
