@@ -103,44 +103,6 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     }
-    public void initIncidents(){
-        myDataBase.execSQL("DROP TABLE IF EXISTS incidents");
-        myDataBase.execSQL("CREATE TABLE incidents (incidentID INTEGER PRIMARY KEY AUTOINCREMENT,"+
-                "reporterId INTEGER,"+
-                "locationId INTEGER,"+
-                "typeId INETEGER,"+
-                "importance INTEGER,"+
-                "title VARCHAR(30),"+
-                "description TEXT)"
-        );
-
-    }
-
-    public void initLocations(){
-
-        myDataBase.execSQL("CREATE TABLE locations (locationId INTEGER PRIMARY KEY AUTOINCREMENT,"+
-                "name VARCHAR(30))");
-
-        myDataBase.execSQL("INSERT INTO locations (name) VALUES('E130')");
-        myDataBase.execSQL("INSERT INTO locations (name) VALUES('E131')");
-        myDataBase.execSQL("INSERT INTO locations (name) VALUES('E132')");
-
-        myDataBase.execSQL("INSERT INTO locations (name) VALUES('O108')");
-        myDataBase.execSQL("INSERT INTO locations (name) VALUES('0109')");
-        myDataBase.execSQL("INSERT INTO locations (name) VALUES('0110')");
-
-        myDataBase.execSQL("INSERT INTO locations (name) VALUES('Parking')");
-    }
-
-    public void initTypes() {
-
-        myDataBase.execSQL("CREATE TABLE types (typeId INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "name VARCHAR(30))");
-
-        myDataBase.execSQL("INSERT INTO types (name) VALUES('Fournitures')");
-        myDataBase.execSQL("INSERT INTO types (name) VALUES('Matériel cassé')");
-        myDataBase.execSQL("INSERT INTO types (name) VALUES('Autres')");
-    }
 
     public void initTables() throws IOException {
 

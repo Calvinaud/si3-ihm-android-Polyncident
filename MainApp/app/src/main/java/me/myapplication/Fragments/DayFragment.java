@@ -17,6 +17,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import me.myapplication.Adapters.DayRecyclerViewAdapter;
+import me.myapplication.Helpers.IncidentDBHelper;
 import me.myapplication.R;
 
 /**
@@ -25,21 +26,16 @@ import me.myapplication.R;
  */
 public class DayFragment extends Fragment {
 
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    private int mColumnCount = 1;
     private static Calendar dateday;
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public DayFragment() {
-    }
+    public DayFragment() {}
 
-    public static DayFragment newInstance(int columnCount, Calendar date) {
+    public static DayFragment newInstance() {
         DayFragment fragment = new DayFragment();
         Bundle args = new Bundle();
-        dateday=date;
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
         return fragment;
     }
@@ -48,9 +44,6 @@ public class DayFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
     }
 
     @Override
@@ -58,18 +51,14 @@ public class DayFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_planning_day, container, false);
 
-        TextView text= (TextView) view.findViewById(R.id.date);;
+        TextView text= (TextView) view.findViewById(R.id.date);
 
         text.setText("date");
         RecyclerView recyclerView = view.findViewById(R.id.incidentList);
         recyclerView.setHasFixedSize(true);
 
             Context context = view.getContext();
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
             recyclerView.setAdapter(new DayRecyclerViewAdapter());
 
         return view;
