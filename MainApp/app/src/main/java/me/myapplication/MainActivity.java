@@ -24,9 +24,9 @@ import android.widget.TextView;
 
 import java.util.logging.Logger;
 
-import me.myapplication.Fragments.DayFragment;
 import me.myapplication.Fragments.VisualizationFragment;
 import me.myapplication.Helpers.IncidentDBHelper;
+import me.myapplication.Services.AddedIncidentSimService;
 import me.myapplication.Services.NotificationService;
 
 public class MainActivity extends AppCompatActivity {
@@ -59,6 +59,13 @@ public class MainActivity extends AppCompatActivity {
             IncidentDBHelper.getSingleton().createDataBase();
             IncidentDBHelper.getSingleton().openDataBase();
             IncidentDBHelper.getSingleton().initTables();
+
+            //incidents initiaux
+            IncidentDBHelper.getSingleton()
+                    .insertIncident(1, 3,1
+                            ,
+                            2,"Plus de connection internet", "Il n'y a plus de co aled !"
+                    );
 
         }catch (Exception e){
             Logger.getAnonymousLogger().severe("MainActivity"+e.toString());
@@ -110,6 +117,9 @@ public class MainActivity extends AppCompatActivity {
 
         Intent i= new Intent(this, NotificationService.class);
         startService(i);
+
+        Intent intent =new Intent(this, AddedIncidentSimService.class);
+        startService(intent);
     }
 
     @Override
@@ -189,7 +199,13 @@ public class MainActivity extends AppCompatActivity {
             switch (position) {
 
                 case 0:
-                    return VisualizationFragment.newInstance(position+1, dbHelper);
+                    VisualizationFragment incidentsFragment = VisualizationFragment.newInstance(position+1);
+                    incidentsFragment.setMyIncidents(false);
+                    return incidentsFragment;
+                case 1:
+                    VisualizationFragment myIncidentsFragment = VisualizationFragment.newInstance(position+1);
+                    myIncidentsFragment.setMyIncidents(true);
+                    return myIncidentsFragment;
 
             }
             return PlaceholderFragment.newInstance(position+1);
@@ -198,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public int getCount() {
             // Show 1 total pages.
-            return 1;
+            return 2;
         }
     }
 

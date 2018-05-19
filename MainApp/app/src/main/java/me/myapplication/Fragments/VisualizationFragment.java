@@ -31,9 +31,10 @@ public class VisualizationFragment extends android.support.v4.app.Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private IncidentDBHelper dbHelper;
+    private boolean myIncidents;
 
 
-    public static VisualizationFragment newInstance(int sectionNumber, IncidentDBHelper dbHelper) {
+    public static VisualizationFragment newInstance(int sectionNumber) {
         VisualizationFragment fragment = new VisualizationFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
@@ -41,6 +42,9 @@ public class VisualizationFragment extends android.support.v4.app.Fragment {
         return fragment;
     }
 
+    public void setMyIncidents(boolean bool) {
+        this.myIncidents= bool;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,9 +60,8 @@ public class VisualizationFragment extends android.support.v4.app.Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        adapter = new VisualizationCustomAdapter(getContext(), dbHelper);
+        adapter = new VisualizationCustomAdapter(getContext(), this.myIncidents);
         recyclerView.setAdapter(adapter);
-
     }
 
     @Override
@@ -69,7 +72,7 @@ public class VisualizationFragment extends android.support.v4.app.Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
-        adapter = new VisualizationCustomAdapter(getContext(), dbHelper);
+        adapter = new VisualizationCustomAdapter(getContext(), this.myIncidents);
         recyclerView.setAdapter(adapter);
         return rootView;
     }

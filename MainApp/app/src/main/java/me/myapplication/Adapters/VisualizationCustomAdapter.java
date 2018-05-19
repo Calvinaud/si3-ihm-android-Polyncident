@@ -35,9 +35,14 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
     private Cursor cursor;
     private Incident incident;
 
-    public VisualizationCustomAdapter(Context context, IncidentDBHelper incidentDBHelper){
-        this.context=context;
-        this.cursor=IncidentDBHelper.getSingleton().getIncidentCursor(-1,-1,-1,100);
+    public VisualizationCustomAdapter(Context context, Boolean myIncident) {
+        this.context = context;
+        int myReporterId = 0;
+        if (myIncident) {
+            this.cursor = IncidentDBHelper.getSingleton().getIncidentCursor(myReporterId, -1, -1, 100);
+        } else {
+            this.cursor = IncidentDBHelper.getSingleton().getIncidentCursor(-1, -1, -1, 100);
+        }
     }
 
     @NonNull

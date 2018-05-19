@@ -58,7 +58,7 @@ public class NotificationService extends Service {
                                 wait(5000);
                                 Cursor cursor = dbHelper.getLastIncidentCursor();
                                 if(prev < dbHelper.getIncidentNumber()){
-                                    sendNotif();
+                                    sendNotif(cursor.getString(cursor.getColumnIndexOrThrow("title")), cursor.getString(cursor.getColumnIndexOrThrow("description")) );
                                     try {
                                         Logger.getAnonymousLogger().log(Level.WARNING, cursor.getString(cursor.getColumnIndexOrThrow("title")));
                                     }catch (Exception e){Logger.getAnonymousLogger().log(Level.WARNING, e.toString());}
@@ -79,15 +79,14 @@ public class NotificationService extends Service {
         super.onDestroy();
     }
 
-    public void sendNotif(){
-        //Logger.getAnonymousLogger().log(Level.WARNING,"ok" + cursor.getString(cursor.getColumnIndexOrThrow("title")));
+    public void sendNotif(String title, String desc){
 
         notification.setSmallIcon(R.drawable.ic_notifications_black_24dp);
         notification.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.logo));
         notification.setTicker("ok");
         notification.setWhen(System.currentTimeMillis());
-        notification.setContentTitle("Un incident a été ajouté");
-        notification.setContentText("");
+        notification.setContentTitle("Un incident a été ajouté : "+title);
+        notification.setContentText(desc);
 
         Intent intent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);

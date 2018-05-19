@@ -45,7 +45,7 @@ public class PlanningActivity extends AppCompatActivity {
         Calendar date=new GregorianCalendar();
         date.set(2018,12,12);
         FragmentTransaction ft=getFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment, DayFragment.newInstance(0,date));
+        ft.replace(R.id.fragment, DayFragment.newInstance());
         ft.commit();
 
 
