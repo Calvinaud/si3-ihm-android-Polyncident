@@ -106,6 +106,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
 
+
+
         Intent i= new Intent(this, NotificationService.class);
         startService(i);
     }

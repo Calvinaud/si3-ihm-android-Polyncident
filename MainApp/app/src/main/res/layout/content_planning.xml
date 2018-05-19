@@ -37,11 +37,13 @@
             android:text="Mode" />
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/dayList"
+
+    <fragment
+        android:id="@+id/fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".PlanningActivity"
-        tools:listitem="@layout/fragment_planning_day"/>
+        tools:layout="@layout/fragment_planning_day"
+        android:name="me.myapplication.Fragments.DayFragment"/>
+
 
 </LinearLayout>

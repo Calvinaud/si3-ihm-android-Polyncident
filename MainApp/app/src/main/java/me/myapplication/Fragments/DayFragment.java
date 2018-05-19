@@ -2,13 +2,14 @@ package me.myapplication.Fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import me.myapplication.Adapters.DayRecyclerViewAdapter;
 import me.myapplication.R;
@@ -34,8 +35,6 @@ public class DayFragment extends Fragment {
     public DayFragment() {
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
     public static DayFragment newInstance(int columnCount) {
         DayFragment fragment = new DayFragment();
         Bundle args = new Bundle();
@@ -59,16 +58,23 @@ public class DayFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_planning_day, container, false);
 
         // Set the adapter
-        if (view instanceof RecyclerView) {
+       /*
+        }*/
+
+        TextView text= (TextView) view.findViewById(R.id.date);
+        text.setText("OOOOO");
+
+        RecyclerView recyclerView = view.findViewById(R.id.incidentList);
+        recyclerView.setHasFixedSize(true);
+
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             recyclerView.setAdapter(new DayRecyclerViewAdapter());
-        }
+
         return view;
     }
 

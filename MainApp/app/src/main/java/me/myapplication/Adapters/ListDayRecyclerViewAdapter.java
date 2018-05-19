@@ -34,22 +34,24 @@ public class ListDayRecyclerViewAdapter extends RecyclerView.Adapter<ListDayRecy
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
        // holder.mIncidentList=DayFragment
+        holder.mdate.setText("Nous somme le 23/11/12");
     }
 
     @Override
     public int getItemCount() {
     //    return mValues.size();
-        return 1;
+        return 3;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final RecyclerView mIncidentList;
+      //  public final View mView;
+        TextView mdate;
+       // public final RecyclerView mIncidentList;
 
         public ViewHolder(View view) {
             super(view);
-            mView = view;
-            mIncidentList= (RecyclerView) view.findViewById(R.id.planning_day);
+            mdate=(TextView) itemView.findViewById(R.id.date);
+            //mIncidentList= (RecyclerView) view.findViewById(R.id.planning_day);
         }
 
         @Override

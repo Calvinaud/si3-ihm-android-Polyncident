@@ -32,7 +32,9 @@ public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerView
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-
+        holder.text1.setText("Test1");
+        holder.text2.setText("Test22");
+        holder.text3.setText("Test333");
     }
 
     @Override
@@ -42,8 +44,15 @@ public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerView
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+        TextView text1;
+        TextView text2;
+        TextView text3;
+
         public ViewHolder(View view) {
             super(view);
+            text1= (TextView) itemView.findViewById(R.id.item_number);
+            text2= (TextView) itemView.findViewById(R.id.content);
+            text3= (TextView) itemView.findViewById(R.id.truc);
         }
 
         @Override
