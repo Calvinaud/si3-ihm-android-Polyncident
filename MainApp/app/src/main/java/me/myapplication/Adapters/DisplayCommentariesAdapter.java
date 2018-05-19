@@ -75,7 +75,6 @@ public class DisplayCommentariesAdapter extends RecyclerView.Adapter<DisplayComm
             super(itemView);
 
             profilPicture = (ImageView) itemView.findViewById(R.id.profilPicture);
-
             content = (TextView) itemView.findViewById(R.id.commentary);
             date=(TextView) itemView.findViewById(R.id.dateTextView2);
             heure=(TextView) itemView.findViewById(R.id.timeTextView2);

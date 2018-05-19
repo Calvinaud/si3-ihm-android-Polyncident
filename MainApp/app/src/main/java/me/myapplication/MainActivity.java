@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import java.util.logging.Logger;
 
+import me.myapplication.Fragments.DayFragment;
 import me.myapplication.Fragments.VisualizationFragment;
 import me.myapplication.Helpers.IncidentDBHelper;
 import me.myapplication.Services.NotificationService;
@@ -96,14 +97,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        FloatingActionButton admin = (FloatingActionButton) findViewById(R.id.admin);
+       /* FloatingActionButton admin = (FloatingActionButton) findViewById(R.id.admin);
         admin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, AdminActivity.class);
                 startActivity(intent);
             }
-        });
+        });*/
 
         Intent i= new Intent(this, NotificationService.class);
         startService(i);
