@@ -1,10 +1,11 @@
-DROP TABLE IF EXISTS incidents;
-DROP TABLE IF EXISTS locations;
-DROP TABLE IF EXISTS types;
-DROP TABLE IF EXISTS followers;
-DROP TABLE IF EXISTS categories;
-DROP TABLE IF EXISTS comments;
 DROP TABLE IF EXISTS assignations;
+DROP TABLE IF EXISTS comments;
+DROP TABLE IF EXISTS followers;
+DROP TABLE IF EXISTS incidents;
+DROP TABLE IF EXISTS categories;
+DROP TABLE IF EXISTS types;
+DROP TABLE IF EXISTS locations;
+DROP TABLE IF EXISTS users;
 
 --==== Creation of the tables ====
 
