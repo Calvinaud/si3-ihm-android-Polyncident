@@ -14,13 +14,22 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.InterruptedIOException;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.util.Date;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.SimpleTimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import me.myapplication.Models.Importance;
+import me.myapplication.Models.Incident;
+import me.myapplication.Models.PlanningIncident;
 
 /**
  * Created by Aurelien on 29/04/2018.
@@ -167,6 +176,83 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
 
         return types;
     }
+
+    public Incident getIncidentById(int incidentId){
+
+        Cursor cursor=myDataBase.rawQuery("SELECT * FROM incidents WHERE incidentId="+incidentId, null);
+        cursor.moveToFirst();
+        String title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
+        String desc = cursor.getString(cursor.getColumnIndex("description"));
+        //Importance importance; A FAIRE
+        String urgence = cursor.getString(cursor.getColumnIndex("importance")); //temp
+
+       //TODO: Gérer les importances
+        Importance importance;
+
+        int reporterId = cursor.getInt(cursor.getColumnIndexOrThrow("reporterId"));
+        int locationId = cursor.getInt(cursor.getColumnIndexOrThrow("locationId"));
+        int typeId = cursor.getInt(cursor.getColumnIndexOrThrow("typeId"));
+
+        return new Incident(reporterId,
+                locationId,
+                typeId,
+                Importance.URGENT,
+                title,
+                desc);
+    }
+
+    public List<PlanningIncident> getDayPlanningIncident(int userId, Date date){
+
+        List<PlanningIncident> planningIncident=new ArrayList<>();
+
+        String queryString = "SELECT i.title, i.importance, a.startDate, a.endDate, t.name AS typeName, l.name AS lieuName" +
+                "FROM assignations AS a, incidents AS i, locations AS l, types AS t" +
+                "WHERE l.locationId=i.locationId AND i.incidentId=a.incidentId AND i.typeId=t.typeId AND";
+
+        queryString += " userId=";
+        queryString += userId;
+
+        queryString += "AND startDate=";
+        queryString += date;
+
+        Cursor cursor= myDataBase.rawQuery(queryString, null);
+        cursor.moveToFirst();
+
+        while (!cursor.isAfterLast()) {
+
+            planningIncident.add(createPlanningIncident(cursor));
+            cursor.moveToNext();
+        }
+
+        return planningIncident;
+    }
+
+    private PlanningIncident createPlanningIncident(Cursor cursor){
+
+        String title = cursor.getString(cursor.getColumnIndex("title"));
+        String lieuName = cursor.getString(cursor.getColumnIndex("lieuName"));
+        String typeName = cursor.getString(cursor.getColumnIndex("typeName"));
+        int importance = cursor.getInt(cursor.getColumnIndex("importance"));
+        String startDateS = cursor.getString(cursor.getColumnIndex("startDate"));
+        String endDateS = cursor.getString(cursor.getColumnIndex("endDate"));
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+
+        Date startDate = new Date();
+        Date endDate = new Date();
+
+        try {
+            startDate = dateFormat.parse(startDateS);
+            endDate = dateFormat.parse(endDateS);
+        }
+        catch (ParseException e){
+            e.printStackTrace();
+        }
+
+        return new PlanningIncident(title, lieuName, typeName, startDate, endDate, importance);
+    }
+
+
 
     public Cursor getIncidentCursor(int reporterId, int typeId, int importance, int rowNumber){
 

@@ -1,7 +1,7 @@
 package me.myapplication.Models;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 public class PlanningIncident implements Serializable{
 
@@ -11,7 +11,6 @@ public class PlanningIncident implements Serializable{
     final private Date startDate;
     final private Date endDate;
     final private int importance;
-
 
     public PlanningIncident(String title, String lieuName, String typeName, Date startDate, Date endDate, int importance) {
         this.title = title;
