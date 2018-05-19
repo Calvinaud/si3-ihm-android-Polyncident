@@ -12,6 +12,14 @@
         android:text="Name"
         android:textSize="20sp" />
 
+    <TextView
+        android:id="@+id/profile_role_label"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal"
+        android:text="Role"
+        android:textSize="20sp" />
+
     <View
         android:layout_width="350dp"
         android:layout_height="1dp"

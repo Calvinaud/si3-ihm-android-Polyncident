@@ -30,9 +30,10 @@ public class ProfileActivity extends Activity {
 
     //GUI components
     private TextView nameLabel;
+    private TextView roleLabel;
     private ImageButton callButton;
-    private  ImageButton smsButton;
-    private  ImageButton mailButton;
+    private ImageButton smsButton;
+    private ImageButton mailButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState)  {
@@ -50,6 +51,8 @@ public class ProfileActivity extends Activity {
 
     private void assignViewMembers(){
         this.nameLabel = findViewById(R.id.profile_name_label);
+        this.roleLabel = findViewById(R.id.profile_role_label);
+
         this.callButton = findViewById(R.id.profile_call_button);
         this.smsButton = findViewById(R.id.profile_sms_button);
         this.mailButton = findViewById(R.id.profile_mail_button);
@@ -89,10 +92,12 @@ public class ProfileActivity extends Activity {
 
     private void displayUserData(){
         try {
-            //can
+            //can trow a null pointer exception
             int userId = getIntent().getExtras().getInt("userId");
             Cursor cursor = IncidentDBHelper.getSingleton().getUserCursor(1);
-            this.nameLabel.setText(cursor.getInt(cursor.getColumnIndex("username")));
+
+            this.nameLabel.setText(cursor.getString(cursor.getColumnIndex("username")));
+            this.roleLabel.setText(cursor.getString(cursor.getColumnIndex("role")));
             cursor.close();
         }catch (NullPointerException e){
             Logger.getAnonymousLogger().severe(
