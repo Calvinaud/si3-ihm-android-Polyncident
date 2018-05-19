@@ -11,23 +11,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 import me.myapplication.Adapters.DayRecyclerViewAdapter;
 import me.myapplication.R;
-import me.myapplication.Fragments.dummy.DummyContent;
-import me.myapplication.Fragments.dummy.DummyContent.DummyItem;
 
 /**
  * A fragment representing a list of Items.
- * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
 public class DayFragment extends Fragment {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
-    private OnListFragmentInteractionListener mListener;
-
+    private static Calendar dateday;
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -35,9 +35,10 @@ public class DayFragment extends Fragment {
     public DayFragment() {
     }
 
-    public static DayFragment newInstance(int columnCount) {
+    public static DayFragment newInstance(int columnCount, Calendar date) {
         DayFragment fragment = new DayFragment();
         Bundle args = new Bundle();
+        dateday=date;
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
         return fragment;
@@ -57,13 +58,9 @@ public class DayFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_planning_day, container, false);
 
-        // Set the adapter
-       /*
-        }*/
+        TextView text= (TextView) view.findViewById(R.id.date);;
 
-        TextView text= (TextView) view.findViewById(R.id.date);
-        text.setText("OOOOO");
-
+        text.setText("date");
         RecyclerView recyclerView = view.findViewById(R.id.incidentList);
         recyclerView.setHasFixedSize(true);
 
@@ -78,36 +75,4 @@ public class DayFragment extends Fragment {
         return view;
     }
 
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
-    }
 }

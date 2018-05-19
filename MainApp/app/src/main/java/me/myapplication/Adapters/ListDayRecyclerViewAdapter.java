@@ -7,10 +7,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import me.myapplication.Fragments.DayFragment;
-import me.myapplication.Fragments.DayFragment.OnListFragmentInteractionListener;
 import me.myapplication.Models.Incident;
 import me.myapplication.R;
-import me.myapplication.Fragments.dummy.DummyContent.DummyItem;
 
 import java.util.List;
 
