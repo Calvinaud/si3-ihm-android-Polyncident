@@ -48,15 +48,15 @@ CREATE TABLE comments(
     commentId INTEGER PRIMARY KEY,
     userId INTEGER REFERENCES users,
     incidentId INTEGER REFERENCES incidents,
-    date DATE,
+    date DATETIME,
     comment TEXT
 );
 
 CREATE TABLE assignations (
     userId INTEGER REFERENCES users,
     incidentId INTEGER REFERENCES incidents,
-    startDate DATE,
-    endDate DATE,
+    startDate DATETIME,
+    endDate DATETIME,
     comment TEXT,
     PRIMARY KEY(userId, incidentId)
 );
@@ -83,7 +83,13 @@ INSERT INTO types (name) VALUES('Matériel cassé');
 INSERT INTO types (name) VALUES('Autres');
 
 --users
+INSERT INTO users (userId, username, password, role) VALUES ("11","Mathieu", "Mathieu", "UTILISATEUR");
+INSERT INTO users (userId, username, password, role) VALUES ("42", "Bob", "Bob", "TECHNICIEN");
 
-INSERT INTO users (username, password, role) VALUES ("Mathieu", "Mathieu", "UTILISATEUR");
+--incident
+INSERT INTO incident (incidentId) VALUE ("1");
+INSERT INTO incident (incidentId) VALUE ("2");
 
-INSERT INTO incidents (reporterId, locationId, categoryId) VALUES ();
+--assignation
+INSERT INTO assignation (userId, incidentId, startDate, endDate) VALUES ("42", "1", "2018-05-19 15:30:00", "2018-05-20 18:30:00");
+INSERT INTO assignation (userId, incidentId, startDate, endDate) VALUES ("42", "2", "2018-05-19 11:00:00", "2018-05-20 13:00:00");
