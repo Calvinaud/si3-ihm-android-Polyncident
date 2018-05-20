@@ -13,7 +13,7 @@ CREATE TABLE users (
     userId INTEGER PRIMARY KEY,
     username varchar(30) UNIQUE,
     password varchar(100),
-    roles VARCHAR(20) NOT NULL CHECK (roles IN ('utilisateur','administrateur', 'technicien'))
+    roles VARCHAR(20) NOT NULL CHECK (roles IN ('UTILISATEUR','ADMINISTRATEUR', 'TECHNICIEN'))
 );
 
 CREATE TABLE locations (
@@ -84,8 +84,8 @@ INSERT INTO types (typeid, name) VALUES('2','Matériel cassé');
 INSERT INTO types (typeid, name) VALUES('3','Autres');
 
 --users
-INSERT INTO users (userId username, password, roles) VALUES (1, 'Mathieu', 'Mathieu', 'utilisateur');
-INSERT INTO users (userId, username, password, roles) VALUES (2, 'Bob', 'Bob', 'technicien');
+INSERT INTO users (userId, username, password, roles) VALUES (1,'Mathieu', 'Mathieu', 'UTILISATEUR');
+INSERT INTO users (userId, username, password, roles) VALUES (2, 'Bob', 'Bob', 'TECHNICIEN');
 
 --incident
 INSERT INTO incidents (incidentId, reporterId, locationId, typeId, importance, title) VALUES (1, 1, 3, 2, 3, 'Incident 1');
