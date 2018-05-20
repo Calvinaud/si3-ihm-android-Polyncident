@@ -52,9 +52,9 @@ public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerView
 
         PlanningIncident planningIncident = incidents.get(position);
 
-        holder.titre.setText(planningIncident.getTitle());
-        holder.lieu.setText(planningIncident.getLieuName());
-        holder.type.setText(planningIncident.getTypeName());
+        holder.titre.setText("Titre: "+planningIncident.getTitle());
+        holder.lieu.setText("Lieu: "+planningIncident.getLieuName());
+        holder.type.setText("Type: "+planningIncident.getTypeName());
 
         holder.planningIncident.setOnClickListener(new DetailsListener());
     }
