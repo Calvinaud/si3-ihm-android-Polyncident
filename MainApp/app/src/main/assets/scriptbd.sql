@@ -49,15 +49,15 @@ CREATE TABLE comments(
     commentId INTEGER PRIMARY KEY,
     userId INTEGER REFERENCES users,
     incidentId INTEGER REFERENCES incidents,
-    date DATE,
+    date DATETIME,
     comment TEXT
 );
 
 CREATE TABLE assignations (
     userId INTEGER REFERENCES users,
     incidentId INTEGER REFERENCES incidents,
-    startDate DATE,
-    endDate DATE,
+    startDate DATETIME,
+    endDate DATETIME,
     comment TEXT,
     PRIMARY KEY(userId, incidentId)
 );
