@@ -288,7 +288,18 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
     }
 
     public void logIncidents(){
-        Cursor cursor = myDataBase.rawQuery("SELECT * FROM incidents", null);
+        logTable("incidents");
+    }
+
+
+    public void logUsers(){
+        logTable("users");
+    }
+
+
+    public void logTable(String tableName){
+
+        Cursor cursor = myDataBase.rawQuery("SELECT * FROM "+tableName, null);
         String s = "";
 
         //prints the columns' names
@@ -301,7 +312,7 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
         s = "";
         cursor.moveToFirst();
         while(!cursor.isAfterLast()){
-            for (int i = 0; i < 7; i++) {
+            for (int i = 0; i < cursor.getColumnCount(); i++) {
                 s += " " + cursor.getString(i) + " ";
             }
             Logger.getAnonymousLogger().warning(s);
