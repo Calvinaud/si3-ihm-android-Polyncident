@@ -10,6 +10,7 @@
     android:orientation="vertical"
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
+    android:clickable="true"
     tools:context=".Fragments.DayFragment">
 
     <TextView
@@ -24,8 +25,9 @@
         android:id="@+id/incidentList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/date"
+        app:layout_constraintTop_toBottomOf="@+id/date"
         tools:context=".Fragments.DayFragment"
-        tools:listitem="@layout/fragment_planning_incident"
-        app:layout_constraintTop_toBottomOf="@+id/date" />
+        tools:listitem="@layout/fragment_planning_incident" />
 
 </android.support.constraint.ConstraintLayout>

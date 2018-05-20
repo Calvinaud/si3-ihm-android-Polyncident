@@ -219,6 +219,7 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
         return planningIncident;
     }
 
+
     private PlanningIncident createPlanningIncident(Cursor cursor){
 
         String title = cursor.getString(cursor.getColumnIndex("title"));
@@ -228,7 +229,7 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
         String startDateS = cursor.getString(cursor.getColumnIndex("startDate"));
         String endDateS = cursor.getString(cursor.getColumnIndex("endDate"));
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
         Date startDate = new Date();
         Date endDate = new Date();

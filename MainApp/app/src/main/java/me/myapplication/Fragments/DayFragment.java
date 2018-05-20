@@ -10,12 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-
 import me.myapplication.Adapters.DayRecyclerViewAdapter;
 import me.myapplication.Helpers.IncidentDBHelper;
 import me.myapplication.R;
@@ -58,7 +52,7 @@ public class DayFragment extends Fragment {
 
         Context context = view.getContext();
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.setAdapter(new DayRecyclerViewAdapter(2));
+        recyclerView.setAdapter(new DayRecyclerViewAdapter(context,2));
 
         return view;
     }

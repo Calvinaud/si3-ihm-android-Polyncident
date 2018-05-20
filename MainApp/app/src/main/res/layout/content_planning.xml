@@ -37,13 +37,11 @@
             android:text="Mode" />
     </LinearLayout>
 
-
     <fragment
         android:id="@+id/fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout="@layout/fragment_planning_day"
         android:name="me.myapplication.Fragments.DayFragment"/>
-
 
 </LinearLayout>

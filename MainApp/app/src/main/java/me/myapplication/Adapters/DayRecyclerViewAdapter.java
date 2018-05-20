@@ -1,12 +1,19 @@
 package me.myapplication.Adapters;
 
+import android.content.Context;
+import android.content.Intent;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import me.myapplication.DeclarationActivity;
+import me.myapplication.DisplayDetailsIncidentActivity;
 import me.myapplication.Helpers.IncidentDBHelper;
+import me.myapplication.MainActivity;
 import me.myapplication.Models.PlanningIncident;
 import me.myapplication.PlanningActivity;
 import me.myapplication.R;
@@ -22,8 +29,10 @@ public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerView
 
     List<PlanningIncident> incidents;
     int userId;
+    Context context;
 
-    public DayRecyclerViewAdapter(int userId) {
+    public DayRecyclerViewAdapter(Context context, int userId) {
+        this.context=context;
         this.userId=userId;
     }
 
@@ -43,26 +52,31 @@ public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerView
 
         PlanningIncident planningIncident = incidents.get(position);
 
-        holder.text1.setText(planningIncident.getLieuName());
-        holder.text2.setText(planningIncident.getTypeName());
+        holder.titre.setText(planningIncident.getTitle());
+        holder.lieu.setText(planningIncident.getLieuName());
+        holder.type.setText(planningIncident.getTypeName());
+
+        holder.planningIncident.setOnClickListener(new DetailsListener());
     }
 
     @Override
     public int getItemCount() {
-        return 1;
+        return 2;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView text1;
-        TextView text2;
-        TextView text3;
+        TextView titre;
+        TextView lieu;
+        TextView type;
+        ConstraintLayout planningIncident;
 
         public ViewHolder(View view) {
             super(view);
-            text1= (TextView) itemView.findViewById(R.id.item_number);
-            text2= (TextView) itemView.findViewById(R.id.content);
-            text3= (TextView) itemView.findViewById(R.id.truc);
+            titre = (TextView) itemView.findViewById(R.id.title);
+            lieu = (TextView) itemView.findViewById(R.id.lieu);
+            type = (TextView) itemView.findViewById(R.id.type);
+            planningIncident = (ConstraintLayout) itemView.findViewById(R.id.planning_incident);
         }
 
         @Override
@@ -70,4 +84,15 @@ public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerView
             return super.toString();
         }
     }
+
+    public class DetailsListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view)  {
+            Intent intent = new Intent(context,DeclarationActivity.class);
+         //   intent.putExtra("incident",incident);
+            context.startActivity(intent);
+        }
+    }
+
 }
