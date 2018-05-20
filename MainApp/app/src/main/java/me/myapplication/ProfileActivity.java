@@ -92,12 +92,13 @@ public class ProfileActivity extends Activity {
 
     private void displayUserData(){
         try {
-            //can trow a null pointer exception
+            //can throw a null pointer exception
             int userId = getIntent().getExtras().getInt("userId");
-            Cursor cursor = IncidentDBHelper.getSingleton().getUserCursor(1);
+            Cursor cursor = IncidentDBHelper.getSingleton().getUserCursor(userId);
 
             this.nameLabel.setText(cursor.getString(cursor.getColumnIndex("username")));
-            this.roleLabel.setText(cursor.getString(cursor.getColumnIndex("role")));
+            this.roleLabel.setText(cursor.getString(cursor.getColumnIndex("roles")));
+
             cursor.close();
         }catch (NullPointerException e){
             Logger.getAnonymousLogger().severe(
@@ -107,7 +108,7 @@ public class ProfileActivity extends Activity {
             Logger.getAnonymousLogger().severe(e.toString());
         }
         finally {
-            finish();
+            // finish();
         }
 
     }

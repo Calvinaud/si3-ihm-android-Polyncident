@@ -11,7 +11,7 @@ DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
     userId INTEGER PRIMARY KEY,
-    username varchar(30) UNIQUE,
+    username varchar(30),
     password varchar(100),
     roles VARCHAR(20) NOT NULL CHECK (roles IN ('UTILISATEUR','ADMINISTRATEUR', 'TECHNICIEN'))
 );
