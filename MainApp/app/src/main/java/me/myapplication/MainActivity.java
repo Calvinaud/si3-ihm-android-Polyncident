@@ -22,6 +22,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import me.myapplication.Fragments.VisualizationFragment;
@@ -116,6 +117,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         Intent i= new Intent(this, NotificationService.class);
+        ArrayList<Integer> subs = new ArrayList<Integer>();
+        subs.add(1);
+        i.putExtra("subs", subs );
         startService(i);
 
         Intent intent =new Intent(this, AddedIncidentSimService.class);

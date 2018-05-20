@@ -26,11 +26,11 @@ public class AddedIncidentSimService extends Service {
                 for ( int i = 0; i < 2; i++){
                     synchronized (this) {
                         try {
-                            wait(10000);
+                            wait(20000);
                             IncidentDBHelper.getSingleton()
-                                    .insertIncident(0, 3, 1
+                                    .insertIncident(2, 3, i%3
                                             ,
-                                            2, "Je suis ds le service aled", "Il n'y a plus de co aled !"
+                                            2, "Je suis ds le service aled", "Type = "+i%3
                                     );
                         } catch (InterruptedException e) {
                             e.printStackTrace();

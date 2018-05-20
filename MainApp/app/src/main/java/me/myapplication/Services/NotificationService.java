@@ -13,6 +13,8 @@ import android.view.View;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,6 +27,7 @@ public class NotificationService extends Service {
 
     NotificationCompat.Builder notification;
     private static final int uniqueID = 1234;
+    public ArrayList<Integer> subscrbedTypesId = new ArrayList<>();
 
     public NotificationService() {
     }
@@ -45,6 +48,7 @@ public class NotificationService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
+        this.subscrbedTypesId = (ArrayList<Integer>) intent.getSerializableExtra("subs");
 
         final IncidentDBHelper dbHelper = IncidentDBHelper.getSingleton();
 
@@ -58,10 +62,9 @@ public class NotificationService extends Service {
                                 wait(5000);
                                 Cursor cursor = dbHelper.getLastIncidentCursor();
                                 if(prev < dbHelper.getIncidentNumber()){
-                                    sendNotif(cursor.getString(cursor.getColumnIndexOrThrow("title")), cursor.getString(cursor.getColumnIndexOrThrow("description")) );
-                                    try {
-                                        Logger.getAnonymousLogger().log(Level.WARNING, cursor.getString(cursor.getColumnIndexOrThrow("title")));
-                                    }catch (Exception e){Logger.getAnonymousLogger().log(Level.WARNING, e.toString());}
+                                    if(getSubscribed().contains(cursor.getInt(cursor.getColumnIndexOrThrow("typeId")))) {
+                                        sendNotif(cursor.getString(cursor.getColumnIndexOrThrow("title")), cursor.getString(cursor.getColumnIndexOrThrow("description")));
+                                    }
                                 }
                                 prev=dbHelper.getIncidentNumber();
                             }catch (Exception ignored){}
@@ -77,6 +80,10 @@ public class NotificationService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+    }
+
+    public List<Integer> getSubscribed(){
+        return this.subscrbedTypesId;
     }
 
     public void sendNotif(String title, String desc){
