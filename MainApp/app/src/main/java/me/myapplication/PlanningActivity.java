@@ -31,7 +31,6 @@ public class PlanningActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
         String dateToday = "No date";
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         dateToday = df.format(Calendar.getInstance().getTime());
@@ -39,16 +38,9 @@ public class PlanningActivity extends AppCompatActivity {
         TextView todaydate=(TextView) findViewById(R.id.todayDate);
         todaydate.setText("Nous somme le: "+dateToday);
 
-
-
-
-        Calendar date=new GregorianCalendar();
-        date.set(2018,12,12);
         FragmentTransaction ft=getFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment, DayFragment.newInstance());
+        ft.replace(R.id.fragment, new DayFragment());
         ft.commit();
-
-
 
 //        DayFragment fragment=(DayFragment) getFragmentManager().findFragmentById(R.id.fragment);
 

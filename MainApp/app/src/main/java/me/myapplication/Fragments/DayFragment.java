@@ -26,7 +26,6 @@ import me.myapplication.R;
  */
 public class DayFragment extends Fragment {
 
-    private static Calendar dateday;
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -52,14 +51,14 @@ public class DayFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_planning_day, container, false);
 
         TextView text= (TextView) view.findViewById(R.id.date);
-
         text.setText("date");
+
         RecyclerView recyclerView = view.findViewById(R.id.incidentList);
         recyclerView.setHasFixedSize(true);
 
-            Context context = view.getContext();
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(new DayRecyclerViewAdapter());
+        Context context = view.getContext();
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setAdapter(new DayRecyclerViewAdapter(2));
 
         return view;
     }

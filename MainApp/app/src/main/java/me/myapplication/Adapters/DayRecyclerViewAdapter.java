@@ -5,32 +5,46 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import me.myapplication.Helpers.IncidentDBHelper;
+import me.myapplication.Models.PlanningIncident;
+import me.myapplication.PlanningActivity;
 import me.myapplication.R;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
  * {@link RecyclerView.Adapter}
- * TODO: Replace the implementation with code for your data type.
  */
 public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerViewAdapter.ViewHolder> {
 
-    public DayRecyclerViewAdapter() {
+    List<PlanningIncident> incidents;
+    int userId;
 
+    public DayRecyclerViewAdapter(int userId) {
+        this.userId=userId;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_planning_incident, parent, false);
+
+        incidents = new ArrayList<>();
+        incidents.addAll(IncidentDBHelper.getSingleton().getDayPlanningIncident(userId));
+
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.text1.setText("Test1");
-        holder.text2.setText("Test22");
-        holder.text3.setText("Test333");
+
+        PlanningIncident planningIncident = incidents.get(position);
+
+        holder.text1.setText(planningIncident.getLieuName());
+        holder.text2.setText(planningIncident.getTypeName());
     }
 
     @Override

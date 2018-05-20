@@ -201,25 +201,17 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
                 desc);
     }
 
-    public List<PlanningIncident> getDayPlanningIncident(int userId, Date date){
+    public List<PlanningIncident> getDayPlanningIncident(int id){
 
-        List<PlanningIncident> planningIncident=new ArrayList<>();
+        List<PlanningIncident> planningIncident = new ArrayList<>();
 
-        String queryString = "SELECT i.title, i.importance, a.startDate, a.endDate, t.name AS typeName, l.name AS lieuName" +
-                "FROM assignations AS a, incidents AS i, locations AS l, types AS t" +
-                "WHERE l.locationId=i.locationId AND i.incidentId=a.incidentId AND i.typeId=t.typeId AND";
-
-        queryString += " userId=";
-        queryString += userId;
-
-        queryString += "AND startDate=";
-        queryString += date;
-
-        Cursor cursor= myDataBase.rawQuery(queryString, null);
+        Cursor cursor= myDataBase.rawQuery("SELECT i.title, i.importance, a.startDate, a.endDate, t.name AS typeName, l.name AS lieuName" +
+                " FROM assignations AS a, incidents AS i, locations AS l, types AS t" +
+                " WHERE l.locationId=i.locationId AND i.incidentId=a.incidentId AND i.typeId=t.typeId " +
+                " AND a.userId="+id, null);
         cursor.moveToFirst();
 
         while (!cursor.isAfterLast()) {
-
             planningIncident.add(createPlanningIncident(cursor));
             cursor.moveToNext();
         }
