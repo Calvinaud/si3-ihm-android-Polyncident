@@ -2,6 +2,8 @@ package me.myapplication.Models;
 
 import android.database.Cursor;
 
+import java.util.logging.Logger;
+
 public class User {
 
     private String username;
@@ -18,6 +20,7 @@ public class User {
         this.telephoneNumber = cursor.getString(cursor.getColumnIndex("telephoneNumber"));
         this.role = cursor.getString(cursor.getColumnIndex("roles"));
 
+        cursor.close();
     }
 
     public String getUsername() {

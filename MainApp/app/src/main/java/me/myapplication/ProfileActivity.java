@@ -68,7 +68,7 @@ public class ProfileActivity extends Activity {
             @Override
             public void onClick(View view) {
                 Intent callIntent = new Intent(Intent.ACTION_CALL);
-                callIntent.setData(Uri.parse("tel:0768596940"));
+                callIntent.setData(Uri.parse("tel:"+user.getTelephoneNumber()));
                 startActivity(callIntent);
             }
         });
@@ -78,7 +78,7 @@ public class ProfileActivity extends Activity {
             public void onClick(View view) {
                 Intent smsIntent = new Intent(Intent.ACTION_VIEW);
                 smsIntent.setType("vnd.android-dir/mms-sms");
-                smsIntent.putExtra("address", "0768596940");
+                smsIntent.putExtra("address", user.getTelephoneNumber());
                 startActivity(Intent.createChooser(smsIntent, "SMS:"));
             }
         });
@@ -88,7 +88,7 @@ public class ProfileActivity extends Activity {
             public void onClick(View view) {
                 Intent mailIntent = new Intent(Intent.ACTION_SENDTO);
                 mailIntent.setType("message/rfc822");
-                mailIntent.setData(Uri.parse("mailto:test@gmail.com"));
+                mailIntent.setData(Uri.parse("mailto:"+user.getEmailAddress()));
                 mailIntent.putExtra(Intent.EXTRA_SUBJECT, "Incident - Titre incident ");
                 startActivity(Intent.createChooser(mailIntent, "MAIL:"));
             }
@@ -113,7 +113,6 @@ public class ProfileActivity extends Activity {
             this.nameLabel.setText(this.user.getUsername());
             this.roleLabel.setText(this.user.getRole());
 
-            cursor.close();
         }catch (NullPointerException e){
             Logger.getAnonymousLogger().severe(
                     "No <userId> has been provided to "+getClass().getName()

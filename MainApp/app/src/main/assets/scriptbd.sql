@@ -86,7 +86,7 @@ INSERT INTO types (typeid, name) VALUES('2','Matériel cassé');
 INSERT INTO types (typeid, name) VALUES('3','Autres');
 
 --users
-INSERT INTO users (userId, username, password, roles) VALUES (1,'Mathieu', 'Mathieu', 'UTILISATEUR');
+INSERT INTO users (userId, username, password, roles, telephoneNumber) VALUES (1,'Mathieu', 'Mathieu', 'UTILISATEUR', "0645128214");
 INSERT INTO users (userId, username, password, roles) VALUES (2, 'Bob', 'Bob', 'TECHNICIEN');
 
 --incident
