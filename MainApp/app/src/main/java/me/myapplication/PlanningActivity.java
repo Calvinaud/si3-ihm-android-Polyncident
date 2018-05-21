@@ -50,7 +50,7 @@ public class PlanningActivity extends AppCompatActivity {
         }
 
         FragmentTransaction ft=getFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment, new DayFragment());
+        ft.replace(R.id.fragment, DayFragment.newInstance(currentdate.getTime()));
         ft.commit();
 
 //        DayFragment fragment=(DayFragment) getFragmentManager().findFragmentById(R.id.fragment);

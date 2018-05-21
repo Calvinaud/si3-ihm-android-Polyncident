@@ -30,7 +30,8 @@ import me.myapplication.R;
  */
 public class DayFragment extends Fragment {
 
-    private static String ARG_SECTION_DATE="date";
+    private long DATE_LONG;
+    private static final String ARG="DATE_LONG";
 
     private Context context;
     private Date date;
@@ -40,9 +41,10 @@ public class DayFragment extends Fragment {
      */
     public DayFragment(){}
 
-    public static DayFragment newInstance(Date currentdate) {
+    public static DayFragment newInstance(long title) {
         DayFragment fragment = new DayFragment();
         Bundle args = new Bundle();
+        args.putLong(ARG,title);
         fragment.setArguments(args);
         return fragment;
     }
@@ -51,6 +53,7 @@ public class DayFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
     }
 
     @Override
@@ -58,25 +61,24 @@ public class DayFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_planning_day, container, false);
 
-        Date currentdate= new Date();
-        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
-        try{
-            currentdate=format.parse("2018-05-19");
-        }
-        catch (ParseException e){
-            e.printStackTrace();
-        }
+       SimpleDateFormat format=new SimpleDateFormat("dd MM yyyy");
 
         TextView text= (TextView) view.findViewById(R.id.date);
-      //  text.setText(format.format(currentdate));
-        text.setText("truc");
-
         RecyclerView recyclerView = view.findViewById(R.id.incidentList);
         recyclerView.setHasFixedSize(true);
 
         context = view.getContext();
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.setAdapter(new DayRecyclerViewAdapter(context,2, currentdate));
+
+        if (getArguments() != null) {
+            Bundle args = getArguments();
+            if (args.containsKey(ARG)) {
+
+                date=new Date(args.getLong(ARG));
+                text.setText("" + format.format(date));
+                recyclerView.setAdapter(new DayRecyclerViewAdapter(context,2, date));
+            }
+        }
 
         view.setOnTouchListener(new OnSwipeTouchListener(context) {
             @Override
