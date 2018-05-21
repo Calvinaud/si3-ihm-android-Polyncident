@@ -54,7 +54,7 @@ public class DeclarationActivity extends Activity {
     private static final int REQUEST_IMAGE_CAPTURE = 2;
     private static final int REQUEST_VIDEO_CAPTURE = 3;
 
-    private String mCurrentPhotoPath;
+    private String mCurrentPhotoPath="";
 
 
 
@@ -77,6 +77,13 @@ public class DeclarationActivity extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 intent.setType("image/* video/*");
+                File photoFile = null;
+                try {
+                    photoFile = createImageFile();
+                    Log.i("path",mCurrentPhotoPath);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
                 startActivityForResult(intent,PICK_IMAGE);
 
             }
@@ -89,6 +96,14 @@ public class DeclarationActivity extends Activity {
             public void onClick(View v) {
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                    File photoFile = null;
+                    try {
+                        photoFile = createImageFile();
+                        Log.i("path",mCurrentPhotoPath);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+
                     startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
                 }
 
@@ -176,7 +191,8 @@ public class DeclarationActivity extends Activity {
             IncidentDBHelper.getSingleton()
                     .insertIncident(0, locationSpinner.getSelectedItemPosition()+1,
                             typeSpinner.getSelectedItemPosition()+1,importanceSeekBar.getProgress(),
-                            titleEditText.getText().toString(), descriptionEditText.getText().toString()
+                            titleEditText.getText().toString(), descriptionEditText.getText().toString(),
+                            mCurrentPhotoPath
                     );
             IncidentDBHelper.getSingleton().logIncidents();
 
@@ -209,7 +225,6 @@ public class DeclarationActivity extends Activity {
             if (requestCode == PICK_IMAGE) {
                 Uri selectedMediaUri = data.getData();
                 if (selectedMediaUri.toString().contains("image")) {
-                    Log.i("path",selectedMediaUri.toString());
                     try {
                         Bitmap bm = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedMediaUri);
                         mImageView.setImageBitmap(bm);
@@ -243,30 +258,6 @@ public class DeclarationActivity extends Activity {
 
             }
         }
-    }
-    public Bitmap decodeFile(String path) {
-        try {
-            // Decode image size
-            BitmapFactory.Options o = new BitmapFactory.Options();
-            o.inJustDecodeBounds = true;
-            BitmapFactory.decodeFile(path, o);
-            // The new size we want to scale to
-            final int REQUIRED_SIZE = 70;
-
-            // Find the correct scale value. It should be the power of 2.
-            int scale = 1;
-            while (o.outWidth / scale / 2 >= REQUIRED_SIZE && o.outHeight / scale / 2 >= REQUIRED_SIZE)
-                scale *= 2;
-
-            // Decode with inSampleSize
-            BitmapFactory.Options o2 = new BitmapFactory.Options();
-            o2.inSampleSize = scale;
-            return BitmapFactory.decodeFile(path, o2);
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-        return null;
-
     }
 
 

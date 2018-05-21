@@ -103,8 +103,7 @@
                 android:gravity="bottom"
                 android:hint="@string/declaration_description_label"
                 android:inputType="text|textMultiLine"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/declaration_importance_seekBar" />
 
             <Button
@@ -173,8 +172,8 @@
 
             <VideoView
                 android:id="@+id/videoView"
-                android:layout_width="69dp"
-                android:layout_height="69dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_marginBottom="32dp"
                 android:layout_marginTop="20dp"
                 android:contentDescription="aperçu"

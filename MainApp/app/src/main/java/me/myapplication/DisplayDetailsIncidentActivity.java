@@ -1,16 +1,31 @@
 package me.myapplication;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 
 import me.myapplication.Adapters.DisplayCommentariesAdapter;
@@ -30,6 +45,20 @@ public class DisplayDetailsIncidentActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Intent intent = getIntent();
         incident = (Incident)intent.getSerializableExtra("incident");
+
+        ImageView imageView = (ImageView) findViewById(R.id.imageView2);
+
+        InputStream in = null;
+        try {
+            in = new URL("file://"+incident.getUrlPhoto()).openStream();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Bitmap bitmap = BitmapFactory.decodeStream(in);
+        imageView.setImageBitmap(bitmap);
+
+
+
         TextView title = findViewById(R.id.titleDetail);
         TextView description = findViewById(R.id.description);
 

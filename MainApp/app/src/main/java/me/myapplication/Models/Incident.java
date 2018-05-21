@@ -17,14 +17,18 @@ public class Incident implements Serializable{
     final private String title;
     final private String description;
 
+    private String urlPhoto;
 
-    public Incident(int reporterdID, int locationID, int typeID, Importance importance, String title, String description) {
+
+    public Incident(int reporterdID, int locationID, int typeID, Importance importance,
+                    String title, String description, String url) {
         this.reporterdID = reporterdID;
         this.locationID = locationID;
         this.typeID = typeID;
         this.importance = importance;
         this.title = title;
         this.description = description;
+        this.urlPhoto = url;
     }
 
 
@@ -52,4 +56,7 @@ public class Incident implements Serializable{
         return description;
     }
 
+    public String getUrlPhoto() {
+        return urlPhoto;
+    }
 }
