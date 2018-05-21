@@ -27,6 +27,7 @@ import java.util.SimpleTimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import me.myapplication.Fragments.DayFragment;
 import me.myapplication.Models.Importance;
 import me.myapplication.Models.Incident;
 import me.myapplication.Models.PlanningIncident;
@@ -201,14 +202,31 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
                 desc);
     }
 
-    public List<PlanningIncident> getDayPlanningIncident(int id){
+    public List<PlanningIncident> getDayPlanningIncident(int id, Date date){
 
         List<PlanningIncident> planningIncident = new ArrayList<>();
 
-        Cursor cursor= myDataBase.rawQuery("SELECT i.title, i.importance, a.startDate, a.endDate, t.name AS typeName, l.name AS lieuName" +
+        String queryString = "SELECT i.title, i.importance, a.startDate, a.endDate, t.name AS typeName, l.name AS lieuName" +
                 " FROM assignations AS a, incidents AS i, locations AS l, types AS t" +
-                " WHERE l.locationId=i.locationId AND i.incidentId=a.incidentId AND i.typeId=t.typeId " +
-                " AND a.userId="+id, null);
+                " WHERE l.locationId=i.locationId AND i.incidentId=a.incidentId AND ";
+
+        queryString += "a.userId=";
+        queryString += id;
+
+        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
+        String startDate = format.format(date);
+        String endDate = startDate.substring(0,10)+" 23:59:59";
+
+        queryString +=" AND a.startDate>=";
+        queryString += startDate;
+
+         queryString +=" AND a.endDate<='";
+        queryString += endDate+"'";
+
+      //  queryString += startDate.substring(0,10);
+        //queryString += " 23:59:59";
+
+        Cursor cursor= myDataBase.rawQuery(queryString, null);
         cursor.moveToFirst();
 
         while (!cursor.isAfterLast()) {
@@ -229,8 +247,7 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
         String startDateS = cursor.getString(cursor.getColumnIndex("startDate"));
         String endDateS = cursor.getString(cursor.getColumnIndex("endDate"));
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date startDate = new Date();
         Date endDate = new Date();
 

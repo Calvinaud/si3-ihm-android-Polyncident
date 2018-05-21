@@ -18,6 +18,8 @@ import me.myapplication.Models.PlanningIncident;
 import me.myapplication.PlanningActivity;
 import me.myapplication.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -28,11 +30,14 @@ import java.util.List;
 public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerViewAdapter.ViewHolder> {
 
     List<PlanningIncident> incidents;
+    Date date;
     int userId;
     Context context;
 
-    public DayRecyclerViewAdapter(Context context, int userId) {
+
+    public DayRecyclerViewAdapter(Context context, int userId, Date date) {
         this.context=context;
+        this.date=date;
         this.userId=userId;
     }
 
@@ -42,7 +47,7 @@ public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerView
                 .inflate(R.layout.fragment_planning_incident, parent, false);
 
         incidents = new ArrayList<>();
-        incidents.addAll(IncidentDBHelper.getSingleton().getDayPlanningIncident(userId));
+        incidents.addAll(IncidentDBHelper.getSingleton().getDayPlanningIncident(userId, date));
 
         return new ViewHolder(view);
     }
@@ -52,9 +57,19 @@ public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerView
 
         PlanningIncident planningIncident = incidents.get(position);
 
+
         holder.titre.setText("Titre: "+planningIncident.getTitle());
+        //holder.titre.setText("Titre: "+planningIncident.getTitle());
         holder.lieu.setText("Lieu: "+planningIncident.getLieuName());
         holder.type.setText("Type: "+planningIncident.getTypeName());
+
+        SimpleDateFormat format=new SimpleDateFormat("HH:mm");
+
+        String startTime=format.format(planningIncident.getStartDate());
+        String endTime=format.format(planningIncident.getEndDate());
+        String horraire=startTime+"-"+endTime;
+
+        holder.horraire.setText(horraire);
 
         holder.planningIncident.setOnClickListener(new DetailsListener());
     }
@@ -69,6 +84,7 @@ public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerView
         TextView titre;
         TextView lieu;
         TextView type;
+        TextView horraire;
         ConstraintLayout planningIncident;
 
         public ViewHolder(View view) {
@@ -76,6 +92,7 @@ public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerView
             titre = (TextView) itemView.findViewById(R.id.title);
             lieu = (TextView) itemView.findViewById(R.id.lieu);
             type = (TextView) itemView.findViewById(R.id.type);
+            horraire = (TextView) itemView.findViewById(R.id.horraire);
             planningIncident = (ConstraintLayout) itemView.findViewById(R.id.planning_incident);
         }
 
