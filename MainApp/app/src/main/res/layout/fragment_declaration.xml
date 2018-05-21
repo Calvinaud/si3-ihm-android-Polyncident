@@ -110,51 +110,43 @@
                 android:id="@+id/declaration_submit_button"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:layout_marginBottom="64dp"
                 android:layout_marginEnd="32dp"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="45dp"
+                android:layout_marginTop="16dp"
                 android:text="@string/declaration_submit_text"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView4"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintTop_toBottomOf="@+id/videoView" />
 
             <Button
                 android:id="@+id/btnGalery"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="150dp"
-                android:layout_marginStart="124dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
                 android:text="Galerie"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toolbar"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintStart_toEndOf="@+id/btnCapture"
+                app:layout_constraintTop_toBottomOf="@+id/declaration_description_input" />
 
             <Button
                 android:id="@+id/btnCapture"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="150dp"
-                android:layout_marginStart="14dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
                 android:text="Prendre "
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+                app:layout_constraintTop_toBottomOf="@+id/declaration_description_input" />
 
             <Button
                 android:id="@+id/btnVideo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="150dp"
-                android:layout_marginStart="244dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
                 android:text="Video"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/declaration_description_input"
-                app:layout_constraintVertical_bias="0.99" />
+                app:layout_constraintStart_toEndOf="@+id/btnGalery"
+                app:layout_constraintTop_toBottomOf="@+id/declaration_description_input" />
 
             <ImageView
                 android:id="@+id/imageView4"
@@ -174,16 +166,12 @@
                 android:id="@+id/videoView"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:layout_marginBottom="32dp"
                 android:layout_marginTop="20dp"
                 android:contentDescription="aperçu"
-                app:layout_constraintBottom_toTopOf="@+id/declaration_submit_button"
+                android:visibility="invisible"
                 app:layout_constraintStart_toStartOf="@id/btnGalery"
                 app:layout_constraintTop_toBottomOf="@id/btnGalery"
-                app:layout_constraintVertical_bias="0.163"
-                app:srcCompat="@mipmap/ic_launcher_round"
-                tools:layout_editor_absoluteX="156dp"
-                android:visibility="invisible"/>
+                app:srcCompat="@mipmap/ic_launcher_round" />
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v4.widget.NestedScrollView>

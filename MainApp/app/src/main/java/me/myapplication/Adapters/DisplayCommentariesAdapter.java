@@ -46,8 +46,6 @@ public class DisplayCommentariesAdapter extends RecyclerView.Adapter<DisplayComm
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
-
         holder.profilName.setText("NAME");
         holder.date.setText("0");
         holder.heure.setText(""+i);
@@ -56,7 +54,7 @@ public class DisplayCommentariesAdapter extends RecyclerView.Adapter<DisplayComm
 
     @Override
     public int getItemCount() {
-        return 8;
+        return 1;
     }
 
 

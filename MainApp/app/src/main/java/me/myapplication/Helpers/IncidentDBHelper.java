@@ -315,6 +315,15 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
     }
 
 
+    public void insertSub(int userId,int incidentId){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("incidentId",incidentId);
+        contentValues.put("userId",userId);
+
+        myDataBase.insert("subscriptions",null,contentValues);
+    }
+
+
     public void logComms(){ logTable("comments");}
 
     public void logIncidents(){

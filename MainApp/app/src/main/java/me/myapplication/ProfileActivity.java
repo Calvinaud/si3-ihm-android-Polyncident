@@ -34,6 +34,7 @@ public class ProfileActivity extends Activity {
     private ImageButton callButton;
     private ImageButton smsButton;
     private ImageButton mailButton;
+    private ImageButton addContactButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState)  {
@@ -56,6 +57,7 @@ public class ProfileActivity extends Activity {
         this.callButton = findViewById(R.id.profile_call_button);
         this.smsButton = findViewById(R.id.profile_sms_button);
         this.mailButton = findViewById(R.id.profile_mail_button);
+        this.addContactButton = findViewById(R.id.profile_add_contact_button);
     }
 
     private void addListeners(){

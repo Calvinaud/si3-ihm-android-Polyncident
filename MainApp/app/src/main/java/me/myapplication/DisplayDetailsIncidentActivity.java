@@ -18,6 +18,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -76,6 +78,7 @@ public class DisplayDetailsIncidentActivity extends AppCompatActivity {
         DisplayCommentariesAdapter adapter = new DisplayCommentariesAdapter(this);
         recyclerView.setAdapter(adapter);
 
+        /*
         newCom = findViewById(R.id.commentTitle);
         addCom= findViewById(R.id.sendComm);
         addCom.setOnClickListener(new View.OnClickListener() {
@@ -91,6 +94,7 @@ public class DisplayDetailsIncidentActivity extends AppCompatActivity {
                 finish();
             }
         });
+        */
     }
 
 

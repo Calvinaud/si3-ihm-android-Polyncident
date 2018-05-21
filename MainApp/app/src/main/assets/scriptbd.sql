@@ -13,6 +13,8 @@ CREATE TABLE users (
     userId INTEGER PRIMARY KEY,
     username varchar(30),
     password varchar(100),
+    telephoneNumber VARCHAR(20),
+    emailAddress VARCHAR(50),
     roles VARCHAR(20) NOT NULL CHECK (roles IN ('UTILISATEUR','ADMINISTRATEUR', 'TECHNICIEN'))
 );
 
@@ -39,7 +41,7 @@ CREATE TABLE incidents (
     description TEXT
 );
 
-CREATE TABLE followers (
+CREATE TABLE subscriptions (
     incidentId INTEGER REFERENCES incidents,
     userId INTEGER REFERENCES users,
     PRIMARY KEY(incidentId, userId)
