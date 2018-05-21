@@ -23,6 +23,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import me.myapplication.Fragments.VisualizationFragment;
@@ -62,11 +63,9 @@ public class MainActivity extends AppCompatActivity {
             IncidentDBHelper.getSingleton().initTables();
 
             //incidents initiaux
-            IncidentDBHelper.getSingleton()
-                    .insertIncident(1, 3,1
-                            ,
-                            2,"Plus de connection internet", "Il n'y a plus de co aled !",""
-                    );
+            if(IncidentDBHelper.getSingleton().isUserSubscribed(0,1)) {
+                Logger.getAnonymousLogger().log(Level.WARNING, "subs");
+            }
 
         }catch (Exception e){
             Logger.getAnonymousLogger().severe("MainActivity"+e.toString());
@@ -113,8 +112,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });*/
-
-
 
         Intent i= new Intent(this, NotificationService.class);
         ArrayList<Integer> subs = new ArrayList<Integer>();

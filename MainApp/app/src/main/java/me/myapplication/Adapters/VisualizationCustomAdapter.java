@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import me.myapplication.DisplayDetailsIncidentActivity;
 import me.myapplication.Helpers.IncidentDBHelper;
+import me.myapplication.MainActivity;
 import me.myapplication.Models.Importance;
 import me.myapplication.Models.Incident;
 import me.myapplication.R;
@@ -49,6 +50,10 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         this.cursor.moveToPosition(position);
+        int incidentID = cursor.getInt(cursor.getColumnIndexOrThrow("incidentId"));
+        if(IncidentDBHelper.getSingleton().isUserSubscribed(0,incidentID)){
+            holder.subscribe.setImageResource(R.drawable.ic_star_black_24dp);
+        }
 
         String title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
         String desc = cursor.getString(cursor.getColumnIndex("description"));
@@ -108,6 +113,7 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
                     if(!subscribed) {
                         subscribe.setImageResource(R.drawable.ic_star_black_24dp);
                         subscribed = true;
+                        IncidentDBHelper.getSingleton().insertSub(0,cursor.getInt(cursor.getColumnIndexOrThrow("incidentId")));
                     }else {
                         subscribe.setImageResource(R.drawable.ic_star_border_black_24dp);
                         subscribed=false;

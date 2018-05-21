@@ -15,6 +15,7 @@
         android:layout_marginBottom="25dp"
         android:layout_marginEnd="150dp"
         android:layout_marginStart="150dp"
+        android:layout_marginTop="16dp"
         android:text="edrtfyg"
         app:layout_constraintBottom_toTopOf="@+id/imageView2"
         app:layout_constraintEnd_toEndOf="parent"
@@ -32,7 +33,6 @@
         app:layout_constraintTop_toBottomOf="@+id/titleDetail"/>
 
 
-
     <VideoView
         android:id="@+id/VideoView"
         android:layout_width="126dp"
@@ -43,7 +43,8 @@
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/description"
         app:layout_constraintStart_toStartOf="@+id/titleDetail"
-        app:layout_constraintTop_toBottomOf="@+id/titleDetail" />
+        app:layout_constraintTop_toBottomOf="@+id/titleDetail"
+        app:layout_constraintVertical_bias="1.0" />
 
 
     <TextView
@@ -61,24 +62,32 @@
         android:layout_width="230dp"
         android:layout_height="40dp"
         android:layout_marginBottom="4dp"
-        android:text="Ajouter un commentaire..."
+        android:layout_marginEnd="138dp"
+        android:layout_marginStart="16dp"
+        android:hint="Ajouter un commentaire..."
         app:layout_constraintBottom_toTopOf="@+id/recyclerView2"
-        app:layout_constraintTop_toBottomOf="@+id/description"
-        tools:layout_editor_absoluteX="142dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/description" />
 
     <Button
         android:id="@+id/sendComm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginStart="24dp"
         android:text="Envoyer"
-        app:layout_constraintStart_toStartOf="@+id/description"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="157dp" />
+        app:layout_constraintBottom_toTopOf="@+id/recyclerView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/commentTitle" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@+id/commentTitle" />
 
 </android.support.constraint.ConstraintLayout>
