@@ -13,6 +13,8 @@ CREATE TABLE users (
     userId INTEGER PRIMARY KEY,
     username varchar(30),
     password varchar(100),
+    telephoneNumber VARCHAR(20),
+    emailAddress VARCHAR(50),
     roles VARCHAR(20) NOT NULL CHECK (roles IN ('UTILISATEUR','ADMINISTRATEUR', 'TECHNICIEN'))
 );
 
