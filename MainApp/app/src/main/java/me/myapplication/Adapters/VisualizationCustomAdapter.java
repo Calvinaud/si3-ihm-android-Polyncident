@@ -54,22 +54,20 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
         if(IncidentDBHelper.getSingleton().isUserSubscribed(0,incidentID)){
             holder.subscribe.setImageResource(R.drawable.ic_star_black_24dp);
         }
-
+        Importance urgence = getImportance(cursor.getInt(cursor.getColumnIndex("importance")));
         String title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
         String desc = cursor.getString(cursor.getColumnIndex("description"));
-        //Importance importance; A FAIRE
-        String urgence = cursor.getString(cursor.getColumnIndex("importance")); //temp
         int reporterId = cursor.getInt(cursor.getColumnIndexOrThrow("reporterId"));
         int locationId = cursor.getInt(cursor.getColumnIndexOrThrow("locationId"));
         int typeId = cursor.getInt(cursor.getColumnIndexOrThrow("typeId"));
         String url = cursor.getString(cursor.getColumnIndexOrThrow("urlPhoto"));
 
-        this.incident=new Incident(reporterId,locationId,typeId,Importance.MINOR,title,desc,url);
+        this.incident=new Incident(reporterId,locationId,typeId,urgence,title,desc,url);
         holder.cardView.setOnClickListener(new DetailsListener());
         holder.incident.setText(title);
         holder.date.setText("0");
         holder.heure.setText("0");
-        holder.urgence.setText(urgence);
+        holder.urgence.setText(urgence.getText());
         holder.description.setText(desc);
     }
 
@@ -78,6 +76,19 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
         return cursor.getCount();
     }
 
+    private Importance getImportance(int i){
+        switch (i) {
+            case 1:
+                return Importance.NEGLIGIBLE;
+            case 2 :
+                return Importance.MINOR;
+            case 3 :
+                return Importance.URGENT;
+            case 4 :
+                return Importance.CRITICAL;
+            default: return Importance.MINOR;
+        }
+    }
 
 
     class ViewHolder extends RecyclerView.ViewHolder{

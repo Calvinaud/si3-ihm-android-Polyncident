@@ -104,7 +104,7 @@ public class NotificationService extends Service {
         notification.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.logo));
         notification.setTicker("ok");
         notification.setWhen(System.currentTimeMillis());
-        notification.setContentTitle("Un incident a été ajouté : "+title);
+        notification.setContentTitle(title);
         notification.setContentText(desc);
 
         Intent intent = new Intent(this, DisplayDetailsIncidentActivity.class);
