@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,8 +26,9 @@ import me.myapplication.R;
  */
 public class DayFragment extends Fragment {
 
-    Date date;
+    private static String ARG_SECTION_DATE="date";
 
+    private long date;
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -34,9 +36,12 @@ public class DayFragment extends Fragment {
     public DayFragment(){}
 
 
-    public static DayFragment newInstance() {
+    public static DayFragment newInstance(Date currentdate) {
         DayFragment fragment = new DayFragment();
         Bundle args = new Bundle();
+        args.putLong(ARG_SECTION_DATE,currentdate.getTime());
+        Log.i("edea",""+currentdate);
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -44,6 +49,7 @@ public class DayFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i("edea",""+date);
 
     }
 
@@ -55,14 +61,15 @@ public class DayFragment extends Fragment {
         Date currentdate= new Date();
         SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
         try{
-            currentdate=format.parse("2018-06-2019");
+            currentdate=format.parse("2018-05-19");
         }
         catch (ParseException e){
             e.printStackTrace();
         }
 
         TextView text= (TextView) view.findViewById(R.id.date);
-        text.setText(format.format(currentdate));
+      //  text.setText(format.format(currentdate));
+        text.setText(""+date);
 
         RecyclerView recyclerView = view.findViewById(R.id.incidentList);
         recyclerView.setHasFixedSize(true);

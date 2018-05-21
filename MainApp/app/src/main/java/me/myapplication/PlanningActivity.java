@@ -39,8 +39,18 @@ public class PlanningActivity extends AppCompatActivity {
         TextView todaydate=(TextView) findViewById(R.id.todayDate);
         todaydate.setText("Nous somme le: "+dateToday);
 
+
+        Date currentdate= new Date();
+        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
+        try{
+            currentdate=format.parse("2018-05-19");
+        }
+        catch (ParseException e){
+            e.printStackTrace();
+        }
+
         FragmentTransaction ft=getFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment, new DayFragment());
+        ft.replace(R.id.fragment, DayFragment.newInstance(currentdate));
         ft.commit();
 
 //        DayFragment fragment=(DayFragment) getFragmentManager().findFragmentById(R.id.fragment);

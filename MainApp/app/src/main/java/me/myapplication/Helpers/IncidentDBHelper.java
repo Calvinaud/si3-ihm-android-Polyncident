@@ -224,9 +224,6 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
          queryString +=" AND a.endDate<='";
         queryString += endDate+"'";
 
-      //  queryString += startDate.substring(0,10);
-        //queryString += " 23:59:59";
-
         Cursor cursor= myDataBase.rawQuery(queryString, null);
         cursor.moveToFirst();
 

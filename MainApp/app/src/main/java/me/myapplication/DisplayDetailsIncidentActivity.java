@@ -18,9 +18,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.squareup.picasso.Picasso;
-
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
