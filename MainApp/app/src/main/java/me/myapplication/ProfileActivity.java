@@ -111,6 +111,13 @@ public class ProfileActivity extends Activity {
             @Override
             public void onClick(View view) {
                 Intent addContactIntent =  new Intent(Intent.ACTION_INSERT, ContactsContract.Contacts.CONTENT_URI);
+                addContactIntent.putExtra(ContactsContract.Intents.Insert.NAME, user.getUsername());
+
+                if(hasEmailAddress)
+                    addContactIntent.putExtra(ContactsContract.Intents.Insert.EMAIL, user.getEmailAddress());
+                if(hasTelephoneNumber)
+                    addContactIntent.putExtra(ContactsContract.Intents.Insert.PHONE, user.getTelephoneNumber());
+
                 startActivity(addContactIntent);
             }
         });
