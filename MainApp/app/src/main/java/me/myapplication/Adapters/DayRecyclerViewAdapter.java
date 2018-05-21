@@ -29,7 +29,7 @@ import java.util.List;
  */
 public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerViewAdapter.ViewHolder> {
 
-    List<PlanningIncident> incidents;
+    List<PlanningIncident> incidents=new ArrayList<>();
     Date date;
     int userId;
     Context context;
@@ -39,7 +39,6 @@ public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerView
         this.context=context;
         this.date=date;
         this.userId=userId;
-        this.incidents=new ArrayList<>();
     }
 
     @Override
@@ -47,6 +46,7 @@ public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerView
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_planning_incident, parent, false);
 
+        incidents.addAll(IncidentDBHelper.getSingleton().getDayPlanningIncident(userId,date));
 
         return new ViewHolder(view);
     }
@@ -74,7 +74,7 @@ public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerView
 
     @Override
     public int getItemCount() {
-        return incidents.size();
+        return 2;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

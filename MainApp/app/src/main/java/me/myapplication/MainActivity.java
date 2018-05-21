@@ -105,14 +105,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-       /* FloatingActionButton admin = (FloatingActionButton) findViewById(R.id.admin);
+        FloatingActionButton admin = (FloatingActionButton) findViewById(R.id.admin);
         admin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, AdminActivity.class);
                 startActivity(intent);
             }
-        });*/
+        });
 
 
 
