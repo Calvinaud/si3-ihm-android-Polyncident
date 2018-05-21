@@ -193,13 +193,14 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
         int reporterId = cursor.getInt(cursor.getColumnIndexOrThrow("reporterId"));
         int locationId = cursor.getInt(cursor.getColumnIndexOrThrow("locationId"));
         int typeId = cursor.getInt(cursor.getColumnIndexOrThrow("typeId"));
+        String url = cursor.getString(cursor.getColumnIndexOrThrow("urlPhoto"));
 
         return new Incident(reporterId,
                 locationId,
                 typeId,
                 Importance.URGENT,
                 title,
-                desc);
+                desc,url);
     }
 
     public List<PlanningIncident> getDayPlanningIncident(int id, Date date){
@@ -292,7 +293,7 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
     }
 
     public void insertIncident(int reporterdID, int locationID, int typeID,
-                            int importance, String title, String description){
+                            int importance, String title, String description, String imgUrl){
 
         ContentValues contentValues = new ContentValues();
         contentValues.put("reporterId", reporterdID);
@@ -301,9 +302,23 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
         contentValues.put("importance", importance);
         contentValues.put("title", title);
         contentValues.put("description", description);
+        contentValues.put("urlPhoto",imgUrl);
 
         myDataBase.insert("incidents",null, contentValues);
     }
+
+    public void insertComm(int userId,int incidentId,String date,String content){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("userId",userId);
+        contentValues.put("incidentId",incidentId);
+        contentValues.put("date",date);
+        contentValues.put("comment",content);
+
+        myDataBase.insert("comments",null,contentValues);
+    }
+
+
+    public void logComms(){ logTable("comments");}
 
     public void logIncidents(){
         logTable("incidents");

@@ -30,7 +30,7 @@ public class AddedIncidentSimService extends Service {
                             IncidentDBHelper.getSingleton()
                                     .insertIncident(2, 3, i%3
                                             ,
-                                            2, "Je suis ds le service aled", "Type = "+i%3
+                                            2, "Je suis ds le service aled", "Type = "+i%3,""
                                     );
                         } catch (InterruptedException e) {
                             e.printStackTrace();

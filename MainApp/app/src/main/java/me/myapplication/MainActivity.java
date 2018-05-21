@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
             IncidentDBHelper.getSingleton()
                     .insertIncident(1, 3,1
                             ,
-                            2,"Plus de connection internet", "Il n'y a plus de co aled !"
+                            2,"Plus de connection internet", "Il n'y a plus de co aled !",""
                     );
 
         }catch (Exception e){

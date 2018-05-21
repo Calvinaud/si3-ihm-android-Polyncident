@@ -32,7 +32,7 @@ import me.myapplication.R;
 public class DisplayCommentariesAdapter extends RecyclerView.Adapter<DisplayCommentariesAdapter.ViewHolder> {
 
     private Context context;
-
+    int i=0;
     public DisplayCommentariesAdapter(Context context){
         this.context=context;
     }
@@ -50,13 +50,13 @@ public class DisplayCommentariesAdapter extends RecyclerView.Adapter<DisplayComm
 
         holder.profilName.setText("NAME");
         holder.date.setText("0");
-        holder.heure.setText("0");
-        holder.content.setText("CONTENT OF THE COMMENT");
+        holder.heure.setText(""+i);
+        i++;
     }
 
     @Override
     public int getItemCount() {
-        return 3;
+        return 8;
     }
 
 
