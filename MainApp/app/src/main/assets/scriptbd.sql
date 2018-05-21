@@ -94,8 +94,8 @@ INSERT INTO incidents (incidentId, reporterId, locationId, typeId, importance, t
 INSERT INTO incidents (incidentId, reporterId, locationId, typeId, importance, title) VALUES (2, 1, 5, 1, 3, 'Incident 2');
 
 --assignation
-INSERT INTO assignations (userId, incidentId, startDate, endDate) VALUES (2, 1, '2018-05-19 15:30:00', '2018-05-19 18:30:00');
-INSERT INTO assignations (userId, incidentId, startDate, endDate) VALUES (2, 2, '2018-05-19 11:00:00', '2018-05-19 13:00:00');
+INSERT INTO assignations (userId, incidentId, startDate, endDate) VALUES (1, 1, '2018-05-19 15:30:00', '2018-05-19 18:30:00');
+INSERT INTO assignations (userId, incidentId, startDate, endDate) VALUES (1, 2, '2018-05-19 11:00:00', '2018-05-19 13:00:00');
 
 --subs
 INSERT INTO subscriptions (userId, incidentId) VALUES (0,1);

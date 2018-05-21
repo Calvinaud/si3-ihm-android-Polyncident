@@ -39,6 +39,7 @@ public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerView
         this.context=context;
         this.date=date;
         this.userId=userId;
+        this.incidents=new ArrayList<>();
     }
 
     @Override
@@ -46,8 +47,6 @@ public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerView
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_planning_incident, parent, false);
 
-        incidents = new ArrayList<>();
-        incidents.addAll(IncidentDBHelper.getSingleton().getDayPlanningIncident(userId, date));
 
         return new ViewHolder(view);
     }
@@ -56,7 +55,6 @@ public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerView
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
         PlanningIncident planningIncident = incidents.get(position);
-
 
         holder.titre.setText("Titre: "+planningIncident.getTitle());
         //holder.titre.setText("Titre: "+planningIncident.getTitle());
@@ -76,7 +74,7 @@ public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerView
 
     @Override
     public int getItemCount() {
-        return 2;
+        return incidents.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

@@ -61,7 +61,7 @@ public class DayFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_planning_day, container, false);
 
-       SimpleDateFormat format=new SimpleDateFormat("dd MM yyyy");
+       SimpleDateFormat format=new SimpleDateFormat("dd-MM-yyyy");
 
         TextView text= (TextView) view.findViewById(R.id.date);
         RecyclerView recyclerView = view.findViewById(R.id.incidentList);
@@ -76,19 +76,13 @@ public class DayFragment extends Fragment {
 
                 date=new Date(args.getLong(ARG));
                 text.setText("" + format.format(date));
-                recyclerView.setAdapter(new DayRecyclerViewAdapter(context,2, date));
+                recyclerView.setAdapter(new DayRecyclerViewAdapter(context,1, date));
             }
         }
 
-        view.setOnTouchListener(new OnSwipeTouchListener(context) {
-            @Override
-            public void onSwipeLeft() {
-                Intent intent = new Intent(context,DeclarationActivity.class);
-                context.startActivity(intent);
-            }
-        });
-
         return view;
     }
+
+
 
 }
