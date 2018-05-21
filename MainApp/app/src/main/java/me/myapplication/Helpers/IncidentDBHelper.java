@@ -303,7 +303,7 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
     }
 
     public void insertIncident(int reporterdID, int locationID, int typeID,
-                            int importance, String title, String description, String imgUrl){
+                            int importance, String title, String description, String imgUrl, int status){
 
         ContentValues contentValues = new ContentValues();
         contentValues.put("reporterId", reporterdID);
@@ -313,6 +313,7 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
         contentValues.put("title", title);
         contentValues.put("description", description);
         contentValues.put("urlPhoto",imgUrl);
+        contentValues.put("status", status);
 
         myDataBase.insert("incidents",null, contentValues);
     }

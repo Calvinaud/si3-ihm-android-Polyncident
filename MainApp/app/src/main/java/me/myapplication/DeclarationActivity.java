@@ -192,7 +192,7 @@ public class DeclarationActivity extends Activity {
                     .insertIncident(0, locationSpinner.getSelectedItemPosition()+1,
                             typeSpinner.getSelectedItemPosition()+1,importanceSeekBar.getProgress(),
                             titleEditText.getText().toString(), descriptionEditText.getText().toString(),
-                            mCurrentPhotoPath
+                            mCurrentPhotoPath, 0
                     );
             IncidentDBHelper.getSingleton().logIncidents();
 

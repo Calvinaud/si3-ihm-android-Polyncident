@@ -2,8 +2,10 @@ package me.myapplication.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,8 +15,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import me.myapplication.DisplayDetailsIncidentActivity;
 import me.myapplication.Helpers.IncidentDBHelper;
+import me.myapplication.MainActivity;
 import me.myapplication.Models.Importance;
 import me.myapplication.Models.Incident;
 import me.myapplication.R;
@@ -49,23 +55,35 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         this.cursor.moveToPosition(position);
-
+        int incidentID = cursor.getInt(cursor.getColumnIndexOrThrow("incidentId"));
+        if(IncidentDBHelper.getSingleton().isUserSubscribed(0,incidentID)){
+            holder.subscribe.setImageResource(R.drawable.ic_star_black_24dp);
+        }
+        Importance urgence = getImportance(cursor.getInt(cursor.getColumnIndex("importance")));
         String title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
         String desc = cursor.getString(cursor.getColumnIndex("description"));
-        //Importance importance; A FAIRE
-        String urgence = cursor.getString(cursor.getColumnIndex("importance")); //temp
         int reporterId = cursor.getInt(cursor.getColumnIndexOrThrow("reporterId"));
         int locationId = cursor.getInt(cursor.getColumnIndexOrThrow("locationId"));
         int typeId = cursor.getInt(cursor.getColumnIndexOrThrow("typeId"));
         String url = cursor.getString(cursor.getColumnIndexOrThrow("urlPhoto"));
 
-        this.incident=new Incident(reporterId,locationId,typeId,Importance.MINOR,title,desc,url);
+        this.incident=new Incident(reporterId,locationId,typeId,urgence,title,desc,url);
         holder.cardView.setOnClickListener(new DetailsListener());
         holder.incident.setText(title);
         holder.date.setText("0");
         holder.heure.setText("0");
-        holder.urgence.setText(urgence);
+        holder.urgence.setText(urgence.getText());
         holder.description.setText(desc);
+
+        Logger.getAnonymousLogger().log(Level.WARNING,"status ="+cursor.getInt(cursor.getColumnIndexOrThrow("status")));
+        switch (cursor.getInt(cursor.getColumnIndexOrThrow("status"))){
+            case 0:
+                holder.status.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_visibility_off_black_24dp));
+            case 1:
+                holder.status.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_watch_later_black_24dp));
+            case 2:
+                holder.status.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_check_circle_black_24dp));
+        }
     }
 
     @Override
@@ -73,6 +91,19 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
         return cursor.getCount();
     }
 
+    private Importance getImportance(int i){
+        switch (i) {
+            case 1:
+                return Importance.NEGLIGIBLE;
+            case 2 :
+                return Importance.MINOR;
+            case 3 :
+                return Importance.URGENT;
+            case 4 :
+                return Importance.CRITICAL;
+            default: return Importance.MINOR;
+        }
+    }
 
 
     class ViewHolder extends RecyclerView.ViewHolder{
@@ -108,6 +139,7 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
                     if(!subscribed) {
                         subscribe.setImageResource(R.drawable.ic_star_black_24dp);
                         subscribed = true;
+                        IncidentDBHelper.getSingleton().insertSub(0,cursor.getInt(cursor.getColumnIndexOrThrow("incidentId")));
                     }else {
                         subscribe.setImageResource(R.drawable.ic_star_border_black_24dp);
                         subscribed=false;

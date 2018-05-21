@@ -18,8 +18,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import me.myapplication.DisplayDetailsIncidentActivity;
 import me.myapplication.Helpers.IncidentDBHelper;
 import me.myapplication.MainActivity;
+import me.myapplication.Models.Importance;
 import me.myapplication.Models.Incident;
 import me.myapplication.R;
 
@@ -63,7 +65,7 @@ public class NotificationService extends Service {
                                 Cursor cursor = dbHelper.getLastIncidentCursor();
                                 if(prev < dbHelper.getIncidentNumber()){
                                     if(getSubscribed().contains(cursor.getInt(cursor.getColumnIndexOrThrow("typeId")))) {
-                                        sendNotif(cursor.getString(cursor.getColumnIndexOrThrow("title")), cursor.getString(cursor.getColumnIndexOrThrow("description")));
+                                        sendNotif(cursor.getString(cursor.getColumnIndexOrThrow("title")), cursor.getString(cursor.getColumnIndexOrThrow("description")), cursor);
                                     }
                                 }
                                 prev=dbHelper.getIncidentNumber();
@@ -86,16 +88,27 @@ public class NotificationService extends Service {
         return this.subscrbedTypesId;
     }
 
-    public void sendNotif(String title, String desc){
+    public void sendNotif(String title, String desc, Cursor cursor){
+
+        //Importance importance; A FAIRE
+        String urgence = cursor.getString(cursor.getColumnIndex("importance")); //temp
+        int reporterId = cursor.getInt(cursor.getColumnIndexOrThrow("reporterId"));
+        int locationId = cursor.getInt(cursor.getColumnIndexOrThrow("locationId"));
+        int typeId = cursor.getInt(cursor.getColumnIndexOrThrow("typeId"));
+        String url = cursor.getString(cursor.getColumnIndexOrThrow("urlPhoto"));
+
+        Incident incident=new Incident(reporterId,locationId,typeId, Importance.MINOR,title,desc,url);
+
 
         notification.setSmallIcon(R.drawable.ic_notifications_black_24dp);
         notification.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.logo));
         notification.setTicker("ok");
         notification.setWhen(System.currentTimeMillis());
-        notification.setContentTitle("Un incident a été ajouté : "+title);
+        notification.setContentTitle(title);
         notification.setContentText(desc);
 
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, DisplayDetailsIncidentActivity.class);
+        intent.putExtra("incident", incident);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
         notification.setContentIntent(pendingIntent);
 
