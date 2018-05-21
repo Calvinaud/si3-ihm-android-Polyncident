@@ -39,7 +39,7 @@ CREATE TABLE incidents (
     description TEXT
 );
 
-CREATE TABLE followers (
+CREATE TABLE subscriptions (
     incidentId INTEGER REFERENCES incidents,
     userId INTEGER REFERENCES users,
     PRIMARY KEY(incidentId, userId)

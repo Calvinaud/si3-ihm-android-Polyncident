@@ -19,7 +19,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -79,6 +78,7 @@ public class DisplayDetailsIncidentActivity extends AppCompatActivity {
         DisplayCommentariesAdapter adapter = new DisplayCommentariesAdapter(this);
         recyclerView.setAdapter(adapter);
 
+        /*
         newCom = findViewById(R.id.commentTitle);
         addCom= findViewById(R.id.sendComm);
         addCom.setOnClickListener(new View.OnClickListener() {
@@ -94,6 +94,7 @@ public class DisplayDetailsIncidentActivity extends AppCompatActivity {
                 finish();
             }
         });
+        */
     }
 
 

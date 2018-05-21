@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,12 +13,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.List;
-
 import me.myapplication.DisplayDetailsIncidentActivity;
-import me.myapplication.Fragments.VisualizationFragment;
 import me.myapplication.Helpers.IncidentDBHelper;
-import me.myapplication.MainActivity;
 import me.myapplication.Models.Importance;
 import me.myapplication.Models.Incident;
 import me.myapplication.R;
@@ -84,7 +78,8 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
     class ViewHolder extends RecyclerView.ViewHolder{
 
         ImageView status;
-        ImageView comments;
+        ImageView subscribe;
+        boolean subscribed = false;
 
         TextView incident;
         TextView date;
@@ -99,13 +94,26 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
 
             cardView = (CardView) itemView.findViewById(R.id.card);
             status=(ImageView) itemView.findViewById(R.id.statusView);
-            comments=(ImageView) itemView.findViewById(R.id.commentsView);
+            subscribe=(ImageView) itemView.findViewById(R.id.subscribeView);
 
             incident=(TextView) itemView.findViewById(R.id.incidentTextView);
             date=(TextView) itemView.findViewById(R.id.dateTextView);
             heure=(TextView) itemView.findViewById(R.id.timeTextView);
             urgence=(TextView) itemView.findViewById(R.id.emergencyTextView);
             description=(TextView) itemView.findViewById(R.id.descView);
+
+            subscribe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(!subscribed) {
+                        subscribe.setImageResource(R.drawable.ic_star_black_24dp);
+                        subscribed = true;
+                    }else {
+                        subscribe.setImageResource(R.drawable.ic_star_border_black_24dp);
+                        subscribed=false;
+                    }
+                }
+            });
         }
     }
 
@@ -113,12 +121,9 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
 
         @Override
         public void onClick(View view)  {
-            Log.i("heu","yghefjn");
             Intent intent = new Intent(context,DisplayDetailsIncidentActivity.class);
             intent.putExtra("incident",incident);
             context.startActivity(intent);
         }
     }
-
-
 }

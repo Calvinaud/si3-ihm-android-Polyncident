@@ -21,7 +21,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <RelativeLayout
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -31,27 +31,37 @@
                 android:layout_height="30dp"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="14dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_check_circle_black_24dp" />
 
             <ImageView
-                android:id="@+id/commentsView"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:id="@+id/subscribeView"
+                android:layout_width="40dp"
+                android:layout_height="50dp"
                 android:layout_alignParentEnd="true"
-                android:layout_alignTop="@+id/descView"
-                android:layout_marginEnd="15dp"
-                app:srcCompat="@drawable/ic_sms_black_24dp" />
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="15dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginTop="15dp"
+                android:onClick="onClickSubscribe"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_star_border_black_24dp" />
 
             <TextView
                 android:id="@+id/incidentTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/commentNumberTextView"
-                android:layout_marginStart="32dp"
+                android:layout_marginStart="60dp"
                 android:layout_toEndOf="@+id/statusView"
                 android:text="Un incident"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/dateTextView"
@@ -59,35 +69,55 @@
                 android:layout_height="wrap_content"
                 android:layout_alignEnd="@+id/timeTextView"
                 android:layout_alignParentBottom="true"
-                android:layout_marginEnd="40dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="7dp"
                 android:text="00/00/0000"
-                android:textSize="10sp" />
+                android:textSize="10sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/timeTextView"
+                app:layout_constraintTop_toBottomOf="@+id/descView" />
 
             <TextView
                 android:id="@+id/timeTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="106dp"
+                android:layout_marginTop="7dp"
                 android:layout_toStartOf="@+id/emergencyTextView"
                 android:text="00h00"
-                android:textSize="10sp" />
+                android:textSize="10sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/descView" />
 
             <TextView
                 android:id="@+id/emergencyTextView"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="17dp"
                 android:layout_alignBottom="@+id/incidentTextView"
-                android:layout_alignEnd="@+id/commentsView"
-                android:text="Urgence" />
+                android:layout_alignEnd="@+id/subscribeView"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="60dp"
+                android:layout_marginTop="5dp"
+                android:text="Urgence"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/descView" />
 
             <TextView
                 android:id="@+id/descView"
-                android:layout_width="40dp"
-                android:layout_height="30dp"
-                android:layout_alignBottom="@+id/statusView"
+                android:layout_width="235dp"
+                android:layout_height="28dp"
                 android:layout_alignStart="@+id/incidentTextView"
-                android:layout_toStartOf="@+id/emergencyTextView"
-                android:text="Une description" />
-        </RelativeLayout>
+                android:layout_centerVertical="true"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="3dp"
+                android:text="Une description"
+                app:layout_constraintStart_toEndOf="@+id/statusView"
+                app:layout_constraintTop_toBottomOf="@+id/incidentTextView" />
+        </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
 </android.support.constraint.ConstraintLayout>
