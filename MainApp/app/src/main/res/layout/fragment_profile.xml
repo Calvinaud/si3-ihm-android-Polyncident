@@ -4,13 +4,35 @@
     android:layout_height="match_parent"
     android:padding="20dp" >
 
-    <TextView
-        android:id="@+id/profile_name_label"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_gravity="center_horizontal"
-        android:text="Name"
-        android:textSize="20sp" />
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/profile_name_label"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:text="Name"
+            android:textSize="20sp" />
+
+        <ImageButton
+            android:id="@+id/profile_add_contact_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/add_contact_button" />
+
+    </RelativeLayout>
+
+
 
     <TextView
         android:id="@+id/profile_role_label"
@@ -30,6 +52,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_gravity="center_horizontal"
         android:padding="5dp">
 
         <ImageButton
