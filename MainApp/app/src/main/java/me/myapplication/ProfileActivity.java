@@ -23,10 +23,13 @@ import java.util.logging.Logger;
 import me.myapplication.Helpers.IncidentDBHelper;
 import me.myapplication.MainActivity;
 import me.myapplication.Models.Importance;
+import me.myapplication.Models.User;
 import me.myapplication.R;
 
 
 public class ProfileActivity extends Activity {
+
+    private User user;
 
     //GUI components
     private TextView nameLabel;
@@ -106,8 +109,9 @@ public class ProfileActivity extends Activity {
             int userId = getIntent().getExtras().getInt("userId");
             Cursor cursor = IncidentDBHelper.getSingleton().getUserCursor(userId);
 
-            this.nameLabel.setText(cursor.getString(cursor.getColumnIndex("username")));
-            this.roleLabel.setText(cursor.getString(cursor.getColumnIndex("roles")));
+            this.user = new User(cursor);
+            this.nameLabel.setText(this.user.getUsername());
+            this.roleLabel.setText(this.user.getRole());
 
             cursor.close();
         }catch (NullPointerException e){
