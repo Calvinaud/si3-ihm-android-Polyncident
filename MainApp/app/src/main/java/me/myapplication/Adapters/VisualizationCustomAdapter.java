@@ -2,8 +2,10 @@ package me.myapplication.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,6 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import me.myapplication.DisplayDetailsIncidentActivity;
 import me.myapplication.Helpers.IncidentDBHelper;
@@ -69,6 +74,16 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
         holder.heure.setText("0");
         holder.urgence.setText(urgence.getText());
         holder.description.setText(desc);
+
+        Logger.getAnonymousLogger().log(Level.WARNING,"status ="+cursor.getInt(cursor.getColumnIndexOrThrow("status")));
+        switch (cursor.getInt(cursor.getColumnIndexOrThrow("status"))){
+            case 0:
+                holder.status.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_visibility_off_black_24dp));
+            case 1:
+                holder.status.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_watch_later_black_24dp));
+            case 2:
+                holder.status.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_check_circle_black_24dp));
+        }
     }
 
     @Override
