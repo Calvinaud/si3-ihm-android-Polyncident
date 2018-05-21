@@ -14,6 +14,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,10 +32,13 @@ import java.util.ArrayList;
 
 import me.myapplication.Adapters.DisplayCommentariesAdapter;
 import me.myapplication.Adapters.VisualizationCustomAdapter;
+import me.myapplication.Helpers.IncidentDBHelper;
 import me.myapplication.Models.Incident;
 
 public class DisplayDetailsIncidentActivity extends AppCompatActivity {
     private Incident incident;
+    private Button addCom;
+    private EditText newCom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,13 +54,15 @@ public class DisplayDetailsIncidentActivity extends AppCompatActivity {
         ImageView imageView = (ImageView) findViewById(R.id.imageView2);
 
         InputStream in = null;
-        try {
-            in = new URL("file://"+incident.getUrlPhoto()).openStream();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(incident.getUrlPhoto()!=null) {
+            try {
+                in = new URL("file://" + incident.getUrlPhoto()).openStream();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Bitmap bitmap = BitmapFactory.decodeStream(in);
+            imageView.setImageBitmap(bitmap);
         }
-        Bitmap bitmap = BitmapFactory.decodeStream(in);
-        imageView.setImageBitmap(bitmap);
 
 
 
@@ -71,6 +78,23 @@ public class DisplayDetailsIncidentActivity extends AppCompatActivity {
 
         DisplayCommentariesAdapter adapter = new DisplayCommentariesAdapter(this);
         recyclerView.setAdapter(adapter);
+
+        newCom = findViewById(R.id.commentTitle);
+        addCom= findViewById(R.id.sendComm);
+        addCom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(newCom.getText().toString().equals(""))
+                    return;
+
+                IncidentDBHelper.getSingleton()
+                        .insertComm(0,1,"",newCom.getText().toString());
+                IncidentDBHelper.getSingleton().logComms();
+
+                finish();
+            }
+        });
     }
+
 
 }

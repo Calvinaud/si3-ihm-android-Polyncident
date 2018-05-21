@@ -289,6 +289,19 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
         myDataBase.insert("incidents",null, contentValues);
     }
 
+    public void insertComm(int userId,int incidentId,String date,String content){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("userId",userId);
+        contentValues.put("incidentId",incidentId);
+        contentValues.put("date",date);
+        contentValues.put("comment",content);
+
+        myDataBase.insert("comments",null,contentValues);
+    }
+
+
+    public void logComms(){ logTable("comments");}
+
     public void logIncidents(){
         logTable("incidents");
     }
