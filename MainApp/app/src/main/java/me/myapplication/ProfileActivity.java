@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Contacts;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -25,8 +27,6 @@ import me.myapplication.R;
 
 
 public class ProfileActivity extends Activity {
-
-    private static final String ARG_SECTION_NUMBER = "section_number";
 
     //GUI components
     private TextView nameLabel;
@@ -90,6 +90,14 @@ public class ProfileActivity extends Activity {
                 startActivity(Intent.createChooser(mailIntent, "MAIL:"));
             }
         });
+
+        this.addContactButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent addContactIntent =  new Intent(Intent.ACTION_INSERT, ContactsContract.Contacts.CONTENT_URI);
+                startActivity(addContactIntent);
+            }
+        });
     }
 
     private void displayUserData(){
@@ -108,9 +116,6 @@ public class ProfileActivity extends Activity {
             );
         }catch(IncidentDBHelper.NoRecordException e){
             Logger.getAnonymousLogger().severe(e.toString());
-        }
-        finally {
-            // finish();
         }
 
     }
