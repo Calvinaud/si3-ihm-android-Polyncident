@@ -161,7 +161,7 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
 
     public List<String> getLocations(){
 
-        List<String> types = new ArrayList<>(10);
+        List<String> locations = new ArrayList<>(10);
 
         Cursor cursor = myDataBase.rawQuery("SELECT name from locations", null);
         cursor.moveToFirst();
@@ -169,13 +169,13 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
         while (!cursor.isAfterLast()) {
 
             int index = cursor.getColumnIndex("name");
-            types.add(cursor.getString(index));
+            locations.add(cursor.getString(index));
             cursor.moveToNext();
         }
 
         cursor.close();
 
-        return types;
+        return locations;
     }
 
     public Incident getIncidentById(int incidentId){
@@ -280,6 +280,19 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
         Logger.getAnonymousLogger().warning(queryString);
 
         return myDataBase.rawQuery(queryString, null);
+    }
+
+    public boolean isUserSubscribed(int userId, int incidentId){
+
+        String queryString = "SELECT * FROM subscriptions WHERE ";
+
+        queryString += " userId = "+userId;
+
+        queryString += " AND incidentId = "+incidentId;
+
+        Logger.getAnonymousLogger().warning(queryString);
+
+        return myDataBase.rawQuery(queryString, null).getCount() > 0;
     }
 
     public Cursor getLastIncidentCursor(){

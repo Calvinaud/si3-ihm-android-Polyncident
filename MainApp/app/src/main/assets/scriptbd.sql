@@ -86,8 +86,8 @@ INSERT INTO types (typeid, name) VALUES('2','Matériel cassé');
 INSERT INTO types (typeid, name) VALUES('3','Autres');
 
 --users
-INSERT INTO users (userId, username, password, roles) VALUES (1,'Mathieu', 'Mathieu', 'UTILISATEUR');
-INSERT INTO users (userId, username, password, roles) VALUES (2, 'Bob', 'Bob', 'TECHNICIEN');
+INSERT INTO users (userId, username, password, roles, telephoneNumber) VALUES (0,'Mathieu', 'Mathieu', 'UTILISATEUR', "0645128214");
+INSERT INTO users (userId, username, password, roles) VALUES (1, 'Bob', 'Bob', 'TECHNICIEN');
 
 --incident
 INSERT INTO incidents (incidentId, reporterId, locationId, typeId, importance, title) VALUES (1, 1, 3, 2, 3, 'Incident 1');
@@ -97,6 +97,5 @@ INSERT INTO incidents (incidentId, reporterId, locationId, typeId, importance, t
 INSERT INTO assignations (userId, incidentId, startDate, endDate) VALUES (2, 1, '2018-05-19 15:30:00', '2018-05-19 18:30:00');
 INSERT INTO assignations (userId, incidentId, startDate, endDate) VALUES (2, 2, '2018-05-19 11:00:00', '2018-05-19 13:00:00');
 
-SELECT incidentId FROM assignations WHERE userId=2 AND startDate>='2018-05-19 00:00:00' AND endDate<'2018-05-19 23:59:59';
-
-SELECT i.title, a.startDate, a.endDate, l.name FROM assignations AS a, incidents AS i, locations AS l WHERE l.locationId=i.locationId AND i.incidentId=a.incidentId AND a.userId=2;
+--subs
+INSERT INTO subscriptions (userId, incidentId) VALUES (0,1);
