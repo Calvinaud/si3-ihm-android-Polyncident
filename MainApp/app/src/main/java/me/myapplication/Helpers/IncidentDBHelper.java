@@ -17,13 +17,16 @@ import java.io.InputStreamReader;
 import java.io.InterruptedIOException;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.SimpleTimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -333,6 +336,71 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
         cursor.moveToFirst();
 
         return cursor.getInt(cursor.getColumnIndex("Nb"));
+    }
+
+    public int getTechoWeekCount(int userid){
+
+        Calendar c = GregorianCalendar.getInstance();
+        c.setFirstDayOfWeek(Calendar.MONDAY);
+        c.set(Calendar.DAY_OF_WEEK, c.getFirstDayOfWeek());
+        c.add(Calendar.DAY_OF_WEEK, 1);
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String startDate;
+        String endDate;
+        startDate = df.format(c.getTime());
+        c.add(Calendar.DAY_OF_MONTH, 6);
+        endDate = df.format(c.getTime());
+
+        String queryString = "SELECT COUNT(*) AS Nb FROM assignations WHERE userId=";
+
+        queryString +=userid;
+
+        queryString +=" AND startDate>='";
+        queryString +=startDate+" 00:00:00";
+
+        queryString +="' AND endDate<='";
+        queryString +=endDate+" 23:59:59'";
+
+        Log.i("EEEE",queryString);
+
+        Cursor cursor = myDataBase.rawQuery(queryString,null);
+        cursor.moveToFirst();
+
+        return cursor.getInt(cursor.getColumnIndex("Nb"));
+    }
+
+    public long getTechoWeekSum(int userid){
+
+        Calendar c = GregorianCalendar.getInstance();
+        c.setFirstDayOfWeek(Calendar.MONDAY);
+        c.set(Calendar.DAY_OF_WEEK, c.getFirstDayOfWeek());
+        c.add(Calendar.DAY_OF_WEEK, 1);
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String startDate;
+        String endDate;
+        startDate = df.format(c.getTime());
+        c.add(Calendar.DAY_OF_MONTH, 6);
+        endDate = df.format(c.getTime());
+        String queryString = "SELECT startDate, endDate FROM assignations WHERE userId=";
+
+        queryString +=userid;
+
+        queryString += " AND startDate>='";
+        queryString +=startDate+" 00:00:00'";
+
+        queryString +=" AND endDate<='";
+        queryString +=endDate+" 23:59:59'";
+
+        Cursor cursor = myDataBase.rawQuery(queryString,null);
+        cursor.moveToFirst();
+        long sum=0;
+
+        while (!cursor.isAfterLast()) {
+            sum += differenceDate(cursor);
+            cursor.moveToNext();
+        }
+
+        return sum;
     }
 
     public long getTechoDaySum(int userid){

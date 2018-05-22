@@ -62,12 +62,19 @@ public class TechosRecyclerViewAdapter extends RecyclerView.Adapter<TechosRecycl
         }
 
         long daymilli = IncidentDBHelper.getSingleton().getTechoDaySum(id);
-        String time=String.format("%02d:%02d",
-                TimeUnit.MILLISECONDS.toHours(daymilli),
-                TimeUnit.MILLISECONDS.toMinutes(daymilli) -
-                        TimeUnit.MINUTES.toMinutes(TimeUnit.MILLISECONDS.toHours(daymilli)));
+        String hours = String.format("%02d",TimeUnit.MILLISECONDS.toHours(daymilli));
+        daymilli -= TimeUnit.HOURS.toMillis(TimeUnit.MILLISECONDS.toHours(daymilli));
+        String min = String.format("%02d",TimeUnit.MILLISECONDS.toMinutes(daymilli));
 
-        todaycharge += time+" ("+IncidentDBHelper.getSingleton().getTechoDayCount(id)+" tâches)";
+        todaycharge +=hours+"h"+min+" ("+IncidentDBHelper.getSingleton().getTechoDayCount(id)+" tâches)";
+
+        long weekmilli = IncidentDBHelper.getSingleton().getTechoWeekSum(id);
+        hours = String.format("%02d",TimeUnit.MILLISECONDS.toHours(weekmilli));
+        weekmilli -= TimeUnit.HOURS.toMillis(TimeUnit.MILLISECONDS.toHours(weekmilli));
+        min = String.format("%02d",TimeUnit.MILLISECONDS.toMinutes(weekmilli));
+
+        weekcharge +=hours+"h"+min+" ("+IncidentDBHelper.getSingleton().getTechoWeekCount(id)+" tâches)";
+
 
         holder.username.setText(username);
         holder.todaycharge.setText(todaycharge);
@@ -77,7 +84,7 @@ public class TechosRecyclerViewAdapter extends RecyclerView.Adapter<TechosRecycl
 
     @Override
     public int getItemCount() {
-        return 1;
+        return userCursor.getCount();
     }
 
 
