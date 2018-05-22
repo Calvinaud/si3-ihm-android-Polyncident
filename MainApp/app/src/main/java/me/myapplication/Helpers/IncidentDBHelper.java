@@ -17,6 +17,7 @@ import java.io.InputStreamReader;
 import java.io.InterruptedIOException;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -280,6 +281,107 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
         Logger.getAnonymousLogger().warning(queryString);
 
         return myDataBase.rawQuery(queryString, null);
+    }
+
+    public Cursor getTechnicien(){
+        Cursor cursor=myDataBase.rawQuery("SELECT username, userId from users WHERE roles='TECHNICIEN'",null);
+
+        return cursor;
+    }
+
+
+    public boolean getTechoStatus(int userid){
+
+        Date current = Calendar.getInstance().getTime();
+        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String currentString = format.format(current);
+
+        String queryString = "SELECT * FROM assignations WHERE userId=";
+
+        queryString +=userid;
+
+        queryString +=" AND startDate<='";
+        queryString +=currentString;
+
+        queryString +="' AND endDate>='";
+        queryString +=currentString+"'";
+
+        Cursor cursor = myDataBase.rawQuery(queryString,null);
+
+        return cursor.getCount()>0;
+    }
+
+    public int getTechoDayCount(int userid){
+
+        Date current= Calendar.getInstance().getTime();
+        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
+        String currentString = format.format(current);
+
+        String queryString = "SELECT COUNT(*) AS Nb FROM assignations WHERE userId=";
+
+        queryString +=userid;
+
+        queryString +=" AND startDate>='";
+        queryString +=currentString+" 00:00:00";
+
+        queryString +="' AND endDate<='";
+        queryString +=currentString+" 23:59:59'";
+
+        Log.i("re",queryString);
+
+        Cursor cursor = myDataBase.rawQuery(queryString,null);
+        cursor.moveToFirst();
+
+        return cursor.getInt(cursor.getColumnIndex("Nb"));
+    }
+
+    public long getTechoDaySum(int userid){
+
+        Date current= Calendar.getInstance().getTime();
+        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
+        String currentString = format.format(current);
+
+        String queryString = "SELECT startDate, endDate FROM assignations WHERE userId=";
+
+        queryString +=userid;
+
+        queryString += " AND startDate>='";
+        queryString +=currentString+" 00:00:00'";
+
+        queryString +=" AND endDate<='";
+        queryString +=currentString+" 23:59:59'";
+
+        Cursor cursor = myDataBase.rawQuery(queryString,null);
+        cursor.moveToFirst();
+        long sum=0;
+
+        while (!cursor.isAfterLast()) {
+            sum += differenceDate(cursor);
+            cursor.moveToNext();
+        }
+
+        return sum;
+    }
+
+    private long differenceDate(Cursor cursor){
+        String startDateS = cursor.getString(cursor.getColumnIndex("startDate"));
+        String endDateS = cursor.getString(cursor.getColumnIndex("endDate"));
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        Date startDate = new Date();
+        Date endDate = new Date();
+
+        try {
+            startDate = dateFormat.parse(startDateS);
+            endDate = dateFormat.parse(endDateS);
+        }
+        catch (ParseException e){
+            e.printStackTrace();
+        }
+
+        long difference = Math.abs(endDate.getTime()-startDate.getTime());
+
+        return difference;
     }
 
     public boolean isUserSubscribed(int userId, int incidentId){
