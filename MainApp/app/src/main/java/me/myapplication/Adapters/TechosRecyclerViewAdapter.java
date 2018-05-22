@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import me.myapplication.DeclarationActivity;
 import me.myapplication.DisplayDetailsIncidentActivity;
 import me.myapplication.Helpers.IncidentDBHelper;
 import me.myapplication.Models.Importance;
@@ -75,7 +76,7 @@ public class TechosRecyclerViewAdapter extends RecyclerView.Adapter<TechosRecycl
 
         weekcharge +=hours+"h"+min+" ("+IncidentDBHelper.getSingleton().getTechoWeekCount(id)+" tâches)";
 
-
+        holder.card.setOnClickListener(new DetailsListener());
         holder.username.setText(username);
         holder.todaycharge.setText(todaycharge);
         holder.status.setText(status);
@@ -90,6 +91,7 @@ public class TechosRecyclerViewAdapter extends RecyclerView.Adapter<TechosRecycl
 
     class ViewHolder extends RecyclerView.ViewHolder{
 
+        CardView card;
         TextView status;
         TextView username;
         TextView todaycharge;
@@ -98,6 +100,7 @@ public class TechosRecyclerViewAdapter extends RecyclerView.Adapter<TechosRecycl
         ViewHolder(View itemView) {
             super(itemView);
 
+            card = (CardView) itemView.findViewById(R.id.card);
             username = (TextView) itemView.findViewById(R.id.Username);
             todaycharge = (TextView) itemView.findViewById(R.id.todayCharge);
             status = (TextView) itemView.findViewById(R.id.status);
@@ -106,13 +109,12 @@ public class TechosRecyclerViewAdapter extends RecyclerView.Adapter<TechosRecycl
         }
     }
 
-    /*public class DetailsListener implements View.OnClickListener {
+    public class DetailsListener implements View.OnClickListener {
 
         @Override
         public void onClick(View view)  {
-            Intent intent = new Intent(context,DisplayDetailsIncidentActivity.class);
-            intent.putExtra("incident",incident);
+            Intent intent = new Intent(context,DeclarationActivity.class);
             context.startActivity(intent);
         }
-    }*/
+    }
 }
