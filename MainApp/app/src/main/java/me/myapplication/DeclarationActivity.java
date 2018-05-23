@@ -6,11 +6,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -58,8 +61,15 @@ public class DeclarationActivity extends Activity {
     private EditText titleEditText;
     private EditText descriptionEditText;
 
+
+    private Button btnGalery;
+    private Button btnCapture;
+    private Button btnVideo;
+
+
     private Button submitButton;
 
+    //list of views
     private View[] collapsibleViews;
 
     @Override
@@ -78,7 +88,6 @@ public class DeclarationActivity extends Activity {
         this.importanceSeekBar.setMax(Importance.values().length - 1);
 
 
-        Button btnGalery = findViewById(R.id.btnGalery);
 
         btnGalery.setOnClickListener(new View.OnClickListener() {
 
@@ -98,7 +107,6 @@ public class DeclarationActivity extends Activity {
             }
         });
 
-        Button btnCapture = findViewById(R.id.btnCapture);
         btnCapture.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -119,7 +127,6 @@ public class DeclarationActivity extends Activity {
             }
         });
 
-        Button btnVideo = findViewById(R.id.btnVideo);
         btnVideo.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -135,6 +142,7 @@ public class DeclarationActivity extends Activity {
     }
 
     private void initElementReferences(){
+
         this.locationSpinner = findViewById(R.id.declaration_location_spinner);
         this.typeSpinner = findViewById(R.id.declaration_type_spinner);
         this.importanceSeekBar = findViewById(R.id.declaration_importance_seekBar);
@@ -145,10 +153,14 @@ public class DeclarationActivity extends Activity {
         this.locationLabel = findViewById(R.id.declaration_location_label);
         this.importanceLabel = findViewById(R.id.declaration_importance_label);
 
+        this.btnGalery = findViewById(R.id.btnGalery);
+        this.btnCapture = findViewById(R.id.btnCapture);
+        this.btnVideo = findViewById(R.id.btnVideo);
+
         this.collapsibleViews = new View[]{
                 locationLabel, typeLabel, locationSpinner,
                 typeSpinner, titleEditText, importanceSeekBar,
-                importanceLabel
+                importanceLabel, btnCapture, btnGalery, btnVideo
         };
     }
 
@@ -174,10 +186,13 @@ public class DeclarationActivity extends Activity {
         this.locationSpinner.setAdapter(locations);
     }
 
+
     private class DescriptionListener implements EditText.OnFocusChangeListener {
+
 
         @Override
         public void onFocusChange(View view, boolean hasFocus) {
+
 
             if(hasFocus){
                 for (View collapsibleView : collapsibleViews)
@@ -188,6 +203,8 @@ public class DeclarationActivity extends Activity {
 
                 for (View collapsibleView : collapsibleViews)
                     collapsibleView.setVisibility(View.VISIBLE);
+
+
             }
         }
     }
@@ -198,8 +215,10 @@ public class DeclarationActivity extends Activity {
         public void onClick(View view) {
 
             if(titleEditText.getText().toString().equals("")
-                    || descriptionEditText.getText().toString().equals(""))
+                || descriptionEditText.getText().toString().equals("")){
+
                 return;
+            }
 
             IncidentDBHelper.getSingleton()
                     .insertIncident(0, locationSpinner.getSelectedItemPosition()+1,
