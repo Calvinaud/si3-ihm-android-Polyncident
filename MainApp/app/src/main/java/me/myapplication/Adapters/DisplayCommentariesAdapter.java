@@ -34,7 +34,7 @@ public class DisplayCommentariesAdapter extends RecyclerView.Adapter<DisplayComm
     private Context context;
     private Cursor cursor;
     int i=0;
-    public DisplayCommentariesAdapter(Context context, int incidentId) throws IncidentDBHelper.NoRecordException {
+    public DisplayCommentariesAdapter(Context context, int incidentId) {
         this.context=context;
         this.cursor=IncidentDBHelper.getSingleton().getCommentaires(incidentId);
     }
@@ -63,7 +63,8 @@ public class DisplayCommentariesAdapter extends RecyclerView.Adapter<DisplayComm
 
     @Override
     public int getItemCount() {
-        return cursor.getCount();
+        if (cursor!=null) return cursor.getCount();
+        return 0;
     }
 
 
