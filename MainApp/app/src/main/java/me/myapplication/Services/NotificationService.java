@@ -95,14 +95,14 @@ public class NotificationService extends Service {
     public void sendNotif(String title, String desc, Cursor cursor){
 
         //Importance importance; A FAIRE
-        int incidentID = cursor.getInt(cursor.getColumnIndexOrThrow("incidentId"));
+        int incidentId = cursor.getInt(cursor.getColumnIndex("incidentId"));
         String urgence = cursor.getString(cursor.getColumnIndex("importance")); //temp
         int reporterId = cursor.getInt(cursor.getColumnIndexOrThrow("reporterId"));
         int locationId = cursor.getInt(cursor.getColumnIndexOrThrow("locationId"));
         int typeId = cursor.getInt(cursor.getColumnIndexOrThrow("typeId"));
         String url = cursor.getString(cursor.getColumnIndexOrThrow("urlPhoto"));
 
-        Incident incident=new Incident(reporterId,locationId,typeId, Importance.MINOR,title,desc,url);
+        Incident incident=new Incident(incidentId,reporterId,locationId,typeId, Importance.MINOR,title,desc,url);
 
         Intent intentActionSub = new Intent(this,NotificationActionReceiver.class);
         intentActionSub.putExtra("action","S'ABONNER");

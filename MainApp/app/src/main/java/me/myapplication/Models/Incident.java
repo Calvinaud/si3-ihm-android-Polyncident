@@ -8,6 +8,7 @@ import java.io.Serializable;
 
 public class Incident implements Serializable{
 
+    final private int incidentID;
     final private int reporterdID;
     final private int locationID;
     final private int typeID;
@@ -20,7 +21,7 @@ public class Incident implements Serializable{
     private String urlPhoto;
 
 
-    public Incident(int reporterdID, int locationID, int typeID, Importance importance,
+    public Incident(int incidentID, int reporterdID, int locationID, int typeID, Importance importance,
                     String title, String description, String url) {
         this.reporterdID = reporterdID;
         this.locationID = locationID;
@@ -29,6 +30,7 @@ public class Incident implements Serializable{
         this.title = title;
         this.description = description;
         this.urlPhoto = url;
+        this.incidentID=incidentID;
     }
 
 
@@ -58,5 +60,9 @@ public class Incident implements Serializable{
 
     public String getUrlPhoto() {
         return urlPhoto;
+    }
+
+    public int getIncidentID() {
+        return incidentID;
     }
 }

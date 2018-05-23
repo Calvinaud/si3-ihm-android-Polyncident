@@ -68,7 +68,7 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
         int typeId = cursor.getInt(cursor.getColumnIndexOrThrow("typeId"));
         String url = cursor.getString(cursor.getColumnIndexOrThrow("urlPhoto"));
 
-        this.incident=new Incident(reporterId,locationId,typeId,urgence,title,desc,url);
+        this.incident=new Incident(incidentID,reporterId,locationId,typeId,urgence,title,desc,url);
         holder.cardView.setOnClickListener(new DetailsListener());
         holder.incident.setText(title);
         holder.date.setText("0");

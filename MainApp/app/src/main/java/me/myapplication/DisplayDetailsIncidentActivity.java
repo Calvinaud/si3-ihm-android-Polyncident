@@ -75,10 +75,15 @@ public class DisplayDetailsIncidentActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        DisplayCommentariesAdapter adapter = new DisplayCommentariesAdapter(this);
+        final int incidentId = incident.getIncidentID();
+        DisplayCommentariesAdapter adapter = null;
+        try {
+            adapter = new DisplayCommentariesAdapter(this,incidentId);
+        } catch (IncidentDBHelper.NoRecordException e) {
+            e.printStackTrace();
+        }
         recyclerView.setAdapter(adapter);
 
-        /*
         newCom = findViewById(R.id.commentTitle);
         addCom= findViewById(R.id.sendComm);
         addCom.setOnClickListener(new View.OnClickListener() {
@@ -88,13 +93,13 @@ public class DisplayDetailsIncidentActivity extends AppCompatActivity {
                     return;
 
                 IncidentDBHelper.getSingleton()
-                        .insertComm(0,1,"",newCom.getText().toString());
+                        .insertComm(0,incidentId,"",newCom.getText().toString());
                 IncidentDBHelper.getSingleton().logComms();
-
                 finish();
+                startActivity(getIntent());
             }
         });
-        */
+
     }
 
 

@@ -187,13 +187,12 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
 
        //TODO: Gérer les importances
         Importance importance;
-
         int reporterId = cursor.getInt(cursor.getColumnIndexOrThrow("reporterId"));
         int locationId = cursor.getInt(cursor.getColumnIndexOrThrow("locationId"));
         int typeId = cursor.getInt(cursor.getColumnIndexOrThrow("typeId"));
         String url = cursor.getString(cursor.getColumnIndexOrThrow("urlPhoto"));
 
-        return new Incident(reporterId,
+        return new Incident(incidentId,reporterId,
                 locationId,
                 typeId,
                 Importance.URGENT,
@@ -258,7 +257,21 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
         return new PlanningIncident(title, lieuName, typeName, startDate, endDate, importance);
     }
 
+    public Cursor getCommentaires(int incidentId) throws NoRecordException {
 
+        String queryString = "SELECT * FROM comments WHERE ";
+
+        queryString += " incidentId ";
+        queryString += (incidentId != -1 ? "="+incidentId : "<> -1");
+
+        Logger.getAnonymousLogger().warning(queryString);
+
+        Cursor cursor = myDataBase.rawQuery(queryString, null);
+        Log.i("n",""+cursor.getCount());
+        if(!cursor.moveToFirst())
+            throw new NoRecordException("no comments");
+        return cursor;
+    }
 
     public Cursor getIncidentCursor(int reporterId, int typeId, int importance, int rowNumber){
 
