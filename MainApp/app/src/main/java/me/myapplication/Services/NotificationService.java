@@ -3,6 +3,7 @@ package me.myapplication.Services;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -18,12 +19,15 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import me.myapplication.BroadcastReceivers.NotificationActionReceiver;
 import me.myapplication.DisplayDetailsIncidentActivity;
 import me.myapplication.Helpers.IncidentDBHelper;
 import me.myapplication.MainActivity;
 import me.myapplication.Models.Importance;
 import me.myapplication.Models.Incident;
 import me.myapplication.R;
+
+import static android.app.Notification.EXTRA_NOTIFICATION_ID;
 
 public class NotificationService extends Service {
 
@@ -63,7 +67,7 @@ public class NotificationService extends Service {
                             try{
                                 wait(5000);
                                 Cursor cursor = dbHelper.getLastIncidentCursor();
-                                if(prev < dbHelper.getIncidentNumber()){
+                                if(prev < dbHelper.getIncidentNumber() && cursor.getInt(cursor.getColumnIndexOrThrow("reporterId")) != 0){
                                     if(getSubscribed().contains(cursor.getInt(cursor.getColumnIndexOrThrow("typeId")))) {
                                         sendNotif(cursor.getString(cursor.getColumnIndexOrThrow("title")), cursor.getString(cursor.getColumnIndexOrThrow("description")), cursor);
                                     }
@@ -91,13 +95,20 @@ public class NotificationService extends Service {
     public void sendNotif(String title, String desc, Cursor cursor){
 
         //Importance importance; A FAIRE
+        int incidentId = cursor.getInt(cursor.getColumnIndex("incidentId"));
         String urgence = cursor.getString(cursor.getColumnIndex("importance")); //temp
         int reporterId = cursor.getInt(cursor.getColumnIndexOrThrow("reporterId"));
         int locationId = cursor.getInt(cursor.getColumnIndexOrThrow("locationId"));
         int typeId = cursor.getInt(cursor.getColumnIndexOrThrow("typeId"));
         String url = cursor.getString(cursor.getColumnIndexOrThrow("urlPhoto"));
 
-        Incident incident=new Incident(reporterId,locationId,typeId, Importance.MINOR,title,desc,url);
+        Incident incident=new Incident(incidentId,reporterId,locationId,typeId, Importance.MINOR,title,desc,url);
+
+        Intent intentActionSub = new Intent(this,NotificationActionReceiver.class);
+        intentActionSub.putExtra("action","S'ABONNER");
+        intentActionSub.putExtra("incidentId", incidentId );
+        PendingIntent pendingIntentSub = PendingIntent.getBroadcast(this,1,intentActionSub,PendingIntent.FLAG_UPDATE_CURRENT);
+        notification.addAction(R.drawable.ic_star_border_black_24dp, "S'ABONNER", pendingIntentSub);
 
 
         notification.setSmallIcon(R.drawable.ic_notifications_black_24dp);
@@ -106,6 +117,7 @@ public class NotificationService extends Service {
         notification.setWhen(System.currentTimeMillis());
         notification.setContentTitle(title);
         notification.setContentText(desc);
+
 
         Intent intent = new Intent(this, DisplayDetailsIncidentActivity.class);
         intent.putExtra("incident", incident);

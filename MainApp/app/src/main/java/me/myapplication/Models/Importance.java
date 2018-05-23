@@ -6,7 +6,7 @@ package me.myapplication.Models;
 
 public enum Importance {
 
-    NEGLIGIBLE("négligeable"), MINOR("mineur"), URGENT("urgent"), CRITICAL("très urgent");
+    NEGLIGIBLE("négligeable"), MINOR("mineur"), URGENT("assez urgent"), CRITICAL("très urgent");
 
     private String text;
 
@@ -16,5 +16,16 @@ public enum Importance {
 
     public String getText() {
         return text;
+    }
+
+
+    public static Importance getImportanceByValue(int value){
+        if (value < 0 || value >= values().length){
+            throw new IllegalArgumentException(
+                    "There are only "+values().length + " possible importance values"
+            );
+        }
+
+        return values()[value];
     }
 }

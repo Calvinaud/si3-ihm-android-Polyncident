@@ -8,15 +8,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.InterruptedIOException;
 import java.io.OutputStream;
-import java.io.Serializable;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -27,11 +23,9 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
-import java.util.SimpleTimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import me.myapplication.Fragments.DayFragment;
 import me.myapplication.Models.Importance;
 import me.myapplication.Models.Incident;
 import me.myapplication.Models.PlanningIncident;
@@ -193,13 +187,12 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
 
        //TODO: Gérer les importances
         Importance importance;
-
         int reporterId = cursor.getInt(cursor.getColumnIndexOrThrow("reporterId"));
         int locationId = cursor.getInt(cursor.getColumnIndexOrThrow("locationId"));
         int typeId = cursor.getInt(cursor.getColumnIndexOrThrow("typeId"));
         String url = cursor.getString(cursor.getColumnIndexOrThrow("urlPhoto"));
 
-        return new Incident(reporterId,
+        return new Incident(incidentId,reporterId,
                 locationId,
                 typeId,
                 Importance.URGENT,
@@ -265,7 +258,20 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
         return new PlanningIncident(incidentId,title, lieuName, typeName, startDate, endDate, importance);
     }
 
+    public Cursor getCommentaires(int incidentId) {
 
+        String queryString = "SELECT * FROM comments WHERE ";
+
+        queryString += " incidentId ";
+        queryString += (incidentId != -1 ? "="+incidentId : "<> -1");
+
+        Logger.getAnonymousLogger().warning(queryString);
+
+        Cursor cursor = myDataBase.rawQuery(queryString, null);
+        Log.i("n",""+cursor.getCount());
+
+        return cursor;
+    }
 
     public Cursor getIncidentCursor(int reporterId, int typeId, int importance, int rowNumber){
 
@@ -464,6 +470,13 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
         Logger.getAnonymousLogger().warning(queryString);
 
         return myDataBase.rawQuery(queryString, null).getCount() > 0;
+    }
+
+    public void updateStatus(int incidentId, int statusId){
+        String queryString = "UPDATE incidents SET status";
+        queryString += "= "+statusId;
+        queryString += " WHERE incidentId = "+incidentId;
+        myDataBase.execSQL(queryString);
     }
 
     public Cursor getLastIncidentCursor(){

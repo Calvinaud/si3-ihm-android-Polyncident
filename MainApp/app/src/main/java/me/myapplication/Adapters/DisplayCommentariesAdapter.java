@@ -32,9 +32,11 @@ import me.myapplication.R;
 public class DisplayCommentariesAdapter extends RecyclerView.Adapter<DisplayCommentariesAdapter.ViewHolder> {
 
     private Context context;
+    private Cursor cursor;
     int i=0;
-    public DisplayCommentariesAdapter(Context context){
+    public DisplayCommentariesAdapter(Context context, int incidentId) {
         this.context=context;
+        this.cursor=IncidentDBHelper.getSingleton().getCommentaires(incidentId);
     }
 
     @NonNull
@@ -46,15 +48,23 @@ public class DisplayCommentariesAdapter extends RecyclerView.Adapter<DisplayComm
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.profilName.setText("NAME");
-        holder.date.setText("0");
-        holder.heure.setText(""+i);
-        i++;
+            cursor.moveToPosition(position);
+            Log.i("n",""+cursor.getCount());
+            String contentComment = this.cursor.getString(cursor.getColumnIndexOrThrow("comment"));
+            Log.i("content",contentComment);
+
+            holder.profilName.setText("NAME");
+            holder.date.setText("0");
+            holder.heure.setText("" + i);
+            holder.content.setText(contentComment);
+            i++;
+
     }
 
     @Override
     public int getItemCount() {
-        return 1;
+        if (cursor!=null) return cursor.getCount();
+        return 0;
     }
 
 

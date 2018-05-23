@@ -48,7 +48,8 @@ public class DisplayDetailsIncidentActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Intent intent = getIntent();
-        incident = (Incident)intent.getSerializableExtra("incident");
+        int incidentId = (int)intent.getIntExtra("incident",1);
+        incident = IncidentDBHelper.getSingleton().getIncidentById(incidentId);
 
         ImageView imageView = (ImageView) findViewById(R.id.imageView2);
 
@@ -75,10 +76,11 @@ public class DisplayDetailsIncidentActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        DisplayCommentariesAdapter adapter = new DisplayCommentariesAdapter(this);
+        incidentId = incident.getIncidentID();
+        DisplayCommentariesAdapter adapter = null;
+        adapter = new DisplayCommentariesAdapter(this,incidentId);
         recyclerView.setAdapter(adapter);
 
-        /*
         newCom = findViewById(R.id.commentTitle);
         addCom= findViewById(R.id.sendComm);
         addCom.setOnClickListener(new View.OnClickListener() {
@@ -88,13 +90,13 @@ public class DisplayDetailsIncidentActivity extends AppCompatActivity {
                     return;
 
                 IncidentDBHelper.getSingleton()
-                        .insertComm(0,1,"",newCom.getText().toString());
+                        .insertComm(0,incident.getIncidentID(),"",newCom.getText().toString());
                 IncidentDBHelper.getSingleton().logComms();
-
                 finish();
+                startActivity(getIntent());
             }
         });
-        */
+
     }
 
 

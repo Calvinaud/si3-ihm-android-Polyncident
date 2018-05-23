@@ -9,18 +9,18 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
-    <uses-feature android:name="android.hardware.camera" android:required="true" />
-
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:largeHeap="true">
-
+        android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
@@ -31,7 +31,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".DeclarationActivity"
             android:label="@string/declaration_activity_title"
@@ -78,7 +77,8 @@
         <service
             android:name=".Services.AddedIncidentSimService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.example.android.fileprovider"
@@ -86,10 +86,22 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"></meta-data>
+                android:resource="@xml/file_paths" />
         </provider>
+
+        <receiver
+            android:name=".BroadcastReceivers.NotificationActionReceiver"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="me.myapplication.MainActivity" />
+        </activity>
     </application>
-
-
 
 </manifest>

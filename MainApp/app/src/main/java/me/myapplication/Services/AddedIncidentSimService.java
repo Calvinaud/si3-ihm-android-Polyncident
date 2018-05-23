@@ -26,7 +26,7 @@ public class AddedIncidentSimService extends Service {
                 for ( int i = 0; i < 1; i++){
                     synchronized (this) {
                         try {
-                            wait(20000);
+                            wait(10000);
                             IncidentDBHelper.getSingleton()
                                     .insertIncident(2, 3, i%3+1
                                             ,

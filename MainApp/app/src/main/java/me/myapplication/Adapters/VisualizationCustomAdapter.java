@@ -34,6 +34,7 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
     private Context context;
     private Cursor cursor;
     private Incident incident;
+    private Boolean subscribed;
 
     public VisualizationCustomAdapter(Context context, Boolean myIncident) {
         this.context = context;
@@ -56,7 +57,7 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         this.cursor.moveToPosition(position);
         int incidentID = cursor.getInt(cursor.getColumnIndexOrThrow("incidentId"));
-        if(IncidentDBHelper.getSingleton().isUserSubscribed(0,incidentID)){
+        if((this.subscribed = IncidentDBHelper.getSingleton().isUserSubscribed(0,incidentID))){
             holder.subscribe.setImageResource(R.drawable.ic_star_black_24dp);
         }
         Importance urgence = getImportance(cursor.getInt(cursor.getColumnIndex("importance")));
@@ -67,7 +68,7 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
         int typeId = cursor.getInt(cursor.getColumnIndexOrThrow("typeId"));
         String url = cursor.getString(cursor.getColumnIndexOrThrow("urlPhoto"));
 
-        this.incident=new Incident(reporterId,locationId,typeId,urgence,title,desc,url);
+        this.incident=new Incident(incidentID,reporterId,locationId,typeId,urgence,title,desc,url);
         holder.cardView.setOnClickListener(new DetailsListener());
         holder.incident.setText(title);
         holder.date.setText("0");
@@ -79,10 +80,13 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
         switch (cursor.getInt(cursor.getColumnIndexOrThrow("status"))){
             case 0:
                 holder.status.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_visibility_off_black_24dp));
+                break;
             case 1:
                 holder.status.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_watch_later_black_24dp));
+                break;
             case 2:
                 holder.status.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_check_circle_black_24dp));
+                break;
         }
     }
 
@@ -146,15 +150,17 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
                     }
                 }
             });
+
         }
     }
+
 
     public class DetailsListener implements View.OnClickListener {
 
         @Override
         public void onClick(View view)  {
             Intent intent = new Intent(context,DisplayDetailsIncidentActivity.class);
-            intent.putExtra("incident",incident);
+            intent.putExtra("incidentId",incident.getIncidentID());
             context.startActivity(intent);
         }
     }

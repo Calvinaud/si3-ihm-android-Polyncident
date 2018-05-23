@@ -39,25 +39,28 @@ import me.myapplication.Models.Importance;
 
 public class DeclarationActivity extends Activity {
 
-    //GUI components
-    private Spinner typeSpinner;
-    private Spinner locationSpinner;
-    private SeekBar importanceSeekBar;
-    private Button submitButton;
-    private EditText titleEditText;
-    private EditText descriptionEditText;
-    private TextView typeLabel;
-    private TextView locationLabel;
-
-    private View[] collapsibleViews;
-    private final int PICK_IMAGE = 1;
     private static final int REQUEST_IMAGE_CAPTURE = 2;
     private static final int REQUEST_VIDEO_CAPTURE = 3;
+    private final int PICK_IMAGE = 1;
 
     private String mCurrentPhotoPath="";
 
+    //GUI components
+    private Spinner typeSpinner;
+    private TextView typeLabel;
 
+    private Spinner locationSpinner;
+    private TextView locationLabel;
 
+    private SeekBar importanceSeekBar;
+    private TextView importanceLabel;
+
+    private EditText titleEditText;
+    private EditText descriptionEditText;
+
+    private Button submitButton;
+
+    private View[] collapsibleViews;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -69,8 +72,14 @@ public class DeclarationActivity extends Activity {
         initElementListeners();
 
         fillTypes();
+
         fillDeclarations();
+
+        this.importanceSeekBar.setMax(Importance.values().length - 1);
+
+
         Button btnGalery = findViewById(R.id.btnGalery);
+
         btnGalery.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -134,15 +143,19 @@ public class DeclarationActivity extends Activity {
         this.descriptionEditText = findViewById(R.id.declaration_description_input);
         this.typeLabel = findViewById(R.id.declaration_type_label);
         this.locationLabel = findViewById(R.id.declaration_location_label);
+        this.importanceLabel = findViewById(R.id.declaration_importance_label);
 
-        this.collapsibleViews = new View[]{locationLabel, typeLabel, locationSpinner,
-                typeSpinner, titleEditText, importanceSeekBar};
+        this.collapsibleViews = new View[]{
+                locationLabel, typeLabel, locationSpinner,
+                typeSpinner, titleEditText, importanceSeekBar,
+                importanceLabel
+        };
     }
 
     private void initElementListeners(){
-        this.importanceSeekBar.setMax(Importance.values().length);
         this.submitButton.setOnClickListener(new me.myapplication.DeclarationActivity.SubmissionListener());
         this.descriptionEditText.setOnFocusChangeListener(new me.myapplication.DeclarationActivity.DescriptionListener());
+        this.importanceSeekBar.setOnSeekBarChangeListener(new ImportanceBarListener());
     }
 
     private void fillTypes(){
@@ -198,6 +211,22 @@ public class DeclarationActivity extends Activity {
 
             finish();
         }
+    }
+
+    private class ImportanceBarListener implements SeekBar.OnSeekBarChangeListener {
+
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            DeclarationActivity.this.importanceLabel.setText(
+                    Importance.getImportanceByValue(progress).getText()
+            );
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) { }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) { }
     }
 
     @Override
