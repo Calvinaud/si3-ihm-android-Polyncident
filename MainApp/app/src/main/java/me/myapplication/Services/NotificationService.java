@@ -106,7 +106,7 @@ public class NotificationService extends Service {
 
         Intent intentActionSub = new Intent(this,NotificationActionReceiver.class);
         intentActionSub.putExtra("action","S'ABONNER");
-        intentActionSub.putExtra("incidentId", incidentID );
+        intentActionSub.putExtra("incidentId", incidentId );
         PendingIntent pendingIntentSub = PendingIntent.getBroadcast(this,1,intentActionSub,PendingIntent.FLAG_UPDATE_CURRENT);
         notification.addAction(R.drawable.ic_star_border_black_24dp, "S'ABONNER", pendingIntentSub);
 

@@ -257,7 +257,7 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
         return new PlanningIncident(title, lieuName, typeName, startDate, endDate, importance);
     }
 
-    public Cursor getCommentaires(int incidentId) throws NoRecordException {
+    public Cursor getCommentaires(int incidentId) {
 
         String queryString = "SELECT * FROM comments WHERE ";
 
@@ -268,8 +268,7 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
 
         Cursor cursor = myDataBase.rawQuery(queryString, null);
         Log.i("n",""+cursor.getCount());
-        if(!cursor.moveToFirst())
-            throw new NoRecordException("no comments");
+
         return cursor;
     }
 

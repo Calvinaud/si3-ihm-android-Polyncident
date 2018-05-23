@@ -160,7 +160,7 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
         @Override
         public void onClick(View view)  {
             Intent intent = new Intent(context,DisplayDetailsIncidentActivity.class);
-            intent.putExtra("incident",incident);
+            intent.putExtra("incidentId",incident.getIncidentID());
             context.startActivity(intent);
         }
     }
