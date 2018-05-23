@@ -80,10 +80,13 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
         switch (cursor.getInt(cursor.getColumnIndexOrThrow("status"))){
             case 0:
                 holder.status.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_visibility_off_black_24dp));
+                break;
             case 1:
                 holder.status.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_watch_later_black_24dp));
+                break;
             case 2:
                 holder.status.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_check_circle_black_24dp));
+                break;
         }
     }
 
