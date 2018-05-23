@@ -5,6 +5,7 @@ import java.util.Date;
 
 public class PlanningIncident implements Serializable{
 
+    final private int incidentId;
     final private String title;
     final private String lieuName;
     final private String typeName;
@@ -12,7 +13,8 @@ public class PlanningIncident implements Serializable{
     final private Date endDate;
     final private int importance;
 
-    public PlanningIncident(String title, String lieuName, String typeName, Date startDate, Date endDate, int importance) {
+    public PlanningIncident(int incidentId, String title, String lieuName, String typeName, Date startDate, Date endDate, int importance) {
+        this.incidentId = incidentId;
         this.title = title;
         this.lieuName = lieuName;
         this.typeName = typeName;
@@ -43,5 +45,9 @@ public class PlanningIncident implements Serializable{
 
     public int getImportance() {
         return importance;
+    }
+
+    public int getIncidentId() {
+        return incidentId;
     }
 }

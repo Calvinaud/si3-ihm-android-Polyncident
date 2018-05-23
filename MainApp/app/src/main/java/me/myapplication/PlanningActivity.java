@@ -13,6 +13,8 @@ import android.support.v7.widget.Toolbar;
 import android.app.Fragment;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.DateFormat;
@@ -31,7 +33,6 @@ public class PlanningActivity extends AppCompatActivity {
     private View view;
     Date currentDate;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +44,7 @@ public class PlanningActivity extends AppCompatActivity {
         String dateToday = "No date";
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         dateToday = df.format(Calendar.getInstance().getTime());
+
 
         TextView todaydate=(TextView) findViewById(R.id.todayDate);
         todaydate.setText("Nous somme le: "+dateToday);

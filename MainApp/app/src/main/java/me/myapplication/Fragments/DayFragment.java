@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -52,8 +53,6 @@ public class DayFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
     @Override
@@ -73,15 +72,16 @@ public class DayFragment extends Fragment {
         if (getArguments() != null) {
             Bundle args = getArguments();
             if (args.containsKey(ARG)) {
-
                 date=new Date(args.getLong(ARG));
                 text.setText("" + format.format(date));
-                recyclerView.setAdapter(new DayRecyclerViewAdapter(context,1, date));
+                Log.i("deadadea",""+IncidentDBHelper.getSingleton().getDayPlanningIncident(1,date).size());
+                recyclerView.setAdapter(new DayRecyclerViewAdapter(context,IncidentDBHelper.getSingleton().getDayPlanningIncident(1,date)));
             }
         }
 
         return view;
     }
+
 
 
 

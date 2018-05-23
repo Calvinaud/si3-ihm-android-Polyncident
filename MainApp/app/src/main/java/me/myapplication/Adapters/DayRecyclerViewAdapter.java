@@ -29,35 +29,32 @@ import java.util.List;
  */
 public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerViewAdapter.ViewHolder> {
 
-    List<PlanningIncident> incidents=new ArrayList<>();
+    List<PlanningIncident> incidents;
+    PlanningIncident planningIncident;
     Date date;
     int userId;
     Context context;
 
-
-    public DayRecyclerViewAdapter(Context context, int userId, Date date) {
+    public DayRecyclerViewAdapter(Context context,List<PlanningIncident> incidents) {
         this.context=context;
         this.date=date;
         this.userId=userId;
+        this.incidents = incidents;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_planning_incident, parent, false);
-
-        incidents.addAll(IncidentDBHelper.getSingleton().getDayPlanningIncident(userId,date));
-
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
-        PlanningIncident planningIncident = incidents.get(position);
+        planningIncident = incidents.get(position);
 
         holder.titre.setText("Titre: "+planningIncident.getTitle());
-        //holder.titre.setText("Titre: "+planningIncident.getTitle());
         holder.lieu.setText("Lieu: "+planningIncident.getLieuName());
         holder.type.setText("Type: "+planningIncident.getTypeName());
 
@@ -68,13 +65,12 @@ public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerView
         String horraire=startTime+"-"+endTime;
 
         holder.horraire.setText(horraire);
-
         holder.planningIncident.setOnClickListener(new DetailsListener());
     }
 
     @Override
     public int getItemCount() {
-        return 2;
+        return incidents.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -104,8 +100,8 @@ public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerView
 
         @Override
         public void onClick(View view)  {
-            Intent intent = new Intent(context,DeclarationActivity.class);
-         //   intent.putExtra("incident",incident);
+            Intent intent = new Intent(context,DisplayDetailsIncidentActivity.class);
+           intent.putExtra("incident",IncidentDBHelper.getSingleton().getIncidentById(planningIncident.getIncidentId()));
             context.startActivity(intent);
         }
     }

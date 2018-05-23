@@ -211,7 +211,7 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
 
         List<PlanningIncident> planningIncident = new ArrayList<>();
 
-        String queryString = "SELECT i.title, i.importance, a.startDate, a.endDate, t.name AS typeName, l.name AS lieuName" +
+        String queryString = "SELECT i.incidentId, i.title, i.importance, a.startDate, a.endDate, t.name AS typeName, l.name AS lieuName" +
                 " FROM assignations AS a, incidents AS i, locations AS l, types AS t" +
                 " WHERE l.locationId=i.locationId AND i.incidentId=a.incidentId AND ";
 
@@ -242,6 +242,7 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
 
     private PlanningIncident createPlanningIncident(Cursor cursor){
 
+        int incidentId = cursor.getInt(cursor.getColumnIndex("incidentId"));
         String title = cursor.getString(cursor.getColumnIndex("title"));
         String lieuName = cursor.getString(cursor.getColumnIndex("lieuName"));
         String typeName = cursor.getString(cursor.getColumnIndex("typeName"));
@@ -261,7 +262,7 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
             e.printStackTrace();
         }
 
-        return new PlanningIncident(title, lieuName, typeName, startDate, endDate, importance);
+        return new PlanningIncident(incidentId,title, lieuName, typeName, startDate, endDate, importance);
     }
 
 
