@@ -89,7 +89,16 @@
         <receiver
             android:name=".BroadcastReceivers.NotificationActionReceiver"
             android:enabled="true"
-            android:exported="true"></receiver>
+            android:exported="true" />
+
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="me.myapplication.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
