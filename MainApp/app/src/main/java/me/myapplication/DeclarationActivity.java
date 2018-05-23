@@ -68,6 +68,8 @@ public class DeclarationActivity extends Activity {
     private Button btnCapture;
     private Button btnVideo;
 
+    private VideoView videoView;
+    private ImageView imageView;
 
     private Button submitButton;
 
@@ -81,7 +83,10 @@ public class DeclarationActivity extends Activity {
         setContentView(R.layout.fragment_declaration);
 
         initElementReferences();
+
         initElementListeners();
+
+        hideMediaViews();
 
         fillTypes();
 
@@ -160,6 +165,9 @@ public class DeclarationActivity extends Activity {
         this.btnCapture = findViewById(R.id.btnCapture);
         this.btnVideo = findViewById(R.id.btnVideo);
 
+        this.imageView = findViewById(R.id.imageView4);
+        this.videoView = findViewById(R.id.videoView);
+
         this.collapsibleViews = new View[]{
                 locationLabel, typeLabel, locationSpinner,
                 typeSpinner, titleEditText, importanceSeekBar,
@@ -188,6 +196,14 @@ public class DeclarationActivity extends Activity {
         locations.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         this.locationSpinner.setAdapter(locations);
     }
+
+    private void hideMediaViews(){
+
+        this.videoView.setVisibility(View.GONE);
+        this.imageView.setVisibility(View.GONE);
+
+    }
+
 
 
     private class DescriptionListener implements EditText.OnFocusChangeListener {
@@ -267,10 +283,11 @@ public class DeclarationActivity extends Activity {
         }
         return super.dispatchTouchEvent( event );
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        ImageView mImageView = findViewById(R.id.imageView4);
-        VideoView mVideoView = findViewById(R.id.videoView);
+
+        hideMediaViews();
 
         if (resultCode != Activity.RESULT_CANCELED) {
             if (requestCode == PICK_IMAGE) {
@@ -278,16 +295,14 @@ public class DeclarationActivity extends Activity {
                 if (selectedMediaUri.toString().contains("image")) {
                     try {
                         Bitmap bm = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedMediaUri);
-                        mImageView.setImageBitmap(bm);
-                        mImageView.setVisibility(View.VISIBLE);
-                        mVideoView.setVisibility(View.INVISIBLE);
+                        imageView.setImageBitmap(bm);
+                        imageView.setVisibility(View.VISIBLE);
                     } catch (IOException e){
                         e.printStackTrace();
                     }
                 } else  if (selectedMediaUri.toString().contains("video")) {
-                    mVideoView.setVideoURI(selectedMediaUri);
-                    mImageView.setVisibility(View.INVISIBLE);
-                    mVideoView.setVisibility(View.VISIBLE);
+                    videoView.setVideoURI(selectedMediaUri);
+                    videoView.setVisibility(View.VISIBLE);
                 }
 
             }
@@ -296,16 +311,14 @@ public class DeclarationActivity extends Activity {
                 Bundle extras = data.getExtras();
                 Bitmap imageBitmap = (Bitmap) extras.get("data");
                 Log.i("uhjk", "ujhnk");
-                mImageView.setImageBitmap(imageBitmap);
-                mImageView.setVisibility(View.VISIBLE);
-                mVideoView.setVisibility(View.INVISIBLE);
+                imageView.setImageBitmap(imageBitmap);
+                imageView.setVisibility(View.VISIBLE);
             }
 
             else if (requestCode == REQUEST_VIDEO_CAPTURE){
                 Uri videoUri = data.getData();
-                mVideoView.setVideoURI(videoUri);
-                mImageView.setVisibility(View.INVISIBLE);
-                mVideoView.setVisibility(View.VISIBLE);
+                videoView.setVideoURI(videoUri);
+                videoView.setVisibility(View.VISIBLE);
 
             }
         }
