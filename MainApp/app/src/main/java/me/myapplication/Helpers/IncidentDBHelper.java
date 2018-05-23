@@ -8,15 +8,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.InterruptedIOException;
 import java.io.OutputStream;
-import java.io.Serializable;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -27,11 +23,9 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
-import java.util.SimpleTimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import me.myapplication.Fragments.DayFragment;
 import me.myapplication.Models.Importance;
 import me.myapplication.Models.Incident;
 import me.myapplication.Models.PlanningIncident;
@@ -463,6 +457,13 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
         Logger.getAnonymousLogger().warning(queryString);
 
         return myDataBase.rawQuery(queryString, null).getCount() > 0;
+    }
+
+    public void updateStatus(int incidentId, int statusId){
+        String queryString = "UPDATE incidents SET status";
+        queryString += "= "+statusId;
+        queryString += " WHERE incidentId = "+incidentId;
+        myDataBase.execSQL(queryString);
     }
 
     public Cursor getLastIncidentCursor(){

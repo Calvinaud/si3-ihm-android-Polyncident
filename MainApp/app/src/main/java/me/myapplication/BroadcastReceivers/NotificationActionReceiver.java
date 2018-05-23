@@ -25,7 +25,6 @@ public class NotificationActionReceiver extends BroadcastReceiver {
         }
         else if(action.equals("action2")){
             performAction2();
-
         }
         Intent intent1 = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
         context.sendBroadcast(intent1);
