@@ -33,13 +33,16 @@
 
             <EditText
                 android:id="@+id/declaration_title_input"
-                android:layout_width="200dp"
+                android:layout_width="250dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="15dp"
                 android:hint="@string/declaration_title_label"
+                android:inputType="text"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:singleLine="true"
+                android:maxLength="30"/>
 
 
             <TextView
@@ -150,7 +153,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="16dp"
-                android:text="Prendre "
+                android:text="Photo"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/declaration_description_input" />
 
