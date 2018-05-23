@@ -1,9 +1,16 @@
 package me.myapplication.Adapters;
 
+import android.Manifest;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.Uri;
+import android.provider.CalendarContract;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,9 +22,11 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -49,32 +58,31 @@ public class TechosRecyclerViewAdapter extends RecyclerView.Adapter<TechosRecycl
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         this.userCursor.moveToPosition(position);
 
-        String status="Status: ";
-        String todaycharge="-Aujourd'hui: ";
-        String weekcharge="-Cette semaine: ";
-        String username=userCursor.getString(userCursor.getColumnIndex("username"));
+        String status = "Status: ";
+        String todaycharge = "-Aujourd'hui: ";
+        String weekcharge = "-Cette semaine: ";
+        String username = userCursor.getString(userCursor.getColumnIndex("username"));
         int id = userCursor.getInt(userCursor.getColumnIndex("userId"));
 
-        if(IncidentDBHelper.getSingleton().getTechoStatus(id)){
+        if (IncidentDBHelper.getSingleton().getTechoStatus(id)) {
             status += "Occupé";
-        }
-        else {
+        } else {
             status += "Libre";
         }
 
         long daymilli = IncidentDBHelper.getSingleton().getTechoDaySum(id);
-        String hours = String.format("%02d",TimeUnit.MILLISECONDS.toHours(daymilli));
+        String hours = String.format("%02d", TimeUnit.MILLISECONDS.toHours(daymilli));
         daymilli -= TimeUnit.HOURS.toMillis(TimeUnit.MILLISECONDS.toHours(daymilli));
-        String min = String.format("%02d",TimeUnit.MILLISECONDS.toMinutes(daymilli));
+        String min = String.format("%02d", TimeUnit.MILLISECONDS.toMinutes(daymilli));
 
-        todaycharge +=hours+"h"+min+" ("+IncidentDBHelper.getSingleton().getTechoDayCount(id)+" tâches)";
+        todaycharge += hours + "h" + min + " (" + IncidentDBHelper.getSingleton().getTechoDayCount(id) + " tâches)";
 
         long weekmilli = IncidentDBHelper.getSingleton().getTechoWeekSum(id);
-        hours = String.format("%02d",TimeUnit.MILLISECONDS.toHours(weekmilli));
+        hours = String.format("%02d", TimeUnit.MILLISECONDS.toHours(weekmilli));
         weekmilli -= TimeUnit.HOURS.toMillis(TimeUnit.MILLISECONDS.toHours(weekmilli));
-        min = String.format("%02d",TimeUnit.MILLISECONDS.toMinutes(weekmilli));
+        min = String.format("%02d", TimeUnit.MILLISECONDS.toMinutes(weekmilli));
 
-        weekcharge +=hours+"h"+min+" ("+IncidentDBHelper.getSingleton().getTechoWeekCount(id)+" tâches)";
+        weekcharge += hours + "h" + min + " (" + IncidentDBHelper.getSingleton().getTechoWeekCount(id) + " tâches)";
 
         holder.card.setOnClickListener(new DetailsListener());
         holder.username.setText(username);
@@ -89,7 +97,7 @@ public class TechosRecyclerViewAdapter extends RecyclerView.Adapter<TechosRecycl
     }
 
 
-    class ViewHolder extends RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         CardView card;
         TextView status;
@@ -112,9 +120,30 @@ public class TechosRecyclerViewAdapter extends RecyclerView.Adapter<TechosRecycl
     public class DetailsListener implements View.OnClickListener {
 
         @Override
-        public void onClick(View view)  {
-            Intent intent = new Intent(context,DeclarationActivity.class);
-            context.startActivity(intent);
+        public void onClick(View view) {
+            long calID = 3;
+            long startMillis = 0;
+            long endMillis = 0;
+            Calendar beginTime = Calendar.getInstance();
+            beginTime.set(2018, 5, 23, 7, 30);
+            startMillis = beginTime.getTimeInMillis();
+            Calendar endTime = Calendar.getInstance();
+            endTime.set(2018, 5, 23, 15, 45);
+            endMillis = endTime.getTimeInMillis();
+
+            ContentResolver cr = context.getContentResolver();
+            ContentValues values = new ContentValues();
+            values.put(CalendarContract.Events.DTSTART, startMillis);
+            values.put(CalendarContract.Events.DTEND, endMillis);
+            values.put(CalendarContract.Events.TITLE, "Android Test");
+            values.put(CalendarContract.Events.DESCRIPTION, "Group workout");
+            values.put(CalendarContract.Events.CALENDAR_ID, calID);
+            values.put(CalendarContract.Events.EVENT_TIMEZONE, "Europe/Paris");
+            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+
+            }
+            Log.i("deadea","C'est bon");
+            Uri uri = cr.insert(CalendarContract.Events.CONTENT_URI, values);
         }
     }
 }
