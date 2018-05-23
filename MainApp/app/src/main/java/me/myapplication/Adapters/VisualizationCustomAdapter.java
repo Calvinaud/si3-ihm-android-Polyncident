@@ -34,6 +34,7 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
     private Context context;
     private Cursor cursor;
     private Incident incident;
+    private Boolean subscribed;
 
     public VisualizationCustomAdapter(Context context, Boolean myIncident) {
         this.context = context;
@@ -56,7 +57,7 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         this.cursor.moveToPosition(position);
         int incidentID = cursor.getInt(cursor.getColumnIndexOrThrow("incidentId"));
-        if(IncidentDBHelper.getSingleton().isUserSubscribed(0,incidentID)){
+        if((this.subscribed = IncidentDBHelper.getSingleton().isUserSubscribed(0,incidentID))){
             holder.subscribe.setImageResource(R.drawable.ic_star_black_24dp);
         }
         Importance urgence = getImportance(cursor.getInt(cursor.getColumnIndex("importance")));
@@ -146,8 +147,10 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
                     }
                 }
             });
+
         }
     }
+
 
     public class DetailsListener implements View.OnClickListener {
 
