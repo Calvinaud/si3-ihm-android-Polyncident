@@ -1,5 +1,6 @@
 package me.myapplication.Adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -33,7 +34,7 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
 
     private Context context;
     private Cursor cursor;
-    private Incident incident;
+    private int incidentID;
     private Boolean subscribed;
 
     public VisualizationCustomAdapter(Context context, Boolean myIncident) {
@@ -56,7 +57,8 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         this.cursor.moveToPosition(position);
-        int incidentID = cursor.getInt(cursor.getColumnIndexOrThrow("incidentId"));
+        incidentID = cursor.getInt(cursor.getColumnIndexOrThrow("incidentId"));
+
         if((this.subscribed = IncidentDBHelper.getSingleton().isUserSubscribed(0,incidentID))){
             holder.subscribe.setImageResource(R.drawable.ic_star_black_24dp);
         }
@@ -67,8 +69,7 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
         int locationId = cursor.getInt(cursor.getColumnIndexOrThrow("locationId"));
         int typeId = cursor.getInt(cursor.getColumnIndexOrThrow("typeId"));
         String url = cursor.getString(cursor.getColumnIndexOrThrow("urlPhoto"));
-
-        this.incident=new Incident(incidentID,reporterId,locationId,typeId,urgence,title,desc,url);
+        Log.i("id2: ",""+incidentID);
         holder.cardView.setOnClickListener(new DetailsListener());
         holder.incident.setText(title);
         holder.date.setText("0");
@@ -160,8 +161,10 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
         @Override
         public void onClick(View view)  {
             Intent intent = new Intent(context,DisplayDetailsIncidentActivity.class);
-            intent.putExtra("incidentId",incident.getIncidentID());
-            context.startActivity(intent);
+            intent.removeExtra("incidentID");
+            Log.i("id: ",""+incidentID);
+            intent.putExtra("incidentId",incidentID);
+            view.getContext().startActivity(intent);
         }
     }
 }

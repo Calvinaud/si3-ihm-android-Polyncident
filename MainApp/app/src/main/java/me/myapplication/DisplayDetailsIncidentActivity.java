@@ -1,13 +1,17 @@
 package me.myapplication;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +23,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+
+import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -48,22 +55,29 @@ public class DisplayDetailsIncidentActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Intent intent = getIntent();
-        int incidentId = (int)intent.getIntExtra("incident",1);
+        int incidentId = intent.getIntExtra("incident", 1);
+        Log.i("incidentId:",""+intent.getExtras());
+
         incident = IncidentDBHelper.getSingleton().getIncidentById(incidentId);
 
         ImageView imageView = (ImageView) findViewById(R.id.imageView2);
 
         InputStream in = null;
-        if(incident.getUrlPhoto()!=null) {
+        if (incident.getUrlPhoto() != null) {
+            Log.i("url",incident.getUrlPhoto());
+            //ImageView myImage = new ImageView(this);
             try {
-                in = new URL("file://" + incident.getUrlPhoto()).openStream();
+                Uri photoURI = FileProvider.getUriForFile(this,
+                        "com.example.android.fileprovider",
+                        new File(incident.getUrlPhoto()));
+                Bitmap bm = MediaStore.Images.Media.getBitmap(getContentResolver(),photoURI);
+                //imageView.setImageBitmap(bm);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            Bitmap bitmap = BitmapFactory.decodeStream(in);
-            imageView.setImageBitmap(bitmap);
-        }
 
+
+        }
 
 
         TextView title = findViewById(R.id.titleDetail);
@@ -78,19 +92,19 @@ public class DisplayDetailsIncidentActivity extends AppCompatActivity {
 
         incidentId = incident.getIncidentID();
         DisplayCommentariesAdapter adapter = null;
-        adapter = new DisplayCommentariesAdapter(this,incidentId);
+        adapter = new DisplayCommentariesAdapter(this, incidentId);
         recyclerView.setAdapter(adapter);
 
         newCom = findViewById(R.id.commentTitle);
-        addCom= findViewById(R.id.sendComm);
+        addCom = findViewById(R.id.sendComm);
         addCom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(newCom.getText().toString().equals(""))
+                if (newCom.getText().toString().equals(""))
                     return;
 
                 IncidentDBHelper.getSingleton()
-                        .insertComm(0,incident.getIncidentID(),"",newCom.getText().toString());
+                        .insertComm(0, incident.getIncidentID(), "", newCom.getText().toString());
                 IncidentDBHelper.getSingleton().logComms();
                 finish();
                 startActivity(getIntent());
@@ -98,6 +112,5 @@ public class DisplayDetailsIncidentActivity extends AppCompatActivity {
         });
 
     }
-
 
 }
