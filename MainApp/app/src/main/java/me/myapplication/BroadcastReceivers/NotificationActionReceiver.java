@@ -16,11 +16,11 @@ public class NotificationActionReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         String action=intent.getStringExtra("action");
-        Incident incident = (Incident)intent.getSerializableExtra("incident");
+        int incidentId = intent.getIntExtra("incidentId", -1);
 
         Logger.getAnonymousLogger().log(Level.WARNING,"tio"+action);
         if(action.equals("S'ABONNER")){
-            IncidentDBHelper.getSingleton().insertSub(0, 1); //a changer
+            IncidentDBHelper.getSingleton().insertSub(0, incidentId ); //a changer
 
         }
         else if(action.equals("action2")){

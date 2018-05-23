@@ -95,6 +95,7 @@ public class NotificationService extends Service {
     public void sendNotif(String title, String desc, Cursor cursor){
 
         //Importance importance; A FAIRE
+        int incidentID = cursor.getInt(cursor.getColumnIndexOrThrow("incidentId"));
         String urgence = cursor.getString(cursor.getColumnIndex("importance")); //temp
         int reporterId = cursor.getInt(cursor.getColumnIndexOrThrow("reporterId"));
         int locationId = cursor.getInt(cursor.getColumnIndexOrThrow("locationId"));
@@ -105,7 +106,7 @@ public class NotificationService extends Service {
 
         Intent intentActionSub = new Intent(this,NotificationActionReceiver.class);
         intentActionSub.putExtra("action","S'ABONNER");
-        intentActionSub.putExtra("incident", incident);
+        intentActionSub.putExtra("incidentId", incidentID );
         PendingIntent pendingIntentSub = PendingIntent.getBroadcast(this,1,intentActionSub,PendingIntent.FLAG_UPDATE_CURRENT);
         notification.addAction(R.drawable.ic_star_border_black_24dp, "S'ABONNER", pendingIntentSub);
 
