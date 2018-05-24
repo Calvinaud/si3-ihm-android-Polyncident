@@ -65,17 +65,14 @@ public class DisplayDetailsIncidentActivity extends AppCompatActivity {
             //ImageView myImage = new ImageView(this);
             try {
                 Uri photoURI = FileProvider.getUriForFile(this,
-                        "com.example.android.fileprovider",
+                        "me.myapplication.android.fileprovider",
                         new File(incident.getUrlPhoto()));
                 Bitmap bm = MediaStore.Images.Media.getBitmap(getContentResolver(),photoURI);
                 //imageView.setImageBitmap(bm);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-
         }
-
 
         TextView title = findViewById(R.id.titleDetail);
         TextView description = findViewById(R.id.description);

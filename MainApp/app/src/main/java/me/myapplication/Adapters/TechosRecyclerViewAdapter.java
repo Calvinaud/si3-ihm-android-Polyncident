@@ -19,19 +19,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
-
-import java.util.Calendar;
-import java.util.Date;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import me.myapplication.DeclarationActivity;
-import me.myapplication.DisplayDetailsIncidentActivity;
+import me.myapplication.Helpers.CalendarQueryHandler;
 import me.myapplication.Helpers.IncidentDBHelper;
 import me.myapplication.Models.Importance;
 import me.myapplication.Models.Incident;
@@ -96,7 +86,6 @@ public class TechosRecyclerViewAdapter extends RecyclerView.Adapter<TechosRecycl
         return userCursor.getCount();
     }
 
-
     class ViewHolder extends RecyclerView.ViewHolder {
 
         CardView card;
@@ -120,30 +109,15 @@ public class TechosRecyclerViewAdapter extends RecyclerView.Adapter<TechosRecycl
     public class DetailsListener implements View.OnClickListener {
 
         @Override
-        public void onClick(View view) {
-            long calID = 3;
-            long startMillis = 0;
-            long endMillis = 0;
-            Calendar beginTime = Calendar.getInstance();
-            beginTime.set(2018, 5, 23, 7, 30);
-            startMillis = beginTime.getTimeInMillis();
-            Calendar endTime = Calendar.getInstance();
-            endTime.set(2018, 5, 23, 15, 45);
-            endMillis = endTime.getTimeInMillis();
+        public void onClick(View view)
+        {
 
-            ContentResolver cr = context.getContentResolver();
-            ContentValues values = new ContentValues();
-            values.put(CalendarContract.Events.DTSTART, startMillis);
-            values.put(CalendarContract.Events.DTEND, endMillis);
-            values.put(CalendarContract.Events.TITLE, "Android Test");
-            values.put(CalendarContract.Events.DESCRIPTION, "Group workout");
-            values.put(CalendarContract.Events.CALENDAR_ID, calID);
-            values.put(CalendarContract.Events.EVENT_TIMEZONE, "Europe/Paris");
-            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+            long startdate=1527102732164L;
+            long endDate=1527109732164L;
 
-            }
-            Log.i("deadea","C'est bon");
-            Uri uri = cr.insert(CalendarContract.Events.CONTENT_URI, values);
+
+            CalendarQueryHandler.insertEvent(context, startdate,
+                    endDate, "Tesorino");
         }
     }
 }

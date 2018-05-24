@@ -27,7 +27,6 @@ import java.util.GregorianCalendar;
 import me.myapplication.Fragments.DayFragment;
 import me.myapplication.Listener.OnSwipeTouchListener;
 
-
 public class PlanningActivity extends AppCompatActivity {
 
     private View view;
