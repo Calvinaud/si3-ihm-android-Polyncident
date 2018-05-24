@@ -135,7 +135,6 @@ public class PlanningActivity extends AppCompatActivity implements WeekView.Even
     }
 
     private WeekViewEvent addEvent(Cursor cursor, int newYear, int newMonth){
-        Calendar startTime = Calendar.getInstance();
 
         String fullStartDate = cursor.getString(cursor.getColumnIndexOrThrow("startDate"));
         String fullendDate = cursor.getString(cursor.getColumnIndexOrThrow("endDate"));
@@ -152,15 +151,7 @@ public class PlanningActivity extends AppCompatActivity implements WeekView.Even
         String[] endDating = endTimeS[0].split("-");
         String[] endTiming = endTimeS[1].split(":");
 
-   /*     startTime.set(Calendar.HOUR_OF_DAY, Integer.parseInt(startTiming[0]));
-        startTime.set(Calendar.MINUTE, Integer.parseInt(startTiming[1]));
-        startTime.set(Calendar.DAY_OF_MONTH, Integer.parseInt(startDating[2]));
-        startTime.set(Calendar.MONTH, Integer.parseInt(startDating[1]));
-        startTime.set(Calendar.YEAR, Integer.parseInt(startDating[0]));
-        Calendar endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, Integer.parseInt(endTiming[0]));
-        endTime.set(Calendar.MINUTE, Integer.parseInt(endTiming[1]));*/
-        startTime = Calendar.getInstance();
+        Calendar startTime = Calendar.getInstance();
         startTime.set(Calendar.DAY_OF_MONTH, (int)(Integer.parseInt(startDating[2])));
         startTime.set(Calendar.HOUR_OF_DAY, (int)(Integer.parseInt(startTiming[0])));
         startTime.set(Calendar.MINUTE, (int)(Integer.parseInt(startTiming[1])));
@@ -171,9 +162,12 @@ public class PlanningActivity extends AppCompatActivity implements WeekView.Even
 
         int id = cursor.getInt(cursor.getColumnIndexOrThrow("incidentId"));
         String title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
-        return new WeekViewEvent(id, getEventTitle(startTime), startTime, endTime);
+        String lieuName = cursor.getString(cursor.getColumnIndexOrThrow("lieuName"));
+        String typeName = cursor.getString(cursor.getColumnIndexOrThrow("typeName"));
 
-        //   return new WeekViewEvent(id, title, startTime, endTime);
+
+
+        return new WeekViewEvent(id, getEventTitle(title, lieuName, typeName), startTime, endTime);
     }
 
 
@@ -205,23 +199,26 @@ public class PlanningActivity extends AppCompatActivity implements WeekView.Even
         });
     }
 
-    protected String getEventTitle(Calendar time) {
-        return String.format("Event of %02d:%02d %s/%d", time.get(Calendar.HOUR_OF_DAY), time.get(Calendar.MINUTE), time.get(Calendar.MONTH)+1, time.get(Calendar.DAY_OF_MONTH));
+    protected String getEventTitle(String titre, String lieu, String typeName) {
+        return "Titre: "+titre+"\n Lieu: "+lieu+"\n Type: "+typeName;
     }
 
     @Override
     public void onEventClick(WeekViewEvent event, RectF eventRect) {
         Toast.makeText(this, "Clicked " + event.getName(), Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this,DisplayDetailsIncidentActivity.class);
+        intent.removeExtra("incidentID");
+        Log.i("id: ",""+event.getId());
+        intent.putExtra("incidentId",event.getId());
+        this.startActivity(intent);
     }
 
     @Override
     public void onEventLongPress(WeekViewEvent event, RectF eventRect) {
-        Toast.makeText(this, "Long pressed event: " + event.getName(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onEmptyViewLongPress(Calendar time) {
-        Toast.makeText(this, "Empty view long pressed: " + getEventTitle(time), Toast.LENGTH_SHORT).show();
     }
 
     public WeekView getWeekView() {
