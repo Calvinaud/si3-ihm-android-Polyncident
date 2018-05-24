@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -59,9 +60,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        Intent intent = getIntent();
+        userId = intent.getIntExtra("userId", 0);
         try{
             user = new User(IncidentDBHelper.getSingleton().getUserCursor(userId));
+            Log.i("Appelle user","Done");
+            Log.i("Appelle user",user.getUsername());
 
             //incidents initiaux
             if(IncidentDBHelper.getSingleton().isUserSubscribed(0,1)) {
@@ -96,6 +100,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Log.i("UserRole",user.getRole());
+
         FloatingActionButton planning = (FloatingActionButton) findViewById(R.id.planning);
         if(user.getRole().equals("TECHNICIEN")) {
             planning.setOnClickListener(new View.OnClickListener() {
@@ -112,14 +118,14 @@ public class MainActivity extends AppCompatActivity {
 
         FloatingActionButton admin = (FloatingActionButton) findViewById(R.id.admin);
         if(user.getRole().equals("ADMINISTRATEUR")){
-       admin.setOnClickListener(new View.OnClickListener() {
+            admin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent intent = new Intent(MainActivity.this, AdminActivity.class);
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                Intent intent = new Intent(MainActivity.this, AdminActivity.class);
                 startActivity(intent);
             }
-        });}
+        });
+        }
         else {
             admin.setVisibility(View.GONE);
         }
@@ -130,8 +136,8 @@ public class MainActivity extends AppCompatActivity {
         i.putExtra("subs", subs );
         startService(i);
 
-        Intent intent =new Intent(this, AddedIncidentSimService.class);
-        startService(intent);
+        Intent intentSim =new Intent(this, AddedIncidentSimService.class);
+        startService(intentSim);
     }
 
     @Override

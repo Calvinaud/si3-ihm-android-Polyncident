@@ -247,6 +247,7 @@ public class LoginActivity extends AppCompatActivity {
             mAuthTask = null;
             showProgress(false);
             if (success) {
+                showProgress(true);
                 email_login_form.setVisibility(View.GONE);
                 connect();
                 finish();
