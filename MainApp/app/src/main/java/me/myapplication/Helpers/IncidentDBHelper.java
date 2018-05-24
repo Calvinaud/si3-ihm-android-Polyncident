@@ -253,10 +253,10 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
         Calendar aCalendar = new GregorianCalendar(year,month-1,1);
 
         Date firstDay = aCalendar.getTime();
-        aCalendar.set(Calendar.DATE,     aCalendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        aCalendar.set(Calendar.DATE, aCalendar.getActualMaximum(Calendar.DAY_OF_MONTH));
         Date lastDay = aCalendar.getTime();
 
-        String queryString = "SELECT i.incidentId, i.title, i.importance, a.startDate, a.endDate, t.name AS typeName, l.name AS lieuName" +
+        String queryString = "SELECT i.incidentId, i.description, i.title, i.importance, a.startDate, a.endDate, t.name AS typeName, l.name AS lieuName" +
                 " FROM assignations AS a, incidents AS i, locations AS l, types AS t" +
                 " WHERE l.locationId=i.locationId AND i.incidentId=a.incidentId AND t.typeId = i.typeId AND ";
 

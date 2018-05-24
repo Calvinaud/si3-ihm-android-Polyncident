@@ -1,14 +1,18 @@
 package me.myapplication;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.RectF;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.alamkanak.weekview.DateTimeInterpreter;
@@ -22,6 +26,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import me.myapplication.Helpers.CalendarQueryHandler;
 import me.myapplication.Helpers.IncidentDBHelper;
 
 public class PlanningActivity extends AppCompatActivity implements WeekView.EventClickListener, MonthLoader.MonthChangeListener, WeekView.EventLongPressListener, WeekView.EmptyViewLongPressListener {
@@ -31,7 +36,8 @@ public class PlanningActivity extends AppCompatActivity implements WeekView.Even
     private int mWeekViewType = TYPE_DAY_VIEW;
     private WeekView mWeekView;
     private int userId;
-
+    private Button synchro;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +45,8 @@ public class PlanningActivity extends AppCompatActivity implements WeekView.Even
         setContentView(R.layout.activity_planning);
         Intent intent = getIntent();
         userId = intent.getIntExtra("userId", 0);
+
+        context = this;
 
         // Get a reference for the week view in the layout.
         mWeekView = (WeekView) findViewById(R.id.weekView);
@@ -59,6 +67,20 @@ public class PlanningActivity extends AppCompatActivity implements WeekView.Even
         // Set up a date time interpreter to interpret how the date and time will be formatted in
         // the week view. This is optional.
         setupDateTimeInterpreter(false);
+
+        synchro = findViewById(R.id.synchroniser);
+        synchro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int month = Calendar.getInstance().get(Calendar.MONTH)+1;
+                int year = Calendar.getInstance().get(Calendar.YEAR);
+
+                Cursor cursor = IncidentDBHelper.getSingleton().getIncidentMonth(userId, month, year);
+
+                CalendarQueryHandler.insertAllEvent(context, cursor);
+            }
+        });
+
     }
 
 
@@ -133,14 +155,10 @@ public class PlanningActivity extends AppCompatActivity implements WeekView.Even
         return events;
     }
 
-    private WeekViewEvent addEvent(Cursor cursor, int newYear, int newMonth){
+    private WeekViewEvent addEvent(Cursor eventCursor, int newYear, int newMonth){
 
-        String fullStartDate = cursor.getString(cursor.getColumnIndexOrThrow("startDate"));
-        String fullendDate = cursor.getString(cursor.getColumnIndexOrThrow("endDate"));
-
-        Log.i("full start time",fullStartDate);
-        Log.i("full end time", fullendDate);
-
+        String fullStartDate = eventCursor.getString(eventCursor.getColumnIndexOrThrow("startDate"));
+        String fullendDate = eventCursor.getString(eventCursor.getColumnIndexOrThrow("endDate"));
 
         String[] startTimeS = fullStartDate.split(" ");
         String[] startDating = startTimeS[0].split("-");
@@ -159,12 +177,10 @@ public class PlanningActivity extends AppCompatActivity implements WeekView.Even
         Calendar endTime = (Calendar) startTime.clone();
         endTime.set(Calendar.HOUR_OF_DAY, (int)(Integer.parseInt(endTiming[0])));
 
-        int id = cursor.getInt(cursor.getColumnIndexOrThrow("incidentId"));
-        String title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
-        String lieuName = cursor.getString(cursor.getColumnIndexOrThrow("lieuName"));
-        String typeName = cursor.getString(cursor.getColumnIndexOrThrow("typeName"));
-
-
+        int id = eventCursor.getInt(eventCursor.getColumnIndexOrThrow("incidentId"));
+        String title = eventCursor.getString(eventCursor.getColumnIndexOrThrow("title"));
+        String lieuName = eventCursor.getString(eventCursor.getColumnIndexOrThrow("lieuName"));
+        String typeName = eventCursor.getString(eventCursor.getColumnIndexOrThrow("typeName"));
 
         return new WeekViewEvent(id, getEventTitle(title, lieuName, typeName), startTime, endTime);
     }
@@ -204,10 +220,8 @@ public class PlanningActivity extends AppCompatActivity implements WeekView.Even
 
     @Override
     public void onEventClick(WeekViewEvent event, RectF eventRect) {
-        Toast.makeText(this, "Clicked " + event.getName(), Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this,DisplayDetailsIncidentActivity.class);
         intent.removeExtra("incidentID");
-        Log.i("id: ",""+event.getId());
         intent.putExtra("incidentId",event.getId());
         this.startActivity(intent);
     }

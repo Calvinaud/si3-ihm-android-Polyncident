@@ -405,7 +405,7 @@ public class DeclarationActivity extends Activity {
                 MediaController mc = new MediaController(this);
                 videoView.setMediaController(mc);
 
-                /*ByteArrayOutputStream stream = new ByteArrayOutputStream();
+               /* ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 FileInputStream fis;
                 String[] filePathColumn = {MediaStore.Video.Media.DATA};
                 Cursor cursor = getContentResolver().query(videoUri,filePathColumn,null,null,null);

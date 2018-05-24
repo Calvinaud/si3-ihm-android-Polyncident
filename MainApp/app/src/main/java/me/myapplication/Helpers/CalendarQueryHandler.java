@@ -9,6 +9,10 @@ import android.net.Uri;
 import android.provider.CalendarContract;
 import android.util.Log;
 
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
 import me.myapplication.BuildConfig;
@@ -36,9 +40,43 @@ public class CalendarQueryHandler extends AsyncQueryHandler {
         super(resolver);
     }
 
+
+    public static void insertAllEvent(Context context, Cursor cursor){
+
+        cursor.moveToFirst();
+        while(!cursor.isAfterLast()){
+
+            String startDateS = cursor.getString(cursor.getColumnIndexOrThrow("startDate"));
+            String endDateS = cursor.getString(cursor.getColumnIndexOrThrow("endDate"));
+
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
+            Date startDate = new Date();
+            Date endDate = new Date();
+
+            try {
+                startDate = format.parse(startDateS);
+                endDate = format.parse(endDateS);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            long startTime = startDate.getTime();
+            long endTime = endDate.getTime();
+
+            String title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
+            String lieuName = cursor.getString(cursor.getColumnIndexOrThrow("lieuName"));
+            String description = cursor.getString(cursor.getColumnIndexOrThrow("description"));
+
+            insertEvent(context, startTime, endTime, title, lieuName, description);
+            cursor.moveToNext();
+        }
+
+    }
+
     // insertEvent
     public static void insertEvent(Context context, long startTime,
-                                   long endTime, String title) {
+                                   long endTime, String title, String lieu, String description) {
         ContentResolver resolver = context.getContentResolver();
 
         if (queryHandler == null)
@@ -48,6 +86,8 @@ public class CalendarQueryHandler extends AsyncQueryHandler {
         values.put(CalendarContract.Events.DTSTART, startTime);
         values.put(CalendarContract.Events.DTEND, endTime);
         values.put(CalendarContract.Events.TITLE, title);
+        values.put(CalendarContract.Events.DESCRIPTION, description);
+        values.put(CalendarContract.Events.EVENT_LOCATION, lieu);
 
         if (BuildConfig.DEBUG)
             Log.d(TAG, "Calendar query start");
