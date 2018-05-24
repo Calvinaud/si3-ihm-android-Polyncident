@@ -1,9 +1,8 @@
 package me.myapplication.Adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -16,17 +15,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import me.myapplication.DisplayDetailsIncidentActivity;
 import me.myapplication.Helpers.IncidentDBHelper;
-import me.myapplication.MainActivity;
 import me.myapplication.Models.Importance;
-import me.myapplication.Models.Incident;
 import me.myapplication.R;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by user on 29/04/2018.
@@ -37,13 +34,13 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
     private Context context;
     private Cursor cursor;
     private int incidentID;
-    private Boolean subscribed;
+    private final int userId;
 
-    public VisualizationCustomAdapter(Context context, Boolean myIncident) {
+    public VisualizationCustomAdapter(Context context, Boolean myIncident, int userId) {
         this.context = context;
-        int myReporterId = 0;
+        this.userId = userId;
         if (myIncident) {
-            this.cursor = IncidentDBHelper.getSingleton().getIncidentCursor(myReporterId, -1, -1, 100);
+            this.cursor = IncidentDBHelper.getSingleton().getIncidentCursor(userId, -1, -1, 100);
         } else {
             this.cursor = IncidentDBHelper.getSingleton().getIncidentCursor(-1, -1, -1, 100);
         }
@@ -63,6 +60,14 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
                 Intent intent = new Intent(context,DisplayDetailsIncidentActivity.class);
                 Log.i("id: ","");
                 intent.putExtra("incidentId",incidentId);
+
+                SharedPreferences sharedPreferences = context.getSharedPreferences("Comments", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putInt(Integer.toString(incidentID), IncidentDBHelper.getSingleton().getCommentaires(incidentID).getCount());
+                editor.apply();
+                cursor.moveToFirst();
+                Logger.getAnonymousLogger().log(Level.WARNING,"COMMO "+IncidentDBHelper.getSingleton().getCommentaires(incidentID).getCount());
+
                 view.getContext().startActivity(intent);}
         });
         return holder;
@@ -74,7 +79,13 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
         this.cursor.moveToPosition(position);
         incidentID = cursor.getInt(cursor.getColumnIndexOrThrow("incidentId"));
 
-        if((this.subscribed = IncidentDBHelper.getSingleton().isUserSubscribed(0,incidentID))){
+        if(IncidentDBHelper.getSingleton().isUserSubscribed(userId,incidentID)){
+
+            SharedPreferences sharedPreferences = context.getSharedPreferences("Comments", MODE_PRIVATE);
+            int commNumber = IncidentDBHelper.getSingleton().getCommentaires(incidentID).getCount() - sharedPreferences.getInt(Integer.toString(incidentID), 0);
+            Logger.getAnonymousLogger().log(Level.WARNING," TIO"+commNumber);
+            holder.commentNumer.setText(Integer.toString(commNumber));
+
             holder.subscribe.setImageResource(R.drawable.ic_star_black_24dp);
         }
         Importance urgence = getImportance(cursor.getInt(cursor.getColumnIndex("importance")));
@@ -83,7 +94,7 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
         int reporterId = cursor.getInt(cursor.getColumnIndexOrThrow("reporterId"));
         int locationId = cursor.getInt(cursor.getColumnIndexOrThrow("locationId"));
         int typeId = cursor.getInt(cursor.getColumnIndexOrThrow("typeId"));
-        String url = cursor.getString(cursor.getColumnIndexOrThrow("urlPhoto"));
+        //String url = cursor.getString(cursor.getColumnIndexOrThrow("urlPhoto"));
         Log.i("id2: ",""+incidentID);
         holder.incident.setText(title);
         String fulldate = cursor.getString(cursor.getColumnIndexOrThrow("declarationDate"));
@@ -147,6 +158,7 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
         TextView heure;
         TextView urgence;
         TextView description;
+        TextView commentNumer;
         CardView cardView;
 
         ViewHolder(View itemView) {
@@ -162,6 +174,7 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
             heure=(TextView) itemView.findViewById(R.id.timeTextView);
             urgence=(TextView) itemView.findViewById(R.id.emergencyTextView);
             description=(TextView) itemView.findViewById(R.id.descView);
+            commentNumer=(TextView) itemView.findViewById(R.id.unreadCommentNumber);
 
             subscribe.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -169,23 +182,17 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
                     if(!subscribed) {
                         subscribe.setImageResource(R.drawable.ic_star_black_24dp);
                         subscribed = true;
-                        IncidentDBHelper.getSingleton().insertSub(0,cursor.getInt(cursor.getColumnIndexOrThrow("incidentId")));
+                        IncidentDBHelper.getSingleton().insertSub(userId,cursor.getInt(cursor.getColumnIndexOrThrow("incidentId")));
                     }else {
                         subscribe.setImageResource(R.drawable.ic_star_border_black_24dp);
                         subscribed=false;
                     }
+
+
                 }
             });
 
         }
     }
 
-
-    public class DetailsListener implements View.OnClickListener {
-
-        @Override
-        public void onClick(View view)  {
-
-        }
-    }
 }

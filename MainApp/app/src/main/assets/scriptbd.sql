@@ -15,6 +15,7 @@ CREATE TABLE users (
     password varchar(100),
     telephoneNumber VARCHAR(20),
     emailAddress VARCHAR(50),
+    img BLOB,
     roles VARCHAR(20) NOT NULL CHECK (roles IN ('UTILISATEUR','ADMINISTRATEUR', 'TECHNICIEN'))
 );
 
@@ -36,7 +37,7 @@ CREATE TABLE incidents (
     locationId INTEGER REFERENCES locations,
     typeId INTEGER REFERENCES types,
     importance INTEGER,
-    urlPhoto VARCHAR(100),
+    img BLOB,
     declarationDate DATETIME,
     title VARCHAR(30),
     description TEXT,
@@ -90,7 +91,8 @@ INSERT INTO types (typeid, name) VALUES('3','Autres');
 --users
 INSERT INTO users (userId, username, emailAddress, password, roles, telephoneNumber) VALUES (0,'Mathieu', 'Mat@gmail.com', 'Mathieu', 'UTILISATEUR', "0645128214");
 INSERT INTO users (userId, username, emailAddress, password, roles) VALUES (1, 'Bob', 'Bob@gmail.com','BobBob', 'TECHNICIEN');
-INSERT INTO users (userId, username, emailAddress, password, roles) VALUES (2, 'Roger', 'Roger@gmail.com', 'RogerRoger', 'ADMINISTRATEUR');
+INSERT INTO users (userId, username, emailAddress, password, roles) VALUES (2, 'Roger', 'Roger@gmail.com', 'Roger', 'ADMINISTRATEUR');
+
 --incident
 INSERT INTO incidents (incidentId, reporterId, locationId, typeId, importance, title, status, declarationDate) VALUES (1, 1, 3, 2, 3, 'Incident 1',0, '2018-05-22 11:15:00');
 INSERT INTO incidents (incidentId, reporterId, locationId, typeId, importance, title, status, declarationDate) VALUES (2, 1, 5, 1, 3, 'Incident 2',2, '2018-05-24 12:00:00');

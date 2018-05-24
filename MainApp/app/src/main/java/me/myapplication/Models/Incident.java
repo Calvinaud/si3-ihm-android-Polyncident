@@ -16,19 +16,19 @@ public class Incident implements Serializable{
     final private Importance importance;
     final private String title;
     final private String description;
-    private String urlPhoto;
+    private byte[] img;
     private Date declarationDate;
 
 
     public Incident(int incidentID, int reporterdID, int locationID, int typeID, Importance importance,
-                    String title, String description, String url, Date declarationDate) {
+                    String title, String description, byte[] img, Date declarationDate) {
         this.reporterdID = reporterdID;
         this.locationID = locationID;
         this.typeID = typeID;
         this.importance = importance;
         this.title = title;
         this.description = description;
-        this.urlPhoto = url;
+        this.img = img;
         this.incidentID=incidentID;
         this.declarationDate = declarationDate;
     }
@@ -61,11 +61,12 @@ public class Incident implements Serializable{
         return description;
     }
 
-    public String getUrlPhoto() {
-        return urlPhoto;
-    }
 
     public int getIncidentID() {
         return incidentID;
+    }
+
+    public byte[] getImg() {
+        return img;
     }
 }

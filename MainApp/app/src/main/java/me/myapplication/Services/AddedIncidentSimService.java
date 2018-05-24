@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.os.IBinder;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import me.myapplication.Helpers.IncidentDBHelper;
+import me.myapplication.Models.Incident;
 
 public class AddedIncidentSimService extends Service {
     public AddedIncidentSimService() {
@@ -29,10 +31,11 @@ public class AddedIncidentSimService extends Service {
                     synchronized (this) {
                         try {
                             wait(20000);
+                            IncidentDBHelper.getSingleton().insertComm(1,1, new Date(), "cont");
                             IncidentDBHelper.getSingleton()
                                     .insertIncident(2, 3, i
                                             ,
-                                            2, "Je suis ds le service aled", "Type = "+i,"",2, Calendar.getInstance().getTime()
+                                            2, "Je suis ds le service aled", "Type = "+i,new byte[]{},2, Calendar.getInstance().getTime()
                                     );
                         } catch (InterruptedException e) {
                             e.printStackTrace();

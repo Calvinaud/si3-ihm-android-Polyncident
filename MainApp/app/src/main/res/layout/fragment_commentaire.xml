@@ -26,10 +26,10 @@
 
             <ImageView
                 android:id="@+id/profilPicture"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
+                android:layout_alignParentTop="true"
                 app:srcCompat="@drawable/ic_check_circle_black_24dp" />
 
 
@@ -56,18 +56,22 @@
                 android:id="@+id/profilName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/timeTextView2"
                 android:layout_alignParentStart="true"
+                android:layout_below="@+id/profilPicture"
+                android:layout_marginStart="14dp"
                 android:text="name"
                 android:textSize="10sp" />
 
+                android:layout_width="300dp"
+                android:layout_height="60dp"
+                android:layout_above="@+id/dateTextView2"
+                android:layout_alignParentEnd="true">
             <TextView
                 android:id="@+id/commentary"
                 android:layout_width="300dp"
-                android:layout_height="65dp"
-                android:layout_centerVertical="true"
-                android:layout_toEndOf="@+id/profilPicture"
-                />
+                android:layout_height="60dp"
+                android:layout_above="@+id/dateTextView2"
+                android:layout_alignParentEnd="true" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 </android.support.constraint.ConstraintLayout>

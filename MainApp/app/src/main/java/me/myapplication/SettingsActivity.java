@@ -31,8 +31,10 @@ public class SettingsActivity extends AppCompatActivity {
         others = (Switch) findViewById(R.id.switchOthers);
         others.setChecked(getIsEnabled2());
 
+
         mat = (Switch) findViewById(R.id.switchMat);
         mat.setChecked(getIsEnabled3());
+
 
 
         notificationEnabler.setOnClickListener(new View.OnClickListener() {

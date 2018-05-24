@@ -3,6 +3,7 @@ package me.myapplication.Adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -32,11 +33,11 @@ import me.myapplication.R;
 public class DisplayCommentariesAdapter extends RecyclerView.Adapter<DisplayCommentariesAdapter.ViewHolder> {
 
     private Context context;
-    private Cursor cursor;
+    private Cursor cursorComms;
     int i=0;
     public DisplayCommentariesAdapter(Context context, int incidentId) {
         this.context=context;
-        this.cursor=IncidentDBHelper.getSingleton().getCommentaires(incidentId);
+        this.cursorComms=IncidentDBHelper.getSingleton().getCommentaires(incidentId);
     }
 
     @NonNull
@@ -48,14 +49,31 @@ public class DisplayCommentariesAdapter extends RecyclerView.Adapter<DisplayComm
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            cursor.moveToPosition(position);
-            Log.i("n",""+cursor.getCount());
-            String contentComment = this.cursor.getString(cursor.getColumnIndexOrThrow("comment"));
-            String fulldate = this.cursor.getString(cursor.getColumnIndexOrThrow("date"));
+            this.cursorComms.moveToPosition(position);
+            Log.i("n",""+this.cursorComms.getCount());
+            String contentComment = this.cursorComms.getString(this.cursorComms.getColumnIndexOrThrow("comment"));
+            String fulldate = this.cursorComms.getString(this.cursorComms.getColumnIndexOrThrow("date"));
             String[] date=fulldate.split(" ");
-            String username = this.cursor.getString(cursor.getColumnIndexOrThrow("username"));
+            String username = this.cursorComms.getString(this.cursorComms.getColumnIndexOrThrow("username"));
+            int userId= this.cursorComms.getInt(this.cursorComms.getColumnIndexOrThrow("userId"));
 
-            holder.profilName.setText(username);
+        try {
+            Cursor cursorUser = IncidentDBHelper.getSingleton().getUserCursor(userId);
+            cursorUser.moveToFirst();
+            if(cursorUser.getString(cursorUser.getColumnIndexOrThrow("roles")).equals("ADMINISTRATEUR")){
+                holder.profilPicture.setImageResource(R.mipmap.director);
+            }
+            if(cursorUser.getString(cursorUser.getColumnIndexOrThrow("roles")).equals("UTILISATEUR")){
+                holder.profilPicture.setImageResource(R.mipmap.etudiant);
+            }
+            if(cursorUser.getString(cursorUser.getColumnIndexOrThrow("roles")).equals("TECHNICIEN")){
+                holder.profilPicture.setImageResource(R.mipmap.technicien);
+            }
+
+        } catch (IncidentDBHelper.NoRecordException e) {
+            e.printStackTrace();
+        }
+        holder.profilName.setText(username);
             holder.date.setText(date[0]);
             holder.heure.setText(date[1]);
             holder.content.setText(contentComment);
@@ -64,7 +82,7 @@ public class DisplayCommentariesAdapter extends RecyclerView.Adapter<DisplayComm
 
     @Override
     public int getItemCount() {
-        if (cursor!=null) return cursor.getCount();
+        if (cursorComms!=null) return cursorComms.getCount();
         return 0;
     }
 

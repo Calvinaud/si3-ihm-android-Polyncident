@@ -3,35 +3,29 @@ package me.myapplication;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.constraint.ConstraintLayout;
-import android.support.constraint.ConstraintSet;
-import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -51,6 +45,8 @@ public class DeclarationActivity extends Activity {
 
     private String mCurrentPhotoPath="";
 
+    private int userId;
+
     //GUI components
     private Spinner typeSpinner;
     private TextView typeLabel;
@@ -65,14 +61,20 @@ public class DeclarationActivity extends Activity {
     private EditText descriptionEditText;
 
 
-    private Button btnGalery;
-    private Button btnCapture;
-    private Button btnVideo;
+    //media selection buttons
+    private ImageButton btnGalery;
+    private ImageButton btnCapture;
+    private ImageButton btnVideo;
+    private ImageButton[] mediaButtons;
+
+    private ImageButton mediaSelectionButton;
+    private ImageButton mediaDeletionButton;
 
     private VideoView videoView;
     private ImageView imageView;
 
     private Button submitButton;
+    private byte[] image;
 
     //list of views
     private View[] collapsibleViews;
@@ -87,6 +89,8 @@ public class DeclarationActivity extends Activity {
 
         initElementListeners();
 
+        setMediaSelectionButtonsVisibility(View.GONE);
+
         hideMediaViews();
 
         fillTypes();
@@ -95,7 +99,7 @@ public class DeclarationActivity extends Activity {
 
         this.importanceSeekBar.setMax(Importance.values().length - 1);
 
-
+        this.userId = getIntent().getIntExtra("userId", 0);
 
         btnGalery.setOnClickListener(new View.OnClickListener() {
 
@@ -148,6 +152,27 @@ public class DeclarationActivity extends Activity {
 
             }
         });
+
+        mediaSelectionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setMediaSelectionButtonsVisibility(View.VISIBLE);
+                mediaSelectionButton.setVisibility(View.GONE);
+            }
+        });
+
+        mediaSelectionButton.setVisibility(View.VISIBLE);
+
+        mediaDeletionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideMediaViews();
+                DeclarationActivity.this.mediaSelectionButton.setVisibility(View.VISIBLE);
+            }
+        });
+
+
+        image = new byte[]{};
     }
 
     private void initElementReferences(){
@@ -165,6 +190,8 @@ public class DeclarationActivity extends Activity {
         this.btnGalery = findViewById(R.id.btnGalery);
         this.btnCapture = findViewById(R.id.btnCapture);
         this.btnVideo = findViewById(R.id.btnVideo);
+        this.mediaSelectionButton = findViewById(R.id.mediaSelectionButton);
+        this.mediaDeletionButton = findViewById(R.id.deleteMediaButton);
 
         this.imageView = findViewById(R.id.imageView4);
         this.videoView = findViewById(R.id.videoView);
@@ -174,6 +201,8 @@ public class DeclarationActivity extends Activity {
                 typeSpinner, titleEditText, importanceSeekBar,
                 importanceLabel, btnCapture, btnGalery, btnVideo
         };
+
+        this.mediaButtons = new ImageButton[]{btnVideo, btnGalery, btnCapture};
     }
 
     private void initElementListeners(){
@@ -202,7 +231,14 @@ public class DeclarationActivity extends Activity {
 
         this.videoView.setVisibility(View.GONE);
         this.imageView.setVisibility(View.GONE);
+        this.mediaDeletionButton.setVisibility(View.GONE);
 
+    }
+
+    private void setMediaSelectionButtonsVisibility(int visibility){
+        for(ImageButton imageButton : mediaButtons){
+            imageButton.setVisibility(visibility);
+        }
     }
 
 
@@ -236,15 +272,15 @@ public class DeclarationActivity extends Activity {
 
             if(titleEditText.getText().toString().equals("")
                 || descriptionEditText.getText().toString().equals("")){
-
+                Toast.makeText(view.getContext(),"Titre ou description vide",Toast.LENGTH_SHORT).show();
                 return;
             }
 
             IncidentDBHelper.getSingleton()
-                    .insertIncident(0, locationSpinner.getSelectedItemPosition()+1,
+                    .insertIncident(DeclarationActivity.this.userId, locationSpinner.getSelectedItemPosition()+1,
                             typeSpinner.getSelectedItemPosition()+1,importanceSeekBar.getProgress(),
                             titleEditText.getText().toString(), descriptionEditText.getText().toString(),
-                            mCurrentPhotoPath, 0, Calendar.getInstance().getTime()
+                            image, 0, Calendar.getInstance().getTime()
                     );
             IncidentDBHelper.getSingleton().logIncidents();
 
@@ -298,12 +334,24 @@ public class DeclarationActivity extends Activity {
                         Bitmap bm = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedMediaUri);
                         imageView.setImageBitmap(bm);
                         imageView.setVisibility(View.VISIBLE);
+                        setMediaSelectionButtonsVisibility(View.GONE);
+                        this.mediaDeletionButton.setVisibility(View.VISIBLE);
+
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        bm.compress(Bitmap.CompressFormat.JPEG,0,stream);
+                        this.image = stream.toByteArray();
+
                     } catch (IOException e){
                         e.printStackTrace();
                     }
                 } else  if (selectedMediaUri.toString().contains("video")) {
                     videoView.setVideoURI(selectedMediaUri);
                     videoView.setVisibility(View.VISIBLE);
+                    MediaController mc = new MediaController(this);
+                    videoView.setMediaController(mc);
+                    setMediaSelectionButtonsVisibility(View.GONE);
+                    this.mediaDeletionButton.setVisibility(View.VISIBLE);
+
                 }
 
             }
@@ -314,12 +362,52 @@ public class DeclarationActivity extends Activity {
                 Log.i("uhjk", "ujhnk");
                 imageView.setImageBitmap(imageBitmap);
                 imageView.setVisibility(View.VISIBLE);
+                this.mediaDeletionButton.setVisibility(View.VISIBLE);
+                setMediaSelectionButtonsVisibility(View.GONE);
+
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                imageBitmap.compress(Bitmap.CompressFormat.JPEG,0,stream);
+                this.image = stream.toByteArray();
+
             }
 
             else if (requestCode == REQUEST_VIDEO_CAPTURE){
                 Uri videoUri = data.getData();
                 videoView.setVideoURI(videoUri);
                 videoView.setVisibility(View.VISIBLE);
+                setMediaSelectionButtonsVisibility(View.GONE);
+                this.mediaDeletionButton.setVisibility(View.VISIBLE);
+
+
+                MediaController mc = new MediaController(this);
+                videoView.setMediaController(mc);
+
+                /*ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                FileInputStream fis;
+                String[] filePathColumn = {MediaStore.Video.Media.DATA};
+                Cursor cursor = getContentResolver().query(videoUri,filePathColumn,null,null,null);
+                String path="";
+                if(cursor.moveToFirst()){
+                    int columnIndex=cursor.getColumnIndex(filePathColumn[0]);
+                    path = cursor.getString(columnIndex);
+                }
+                cursor.close();
+
+                try {
+                    fis = new FileInputStream(new File(path));
+                    byte[] buf = new byte[1024];
+                    int n;
+                    while(-1 != (n=fis.read(buf))){
+                        stream.write(buf,0,n);
+                    }
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                this.image=stream.toByteArray();
+                Log.i("ok",""+image.length);*/
+
 
             }
         }

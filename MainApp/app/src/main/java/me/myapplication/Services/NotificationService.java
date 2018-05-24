@@ -20,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -58,6 +59,8 @@ public class NotificationService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
 
+        final int userId = intent.getIntExtra("userId", 0);
+
         final IncidentDBHelper dbHelper = IncidentDBHelper.getSingleton();
 
         Runnable r = new Runnable() {
@@ -86,7 +89,7 @@ public class NotificationService extends Service {
 
 
                                 Cursor cursor = dbHelper.getLastIncidentCursor();
-                                if(prev < dbHelper.getIncidentNumber() && cursor.getInt(cursor.getColumnIndexOrThrow("reporterId")) != 0 && enabled){
+                                if(prev < dbHelper.getIncidentNumber() && cursor.getInt(cursor.getColumnIndexOrThrow("reporterId")) != userId && enabled){
                                     if(subscrbedTypesId.contains(cursor.getInt(cursor.getColumnIndexOrThrow("typeId")))) {
                                         sendNotif(cursor.getString(cursor.getColumnIndexOrThrow("title")), cursor.getString(cursor.getColumnIndexOrThrow("description")), cursor);
                                     }
@@ -116,7 +119,7 @@ public class NotificationService extends Service {
         int reporterId = cursor.getInt(cursor.getColumnIndexOrThrow("reporterId"));
         int locationId = cursor.getInt(cursor.getColumnIndexOrThrow("locationId"));
         int typeId = cursor.getInt(cursor.getColumnIndexOrThrow("typeId"));
-        String url = cursor.getString(cursor.getColumnIndexOrThrow("urlPhoto"));
+        byte[] img = cursor.getBlob(cursor.getColumnIndexOrThrow("img"));
         String sdate = cursor.getString(cursor.getColumnIndexOrThrow("declarationDate"));
 
         Date date = new Date();
@@ -129,7 +132,7 @@ public class NotificationService extends Service {
             e.printStackTrace();
         }
 
-        Incident incident=new Incident(incidentId,reporterId,locationId,typeId, Importance.MINOR,title,desc,url, date);
+        Incident incident=new Incident(incidentId,reporterId,locationId,typeId, Importance.MINOR,title,desc,img, date);
 
         Intent intentActionSub = new Intent(this,NotificationActionReceiver.class);
         intentActionSub.putExtra("action","S'ABONNER");
@@ -152,6 +155,6 @@ public class NotificationService extends Service {
         notification.setContentIntent(pendingIntent);
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.notify(uniqueID,notification.build());
+        notificationManager.notify(new Random().nextInt(),notification.build());
     }
 }
