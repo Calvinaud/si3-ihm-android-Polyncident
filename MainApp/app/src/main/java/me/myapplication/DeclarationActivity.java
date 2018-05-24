@@ -50,7 +50,6 @@ import java.util.logging.Logger;
 
 import me.myapplication.Helpers.IncidentDBHelper;
 import me.myapplication.Models.Importance;
-import okhttp3.internal.Util;
 
 public class DeclarationActivity extends Activity {
 
@@ -59,6 +58,8 @@ public class DeclarationActivity extends Activity {
     private final int PICK_IMAGE = 1;
 
     private String mCurrentPhotoPath="";
+
+    private int userId;
 
     //GUI components
     private Spinner typeSpinner;
@@ -80,6 +81,8 @@ public class DeclarationActivity extends Activity {
     private ImageButton btnVideo;
     private ImageButton[] mediaButtons;
 
+    private ImageButton mediaSelectionButton;
+
 
     private VideoView videoView;
     private ImageView imageView;
@@ -100,6 +103,8 @@ public class DeclarationActivity extends Activity {
 
         initElementListeners();
 
+        setMediaSelectionButtonsVisibility(View.GONE);
+
         hideMediaViews();
 
         fillTypes();
@@ -108,7 +113,7 @@ public class DeclarationActivity extends Activity {
 
         this.importanceSeekBar.setMax(Importance.values().length - 1);
 
-
+        this.userId = getIntent().getIntExtra("userId", 0);
 
         btnGalery.setOnClickListener(new View.OnClickListener() {
 
@@ -162,6 +167,16 @@ public class DeclarationActivity extends Activity {
             }
         });
 
+        mediaSelectionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setMediaSelectionButtonsVisibility(View.VISIBLE);
+                mediaSelectionButton.setVisibility(View.GONE);
+            }
+        });
+
+        mediaSelectionButton.setVisibility(View.VISIBLE);
+
         image = new byte[]{};
     }
 
@@ -180,6 +195,7 @@ public class DeclarationActivity extends Activity {
         this.btnGalery = findViewById(R.id.btnGalery);
         this.btnCapture = findViewById(R.id.btnCapture);
         this.btnVideo = findViewById(R.id.btnVideo);
+        this.mediaSelectionButton = findViewById(R.id.mediaSelectionButton);
 
         this.imageView = findViewById(R.id.imageView4);
         this.videoView = findViewById(R.id.videoView);
@@ -222,9 +238,9 @@ public class DeclarationActivity extends Activity {
 
     }
 
-    private void hideMediaSelectionButtons(){
+    private void setMediaSelectionButtonsVisibility(int visibility){
         for(ImageButton imageButton : mediaButtons){
-            imageButton.setVisibility(View.GONE);
+            imageButton.setVisibility(visibility);
         }
     }
 
@@ -264,7 +280,7 @@ public class DeclarationActivity extends Activity {
             }
 
             IncidentDBHelper.getSingleton()
-                    .insertIncident(0, locationSpinner.getSelectedItemPosition()+1,
+                    .insertIncident(DeclarationActivity.this.userId, locationSpinner.getSelectedItemPosition()+1,
                             typeSpinner.getSelectedItemPosition()+1,importanceSeekBar.getProgress(),
                             titleEditText.getText().toString(), descriptionEditText.getText().toString(),
                             image, 0, Calendar.getInstance().getTime()
@@ -321,7 +337,7 @@ public class DeclarationActivity extends Activity {
                         Bitmap bm = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedMediaUri);
                         imageView.setImageBitmap(bm);
                         imageView.setVisibility(View.VISIBLE);
-                        hideMediaSelectionButtons();
+                        setMediaSelectionButtonsVisibility(View.GONE);
 
                         ByteArrayOutputStream stream = new ByteArrayOutputStream();
                         bm.compress(Bitmap.CompressFormat.JPEG,0,stream);
@@ -335,8 +351,8 @@ public class DeclarationActivity extends Activity {
                     videoView.setVisibility(View.VISIBLE);
                     MediaController mc = new MediaController(this);
                     videoView.setMediaController(mc);
-                    imageView.setVisibility(View.INVISIBLE);
-                    hideMediaSelectionButtons();
+                    setMediaSelectionButtonsVisibility(View.GONE);
+
                 }
 
             }
@@ -357,7 +373,8 @@ public class DeclarationActivity extends Activity {
                 Uri videoUri = data.getData();
                 videoView.setVideoURI(videoUri);
                 videoView.setVisibility(View.VISIBLE);
-                hideMediaSelectionButtons();
+                setMediaSelectionButtonsVisibility(View.GONE);
+
 
                 MediaController mc = new MediaController(this);
                 videoView.setMediaController(mc);

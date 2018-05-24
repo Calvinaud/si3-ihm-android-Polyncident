@@ -21,7 +21,6 @@
                 android:layout_marginBottom="444dp"
                 android:layout_weight="1"
                 android:background="?attr/colorPrimary"
-                app:layout_constraintBottom_toTopOf="@+id/btnCapture"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -150,14 +149,20 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <ImageButton
+                        android:id="@+id/mediaSelectionButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:visibility="visible"
+                        android:src="@drawable/ic_add_to_photos_black_48dp" />
+
+                    <ImageButton
                         android:id="@+id/btnGalery"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_photo_library_black_48dp"
-                        android:text="Galerie"
-                        app:layout_constraintStart_toEndOf="@+id/btnCapture"
-                        app:layout_constraintTop_toBottomOf="parent" />
+                        android:text="Galerie" />
 
                     <ImageButton
                         android:id="@+id/btnCapture"
@@ -174,6 +179,7 @@
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_videocam_black_48dp"
                         android:text="Video" />
+
 
                     <ImageView
                         android:id="@+id/imageView4"
