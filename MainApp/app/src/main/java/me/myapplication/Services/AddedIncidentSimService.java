@@ -27,22 +27,22 @@ public class AddedIncidentSimService extends Service {
         Runnable r = new Runnable() {
             @Override
             public void run() {
-                for ( int i = 1; i < 4; i++){
+                //for ( int i = 1; i < 3; i++){
                     synchronized (this) {
                         try {
                             wait(20000);
                             IncidentDBHelper.getSingleton().insertComm(1,1, new Date(), "cont");
                             IncidentDBHelper.getSingleton()
-                                    .insertIncident(2, 3, i
+                                    .insertIncident(2, 3, 1
                                             ,
-                                            2, "Je suis ds le service aled", "Type = "+i,new byte[]{},2, Calendar.getInstance().getTime()
+                                            2, "Photocopieuse : feuilles", "Plus de feuille dans la photocopieuse",new byte[]{},2, Calendar.getInstance().getTime()
                                     );
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
                     }
                 }
-            }
+            //}
         };
         Thread notifThread = new Thread(r);
         notifThread.start();

@@ -96,7 +96,7 @@ INSERT INTO users (userId, username, emailAddress, password, roles) VALUES (2, '
 --incident
 INSERT INTO incidents (incidentId, reporterId, locationId, typeId, importance, title, status, declarationDate) VALUES (1, 1, 3, 2, 3, 'Incident 1',0, '2018-05-22 11:15:00');
 INSERT INTO incidents (incidentId, reporterId, locationId, typeId, importance, title, status, declarationDate) VALUES (2, 1, 5, 1, 3, 'Incident 2',2, '2018-05-24 12:00:00');
-INSERT INTO incidents (incidentId, reporterId, locationId, typeId, importance, title, status, declarationDate) VALUES (3, 1, 5, 1, 3, 'Incident 2',2, '2018-05-21 15:00:00');
+INSERT INTO incidents (incidentId, reporterId, locationId, typeId, importance, title, status, declarationDate) VALUES (3, 1, 5, 1, 3, 'Incident 3',2, '2018-05-21 15:00:00');
 
 --assignation
 INSERT INTO assignations (userId, incidentId, startDate, endDate) VALUES (1, 1, '2018-05-22 15:30:00', '2018-05-22 18:30:00');

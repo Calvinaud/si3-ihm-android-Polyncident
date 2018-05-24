@@ -51,24 +51,24 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_layout_visualization, parent, false);
         final ViewHolder holder = new ViewHolder(v);
+        SharedPreferences sharedPreferences = context.getSharedPreferences("Comments", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(Integer.toString(incidentID), IncidentDBHelper.getSingleton().getCommentaires(incidentID).getCount());
+        editor.apply();
+        Logger.getAnonymousLogger().log(Level.WARNING,"COMMS"+IncidentDBHelper.getSingleton().getCommentaires(incidentID).getCount());
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                cursor.moveToFirst();
                 Cursor cursorId = IncidentDBHelper.getSingleton().getIncidentCursor(-1, -1, -1, 100);
                 cursorId.moveToPosition(holder.getAdapterPosition());
                 int incidentId = cursorId.getInt(cursorId.getColumnIndexOrThrow("incidentId"));
                 Intent intent = new Intent(context,DisplayDetailsIncidentActivity.class);
                 Log.i("id: ","");
                 intent.putExtra("incidentId",incidentId);
+                view.getContext().startActivity(intent);
 
-                SharedPreferences sharedPreferences = context.getSharedPreferences("Comments", MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putInt(Integer.toString(incidentID), IncidentDBHelper.getSingleton().getCommentaires(incidentID).getCount());
-                editor.apply();
-                cursor.moveToFirst();
-                Logger.getAnonymousLogger().log(Level.WARNING,"COMMO "+IncidentDBHelper.getSingleton().getCommentaires(incidentID).getCount());
-
-                view.getContext().startActivity(intent);}
+            }
         });
         return holder;
 
@@ -80,11 +80,21 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
         incidentID = cursor.getInt(cursor.getColumnIndexOrThrow("incidentId"));
 
         if(IncidentDBHelper.getSingleton().isUserSubscribed(userId,incidentID)){
-
             SharedPreferences sharedPreferences = context.getSharedPreferences("Comments", MODE_PRIVATE);
-            int commNumber = IncidentDBHelper.getSingleton().getCommentaires(incidentID).getCount() - sharedPreferences.getInt(Integer.toString(incidentID), 0);
+            int prev = sharedPreferences.getInt(Integer.toString(incidentID), 0);
+            int current = IncidentDBHelper.getSingleton().getCommentaires(incidentID).getCount();
+
+            int commNumber = current-prev;
             Logger.getAnonymousLogger().log(Level.WARNING," TIO"+commNumber);
+
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putInt(Integer.toString(incidentID), IncidentDBHelper.getSingleton().getCommentaires(incidentID).getCount());
+            editor.apply();
+
+            if(commNumber>=0){
             holder.commentNumer.setText(Integer.toString(commNumber));
+            }else {holder.commentNumer.setText(Integer.toString(1));}
+
 
             holder.subscribe.setImageResource(R.drawable.ic_star_black_24dp);
         }
