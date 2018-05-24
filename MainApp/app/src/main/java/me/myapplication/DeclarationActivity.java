@@ -74,9 +74,12 @@ public class DeclarationActivity extends Activity {
     private EditText descriptionEditText;
 
 
+    //media selection buttons
     private ImageButton btnGalery;
     private ImageButton btnCapture;
     private ImageButton btnVideo;
+    private ImageButton[] mediaButtons;
+
 
     private VideoView videoView;
     private ImageView imageView;
@@ -186,6 +189,8 @@ public class DeclarationActivity extends Activity {
                 typeSpinner, titleEditText, importanceSeekBar,
                 importanceLabel, btnCapture, btnGalery, btnVideo
         };
+
+        this.mediaButtons = new ImageButton[]{btnVideo, btnGalery, btnCapture};
     }
 
     private void initElementListeners(){
@@ -215,6 +220,12 @@ public class DeclarationActivity extends Activity {
         this.videoView.setVisibility(View.GONE);
         this.imageView.setVisibility(View.GONE);
 
+    }
+
+    private void hideMediaSelectionButtons(){
+        for(ImageButton imageButton : mediaButtons){
+            imageButton.setVisibility(View.GONE);
+        }
     }
 
 
@@ -310,6 +321,8 @@ public class DeclarationActivity extends Activity {
                         Bitmap bm = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedMediaUri);
                         imageView.setImageBitmap(bm);
                         imageView.setVisibility(View.VISIBLE);
+                        hideMediaSelectionButtons();
+
                         ByteArrayOutputStream stream = new ByteArrayOutputStream();
                         bm.compress(Bitmap.CompressFormat.JPEG,0,stream);
                         this.image = stream.toByteArray();
@@ -323,6 +336,7 @@ public class DeclarationActivity extends Activity {
                     MediaController mc = new MediaController(this);
                     videoView.setMediaController(mc);
                     imageView.setVisibility(View.INVISIBLE);
+                    hideMediaSelectionButtons();
                 }
 
             }
@@ -343,6 +357,8 @@ public class DeclarationActivity extends Activity {
                 Uri videoUri = data.getData();
                 videoView.setVideoURI(videoUri);
                 videoView.setVisibility(View.VISIBLE);
+                hideMediaSelectionButtons();
+
                 MediaController mc = new MediaController(this);
                 videoView.setMediaController(mc);
 
