@@ -97,8 +97,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Log.i("UserRole",user.getRole());
-
         FloatingActionButton planning = (FloatingActionButton) findViewById(R.id.planning);
         if(user.getRole().equals("TECHNICIEN")) {
             planning.setOnClickListener(new View.OnClickListener() {
@@ -120,8 +118,7 @@ public class MainActivity extends AppCompatActivity {
             admin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               // Intent intent = new Intent(MainActivity.this, AdminActivity.class);
-                 Intent intent = new Intent(MainActivity.this, AdminPlanningActivity.class);
+                Intent intent = new Intent(MainActivity.this, AdminActivity.class);
                 startActivity(intent);
             }
         });

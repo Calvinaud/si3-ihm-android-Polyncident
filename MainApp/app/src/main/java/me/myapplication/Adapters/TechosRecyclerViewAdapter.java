@@ -21,8 +21,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.concurrent.TimeUnit;
 
+import me.myapplication.AdminPlanningActivity;
 import me.myapplication.Helpers.CalendarQueryHandler;
 import me.myapplication.Helpers.IncidentDBHelper;
+import me.myapplication.MainActivity;
 import me.myapplication.Models.Importance;
 import me.myapplication.Models.Incident;
 import me.myapplication.R;
@@ -111,13 +113,10 @@ public class TechosRecyclerViewAdapter extends RecyclerView.Adapter<TechosRecycl
         @Override
         public void onClick(View view)
         {
-
-            long startdate=1527102732164L;
-            long endDate=1527109732164L;
-
-
-            CalendarQueryHandler.insertEvent(context, startdate,
-                    endDate, "Tesorino");
+           /* Intent intent = new Intent(MainActivity.this, AdminPlanningActivity.class);
+            intent.removeExtra("userId");
+            intent.putExtra("userId",userId);
+            startActivity(intent);*/
         }
     }
 }
