@@ -16,6 +16,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -89,10 +91,14 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
         String[] date=fulldate.split(" ");
 
         holder.date.setText(date[0]);
-        holder.heure.setText(date[1]);
+
+        String[] hourParts = date[1].split(":");
+
+        holder.heure.setText(hourParts[0] + ":" + hourParts[1]);
 
         holder.urgence.setText(urgence.getText());
         holder.description.setText(desc);
+
 
         Logger.getAnonymousLogger().log(Level.WARNING,"status ="+cursor.getInt(cursor.getColumnIndexOrThrow("status")));
         switch (cursor.getInt(cursor.getColumnIndexOrThrow("status"))){
