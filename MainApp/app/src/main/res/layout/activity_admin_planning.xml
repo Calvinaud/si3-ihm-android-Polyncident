@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.AdminPlanningFragment">
+    tools:context=".AdminPlanningActivity">
 
     <com.alamkanak.weekview.WeekView
         android:id="@+id/weekView"
@@ -22,4 +23,5 @@
         app:todayBackgroundColor="#1848adff"
         app:headerColumnBackground="#ffffffff"/>
 
-</FrameLayout>
+
+</android.support.constraint.ConstraintLayout>

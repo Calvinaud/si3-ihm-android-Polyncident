@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.support.v4.app.Fragment;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +24,7 @@ import me.myapplication.R;
  * Created by user on 28/04/2018.
  */
 
-public class VisualizationFragment extends android.support.v4.app.Fragment {
+public class VisualizationFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
 
