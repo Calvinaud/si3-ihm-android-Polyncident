@@ -51,7 +51,20 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_layout_visualization, parent, false);
-        return new ViewHolder(v);
+        final ViewHolder holder = new ViewHolder(v);
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Cursor cursorId = IncidentDBHelper.getSingleton().getIncidentCursor(-1, -1, -1, 100);
+                cursorId.moveToPosition(holder.getAdapterPosition());
+                int incidentId = cursorId.getInt(cursorId.getColumnIndexOrThrow("incidentId"));
+                Intent intent = new Intent(context,DisplayDetailsIncidentActivity.class);
+                Log.i("id: ","");
+                intent.putExtra("incidentId",incidentId);
+                view.getContext().startActivity(intent);}
+        });
+        return holder;
+
     }
 
     @Override
@@ -70,7 +83,6 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
         int typeId = cursor.getInt(cursor.getColumnIndexOrThrow("typeId"));
         String url = cursor.getString(cursor.getColumnIndexOrThrow("urlPhoto"));
         Log.i("id2: ",""+incidentID);
-        holder.cardView.setOnClickListener(new DetailsListener());
         holder.incident.setText(title);
         String fulldate = cursor.getString(cursor.getColumnIndexOrThrow("declarationDate"));
 
@@ -165,11 +177,7 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
 
         @Override
         public void onClick(View view)  {
-            Intent intent = new Intent(context,DisplayDetailsIncidentActivity.class);
-            intent.removeExtra("incidentID");
-            Log.i("id: ",""+incidentID);
-            intent.putExtra("incidentId",incidentID);
-            view.getContext().startActivity(intent);
+
         }
     }
 }
