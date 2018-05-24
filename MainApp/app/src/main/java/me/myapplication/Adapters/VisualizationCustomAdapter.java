@@ -109,13 +109,7 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
         holder.incident.setText(title);
         String fulldate = cursor.getString(cursor.getColumnIndexOrThrow("declarationDate"));
 
-        String[] date=fulldate.split(" ");
-
-        holder.date.setText(date[0]);
-
-        String[] hourParts = date[1].split(":");
-
-        holder.heure.setText(hourParts[0] + ":" + hourParts[1]);
+        reduceDate(holder, fulldate);
 
         holder.urgence.setText(urgence.getText());
         holder.description.setText(desc);
@@ -135,6 +129,21 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
                 holder.status.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_check_circle_black_24dp));
                 break;
         }
+    }
+
+    private void reduceDate(ViewHolder holder, String fulldate){
+
+        String[] splittedFullDate = fulldate.split(" ");
+
+        String[] dateParts = splittedFullDate[0].split("-");
+
+        //display the month and the day
+        holder.date.setText(dateParts[1]+"-"+dateParts[2]);
+
+
+        String[] hourParts = splittedFullDate[1].split(":");
+
+        holder.heure.setText(hourParts[0] + ":" + hourParts[1]);
     }
 
     @Override
