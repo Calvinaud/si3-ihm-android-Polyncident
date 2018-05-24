@@ -25,7 +25,7 @@ public class VisualizationFragment extends Fragment {
     private RecyclerView.Adapter adapter;
     private IncidentDBHelper dbHelper;
     private boolean myIncidents;
-
+    private int userId;
 
     public static VisualizationFragment newInstance(int sectionNumber) {
         VisualizationFragment fragment = new VisualizationFragment();

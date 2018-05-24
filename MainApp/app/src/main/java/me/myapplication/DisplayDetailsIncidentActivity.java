@@ -66,6 +66,7 @@ public class DisplayDetailsIncidentActivity extends AppCompatActivity {
             byte[] img = incident.getImg();
             Bitmap bm = BitmapFactory.decodeByteArray(img, 0, img.length);
             imageView.setImageBitmap(bm);
+            imageView.setVisibility(View.VISIBLE);
         }
      //   InputStream in = null;
        // if (incident.getUrlPhoto() != null) {
