@@ -275,10 +275,11 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
 
     public Cursor getCommentaires(int incidentId) {
 
-        String queryString = "SELECT * FROM comments WHERE ";
+        String queryString = "SELECT c.*, u.username FROM comments AS c, users AS u WHERE u.userId=c.userId AND ";
 
-        queryString += " incidentId ";
-        queryString += (incidentId != -1 ? "="+incidentId : "<> -1");
+        queryString += "incidentId=";
+        //queryString += (incidentId != -1 ? "="+incidentId : "<> -1");
+        queryString += incidentId;
 
         Logger.getAnonymousLogger().warning(queryString);
 
@@ -519,11 +520,14 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
         myDataBase.insert("incidents",null, contentValues);
     }
 
-    public void insertComm(int userId,int incidentId,String date,String content){
+    public void insertComm(int userId,int incidentId,Date date,String content){
+
         ContentValues contentValues = new ContentValues();
         contentValues.put("userId",userId);
         contentValues.put("incidentId",incidentId);
-        contentValues.put("date",date);
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        contentValues.put("date",format.format(date));
         contentValues.put("comment",content);
 
         myDataBase.insert("comments",null,contentValues);
@@ -537,7 +541,6 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
 
         myDataBase.insert("subscriptions",null,contentValues);
     }
-
 
     public void logComms(){ logTable("comments");}
 

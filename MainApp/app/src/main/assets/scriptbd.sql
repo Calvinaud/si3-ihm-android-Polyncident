@@ -103,3 +103,6 @@ INSERT INTO assignations (userId, incidentId, startDate, endDate) VALUES (1, 3, 
 
 --subs
 INSERT INTO subscriptions (userId, incidentId) VALUES (0,1);
+
+--comment
+INSERT INTO comments (commentId, userId, incidentId, date, comment) VALUES (0, 0, 1, '2018-05-23 12:00:00', 'Sale noob')

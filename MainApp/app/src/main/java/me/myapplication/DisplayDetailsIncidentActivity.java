@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import me.myapplication.Adapters.DisplayCommentariesAdapter;
 import me.myapplication.Adapters.VisualizationCustomAdapter;
@@ -98,7 +99,7 @@ public class DisplayDetailsIncidentActivity extends AppCompatActivity {
                     return;
 
                 IncidentDBHelper.getSingleton()
-                        .insertComm(0, incident.getIncidentID(), "", newCom.getText().toString());
+                        .insertComm(0, incident.getIncidentID(), Calendar.getInstance().getTime(), newCom.getText().toString());
                 IncidentDBHelper.getSingleton().logComms();
                 finish();
                 startActivity(getIntent());

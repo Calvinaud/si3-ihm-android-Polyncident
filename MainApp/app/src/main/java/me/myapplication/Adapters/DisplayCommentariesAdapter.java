@@ -51,11 +51,14 @@ public class DisplayCommentariesAdapter extends RecyclerView.Adapter<DisplayComm
             cursor.moveToPosition(position);
             Log.i("n",""+cursor.getCount());
             String contentComment = this.cursor.getString(cursor.getColumnIndexOrThrow("comment"));
-            Log.i("content",contentComment);
+            String fulldate = this.cursor.getString(cursor.getColumnIndexOrThrow("date"));
+            String[] date=fulldate.split(" ");
+            String username = this.cursor.getString(cursor.getColumnIndexOrThrow("username"));
 
-            holder.profilName.setText("NAME");
-            holder.date.setText("0");
-            holder.heure.setText("" + i);
+
+            holder.profilName.setText(username);
+            holder.date.setText(date[0]);
+            holder.heure.setText(date[1]);
             holder.content.setText(contentComment);
             i++;
     }
