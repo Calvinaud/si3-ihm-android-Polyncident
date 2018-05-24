@@ -16,6 +16,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -51,7 +53,20 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_layout_visualization, parent, false);
-        return new ViewHolder(v);
+        final ViewHolder holder = new ViewHolder(v);
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Cursor cursorId = IncidentDBHelper.getSingleton().getIncidentCursor(-1, -1, -1, 100);
+                cursorId.moveToPosition(holder.getAdapterPosition());
+                int incidentId = cursorId.getInt(cursorId.getColumnIndexOrThrow("incidentId"));
+                Intent intent = new Intent(context,DisplayDetailsIncidentActivity.class);
+                Log.i("id: ","");
+                intent.putExtra("incidentId",incidentId);
+                view.getContext().startActivity(intent);}
+        });
+        return holder;
+
     }
 
     @Override
@@ -70,17 +85,22 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
         int typeId = cursor.getInt(cursor.getColumnIndexOrThrow("typeId"));
         String url = cursor.getString(cursor.getColumnIndexOrThrow("urlPhoto"));
         Log.i("id2: ",""+incidentID);
-        holder.cardView.setOnClickListener(new DetailsListener());
         holder.incident.setText(title);
         String fulldate = cursor.getString(cursor.getColumnIndexOrThrow("declarationDate"));
 
         String[] date=fulldate.split(" ");
 
         holder.date.setText(date[0]);
-        holder.heure.setText(date[1]);
+
+        String[] hourParts = date[1].split(":");
+
+        holder.heure.setText(hourParts[0] + ":" + hourParts[1]);
 
         holder.urgence.setText(urgence.getText());
         holder.description.setText(desc);
+
+        holder.itemView.findViewById(R.id.card_border)
+                       .setBackgroundColor(urgence.getColor(context));
 
         Logger.getAnonymousLogger().log(Level.WARNING,"status ="+cursor.getInt(cursor.getColumnIndexOrThrow("status")));
         switch (cursor.getInt(cursor.getColumnIndexOrThrow("status"))){
@@ -165,11 +185,7 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
 
         @Override
         public void onClick(View view)  {
-            Intent intent = new Intent(context,DisplayDetailsIncidentActivity.class);
-            intent.removeExtra("incidentID");
-            Log.i("id: ",""+incidentID);
-            intent.putExtra("incidentId",incidentID);
-            view.getContext().startActivity(intent);
+
         }
     }
 }

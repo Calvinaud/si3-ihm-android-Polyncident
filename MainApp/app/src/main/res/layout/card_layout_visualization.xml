@@ -4,120 +4,136 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:paddingLeft="8dp"
-    android:paddingRight="8dp">
+    android:paddingLeft="4dp"
+    android:paddingRight="4dp"
+    android:layout_gravity="center_horizontal"
+    android:layout_margin="5dp">
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/card"
-        android:layout_width="368dp"
+    <FrameLayout
+
+        android:id="@+id/card_border"
+        android:layout_width="325dp"
         android:layout_height="80dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="9dp"
-        android:clickable="true"
-        android:foreground="?android:attr/selectableItemBackground"
-        app:cardBackgroundColor="@color/cardview_light_background"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:paddingTop="5dp"
+        android:background="@color/cardview_dark_background"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:foregroundGravity="center">
 
-        <android.support.constraint.ConstraintLayout
+        <android.support.v7.widget.CardView
+            android:id="@+id/card"
+            android:layout_height="match_parent"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:clickable="true"
+            android:layout_margin="-5dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:cardBackgroundColor="@color/cardview_light_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/statusView"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_check_circle_black_24dp" />
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/subscribeView"
-                android:layout_width="40dp"
-                android:layout_height="50dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginBottom="15dp"
-                android:layout_marginEnd="24dp"
-                android:layout_marginTop="15dp"
-                android:onClick="onClickSubscribe"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_star_border_black_24dp" />
+                <ImageView
+                    android:id="@+id/statusView"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="24dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_check_circle_black_24dp" />
 
-            <TextView
-                android:id="@+id/incidentTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="60dp"
-                android:layout_toEndOf="@+id/statusView"
-                android:text="Un incident"
-                android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                <ImageView
+                    android:id="@+id/subscribeView"
+                    android:layout_width="40dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginTop="15dp"
+                    android:onClick="onClickSubscribe"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_star_border_black_24dp" />
 
-            <TextView
-                android:id="@+id/dateTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignEnd="@+id/timeTextView"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginTop="7dp"
-                android:text="00/00/0000"
-                android:textSize="10sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/timeTextView"
-                app:layout_constraintTop_toBottomOf="@+id/descView" />
+                <TextView
+                    android:id="@+id/incidentTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="60dp"
+                    android:layout_toEndOf="@+id/statusView"
+                    android:text="Un incident"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/timeTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="106dp"
-                android:layout_marginTop="7dp"
-                android:layout_toStartOf="@+id/emergencyTextView"
-                android:text="00h00"
-                android:textSize="10sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/descView" />
+                <TextView
+                    android:id="@+id/dateTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/timeTextView"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="7dp"
+                    android:text="00/00/0000"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="10sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/emergencyTextView"
+                    app:layout_constraintTop_toBottomOf="@+id/descView" />
 
-            <TextView
-                android:id="@+id/emergencyTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/incidentTextView"
-                android:layout_alignEnd="@+id/subscribeView"
-                android:layout_marginBottom="8dp"
-                android:layout_marginStart="60dp"
-                android:layout_marginTop="5dp"
-                android:text="Urgence"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/descView" />
+                <TextView
+                    android:id="@+id/timeTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="7dp"
+                    android:layout_toStartOf="@+id/emergencyTextView"
+                    android:text="00h00"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="10sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/dateTextView"
+                    app:layout_constraintTop_toBottomOf="@+id/descView" />
 
-            <TextView
-                android:id="@+id/descView"
-                android:layout_width="235dp"
-                android:layout_height="28dp"
-                android:layout_alignStart="@+id/incidentTextView"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="3dp"
-                android:text="Une description"
-                app:layout_constraintStart_toEndOf="@+id/statusView"
-                app:layout_constraintTop_toBottomOf="@+id/incidentTextView" />
-        </android.support.constraint.ConstraintLayout>
-    </android.support.v7.widget.CardView>
+                <TextView
+                    android:id="@+id/emergencyTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/incidentTextView"
+                    android:layout_alignEnd="@+id/subscribeView"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="60dp"
+                    android:layout_marginTop="5dp"
+                    android:text="Urgence"
+                    android:textColor="@android:color/darker_gray"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/descView" />
+
+                <TextView
+                    android:id="@+id/descView"
+                    android:layout_width="235dp"
+                    android:layout_height="28dp"
+                    android:layout_alignStart="@+id/incidentTextView"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="3dp"
+                    android:text="Une description"
+                    app:layout_constraintStart_toEndOf="@+id/statusView"
+                    app:layout_constraintTop_toBottomOf="@+id/incidentTextView" />
+            </android.support.constraint.ConstraintLayout>
+        </android.support.v7.widget.CardView>
+    </FrameLayout>
+
+
 </android.support.constraint.ConstraintLayout>

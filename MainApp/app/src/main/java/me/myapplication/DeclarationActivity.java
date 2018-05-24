@@ -257,7 +257,7 @@ public class DeclarationActivity extends Activity {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             DeclarationActivity.this.importanceLabel.setText(
-                    Importance.getImportanceByValue(progress).getText()
+                    Importance.getImportanceByValue(progress+1).getText()
             );
         }
 

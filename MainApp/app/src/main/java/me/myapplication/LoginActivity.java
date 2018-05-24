@@ -67,10 +67,12 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         try {
-            IncidentDBHelper.createSingleton(this);
-            IncidentDBHelper.getSingleton().createDataBase();
-            IncidentDBHelper.getSingleton().openDataBase();
-            IncidentDBHelper.getSingleton().initTables();
+            if(IncidentDBHelper.getSingleton() == null){
+                IncidentDBHelper.createSingleton(this);
+                IncidentDBHelper.getSingleton().createDataBase();
+                IncidentDBHelper.getSingleton().openDataBase();
+                IncidentDBHelper.getSingleton().initTables();
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
