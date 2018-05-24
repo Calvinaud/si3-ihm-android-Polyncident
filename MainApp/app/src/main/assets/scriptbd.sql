@@ -87,9 +87,9 @@ INSERT INTO types (typeid, name) VALUES('2','Matériel cassé');
 INSERT INTO types (typeid, name) VALUES('3','Autres');
 
 --users
-INSERT INTO users (userId, username, password, roles, telephoneNumber) VALUES (0,'Mathieu', 'Mathieu', 'UTILISATEUR', "0645128214");
-INSERT INTO users (userId, username, password, roles) VALUES (1, 'Bob', 'Bob', 'TECHNICIEN');
-INSERT INTO users (userId, username, password, roles) VALUES (2, 'Roger', 'Roger', 'TECHNICIEN');
+INSERT INTO users (userId, username, emailAddress, password, roles, telephoneNumber) VALUES (0,'Mathieu', 'Mat@gmail.com', 'Mathieu', 'UTILISATEUR', "0645128214");
+INSERT INTO users (userId, username, emailAddress, password, roles) VALUES (1, 'Bob', 'Bob@gmail.com','BobBob', 'TECHNICIEN');
+INSERT INTO users (userId, username, emailAddress, password, roles) VALUES (2, 'Roger', 'Roger@gmail.com', 'RogerRoger', 'TECHNICIEN');
 --incident
 INSERT INTO incidents (incidentId, reporterId, locationId, typeId, importance, title, status) VALUES (1, 1, 3, 2, 3, 'Incident 1',0);
 INSERT INTO incidents (incidentId, reporterId, locationId, typeId, importance, title, status) VALUES (2, 1, 5, 1, 3, 'Incident 2',2);

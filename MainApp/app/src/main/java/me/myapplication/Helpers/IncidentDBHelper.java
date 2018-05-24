@@ -138,6 +138,10 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
 
     }
 
+    public Cursor geUsersLogin(){
+        return myDataBase.rawQuery("SELECT emailAddress, password, userId from users", null);
+    }
+
     public List<String> getTypes(){
 
         List<String> types = new ArrayList<>(10);

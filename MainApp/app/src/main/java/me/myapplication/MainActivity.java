@@ -29,13 +29,16 @@ import java.util.logging.Logger;
 
 import me.myapplication.Fragments.VisualizationFragment;
 import me.myapplication.Helpers.IncidentDBHelper;
+import me.myapplication.Models.Incident;
+import me.myapplication.Models.User;
 import me.myapplication.Services.AddedIncidentSimService;
 import me.myapplication.Services.NotificationService;
 
 public class MainActivity extends AppCompatActivity {
 
     private IncidentDBHelper dbHelper;
-
+    private int userId;
+    private User user;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -62,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
             IncidentDBHelper.getSingleton().createDataBase();
             IncidentDBHelper.getSingleton().openDataBase();
             IncidentDBHelper.getSingleton().initTables();
+            user = new User(IncidentDBHelper.getSingleton().getUserCursor(userId));
 
             //incidents initiaux
             if(IncidentDBHelper.getSingleton().isUserSubscribed(0,1)) {
@@ -109,7 +113,8 @@ public class MainActivity extends AppCompatActivity {
         admin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, AdminActivity.class);
+                //Intent intent = new Intent(MainActivity.this, AdminActivity.class);
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
             }
         });
