@@ -221,7 +221,7 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
 
         String queryString = "SELECT i.incidentId, i.title, i.importance, a.startDate, a.endDate, t.name AS typeName, l.name AS lieuName" +
                 " FROM assignations AS a, incidents AS i, locations AS l, types AS t" +
-                " WHERE l.locationId=i.locationId AND i.incidentId=a.incidentId AND ";
+                " WHERE l.locationId=i.locationId AND i.incidentId=a.incidentId AND t.typeId = i.typeId AND ";
 
         queryString += "a.userId=";
         queryString += id;
@@ -245,6 +245,39 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
         }
 
         return planningIncident;
+    }
+
+
+    public Cursor getIncidentMonth(int userId, int month, int year){
+        Calendar aCalendar = new GregorianCalendar(year,month-1,1);
+
+        Date firstDay = aCalendar.getTime();
+        aCalendar.set(Calendar.DATE,     aCalendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        Date lastDay = aCalendar.getTime();
+
+        String queryString = "SELECT i.incidentId, i.title, i.importance, a.startDate, a.endDate, t.name AS typeName, l.name AS lieuName" +
+                " FROM assignations AS a, incidents AS i, locations AS l, types AS t" +
+                " WHERE l.locationId=i.locationId AND i.incidentId=a.incidentId AND t.typeId = i.typeId AND ";
+
+        queryString += "a.userId=";
+        queryString += userId;
+
+        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
+        String startDate = format.format(firstDay);
+        String endDate = format.format(lastDay)+" 23:59:59";
+
+        queryString +=" AND a.startDate>=";
+        queryString += startDate;
+
+        queryString +=" AND a.endDate<='";
+        queryString += endDate+"'";
+
+        Log.i("queryPlanning",queryString);
+
+        Cursor cursor = myDataBase.rawQuery(queryString,null);
+        Log.i("infos",""+month+",,,"+year+"----"+cursor.getCount());
+
+        return cursor;
     }
 
 

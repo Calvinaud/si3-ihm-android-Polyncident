@@ -1,91 +1,230 @@
 package me.myapplication;
 
-import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.RectF;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.app.Fragment;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.util.TypedValue;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
 
-import java.text.DateFormat;
-import java.text.ParseException;
+import com.alamkanak.weekview.DateTimeInterpreter;
+import com.alamkanak.weekview.MonthLoader;
+import com.alamkanak.weekview.WeekView;
+import com.alamkanak.weekview.WeekViewEvent;
+
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.Locale;
 
-import me.myapplication.Fragments.DayFragment;
-import me.myapplication.Listener.OnSwipeTouchListener;
+import me.myapplication.Helpers.IncidentDBHelper;
 
-public class PlanningActivity extends AppCompatActivity {
 
-    private View view;
-    Date currentDate;
+public class PlanningActivity extends AppCompatActivity implements WeekView.EventClickListener, MonthLoader.MonthChangeListener, WeekView.EventLongPressListener, WeekView.EmptyViewLongPressListener {
+    private static final int TYPE_DAY_VIEW = 1;
+    private static final int TYPE_THREE_DAY_VIEW = 2;
+    private static final int TYPE_WEEK_VIEW = 3;
+    private int mWeekViewType = TYPE_THREE_DAY_VIEW;
+    private WeekView mWeekView;
+    private int userId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_planning);
+        Intent intent = getIntent();
+        userId = intent.getIntExtra("userId", 0);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        // Get a reference for the week view in the layout.
+        mWeekView = (WeekView) findViewById(R.id.weekView);
 
-        String dateToday = "No date";
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-        dateToday = df.format(Calendar.getInstance().getTime());
+        // Show a toast message about the touched event.
+        mWeekView.setOnEventClickListener(this);
 
+        // The week view has infinite scrolling horizontally. We have to provide the events of a
+        // month every time the month changes on the week view.
+        mWeekView.setMonthChangeListener(this);
 
-        TextView todaydate=(TextView) findViewById(R.id.todayDate);
-        todaydate.setText("Nous somme le: "+dateToday);
+        // Set long press listener for events.
+        mWeekView.setEventLongPressListener(this);
 
-        currentDate= new Date();
-        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
-        try{
-            currentDate=format.parse("2018-05-19");
-        }
-        catch (ParseException e){
-            e.printStackTrace();
-        }
+        // Set long press listener for empty view
+        mWeekView.setEmptyViewLongPressListener(this);
 
-        FragmentTransaction ft=getFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment, DayFragment.newInstance(currentDate.getTime()));
-        ft.commit();
-
-        view = (View) findViewById(R.id.fullView);
-        view.setOnTouchListener(imageViewSwiped);
+        // Set up a date time interpreter to interpret how the date and time will be formatted in
+        // the week view. This is optional.
+        setupDateTimeInterpreter(false);
     }
 
-    View.OnTouchListener imageViewSwiped = new OnSwipeTouchListener()
-    {
-        @Override
-        public boolean onSwipeRight()
-        {
-            FragmentTransaction ft=getFragmentManager().beginTransaction();
-            currentDate=new Date(currentDate.getTime()+86400000);
-            ft.replace(R.id.fragment, DayFragment.newInstance(currentDate.getTime()));
-            ft.commit();
-            return true;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_planning, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        setupDateTimeInterpreter(id == R.id.action_week_view);
+        switch (id){
+            case R.id.action_today:
+                mWeekView.goToToday();
+                return true;
+            case R.id.action_day_view:
+                if (mWeekViewType != TYPE_DAY_VIEW) {
+                    item.setChecked(!item.isChecked());
+                    mWeekViewType = TYPE_DAY_VIEW;
+                    mWeekView.setNumberOfVisibleDays(1);
+
+                    // Lets change some dimensions to best fit the view.
+                    mWeekView.setColumnGap((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics()));
+                    mWeekView.setTextSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 12, getResources().getDisplayMetrics()));
+                    mWeekView.setEventTextSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 12, getResources().getDisplayMetrics()));
+                }
+                return true;
+            case R.id.action_three_day_view:
+                if (mWeekViewType != TYPE_THREE_DAY_VIEW) {
+                    item.setChecked(!item.isChecked());
+                    mWeekViewType = TYPE_THREE_DAY_VIEW;
+                    mWeekView.setNumberOfVisibleDays(3);
+
+                    // Lets change some dimensions to best fit the view.
+                    mWeekView.setColumnGap((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics()));
+                    mWeekView.setTextSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 12, getResources().getDisplayMetrics()));
+                    mWeekView.setEventTextSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 12, getResources().getDisplayMetrics()));
+                }
+                return true;
+            case R.id.action_week_view:
+                if (mWeekViewType != TYPE_WEEK_VIEW) {
+                    item.setChecked(!item.isChecked());
+                    mWeekViewType = TYPE_WEEK_VIEW;
+                    mWeekView.setNumberOfVisibleDays(7);
+
+                    // Lets change some dimensions to best fit the view.
+                    mWeekView.setColumnGap((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2, getResources().getDisplayMetrics()));
+                    mWeekView.setTextSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 10, getResources().getDisplayMetrics()));
+                    mWeekView.setEventTextSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 10, getResources().getDisplayMetrics()));
+                }
+                return true;
         }
 
-        public boolean onSwipeLeft()
-        {
-            FragmentTransaction ft=getFragmentManager().beginTransaction();
-            currentDate=new Date(currentDate.getTime()+3*86400000);
-            ft.replace(R.id.fragment, DayFragment.newInstance(currentDate.getTime()));
-            ft.commit();
+        return super.onOptionsItemSelected(item);
+    }
 
-            return true;
+
+    @Override
+    public List<WeekViewEvent> onMonthChange(int newYear, int newMonth) {
+
+        List<WeekViewEvent> events = new ArrayList<WeekViewEvent>();
+        Cursor cursor = IncidentDBHelper.getSingleton().getIncidentMonth(userId, newMonth, newYear);
+        cursor.moveToFirst();
+
+        while(!cursor.isAfterLast()){
+            events.add(addEvent(cursor, newYear, newMonth));
+            cursor.moveToNext();
         }
-    };
 
+        return events;
+    }
+
+    private WeekViewEvent addEvent(Cursor cursor, int newYear, int newMonth){
+        Calendar startTime = Calendar.getInstance();
+
+        String fullStartDate = cursor.getString(cursor.getColumnIndexOrThrow("startDate"));
+        String fullendDate = cursor.getString(cursor.getColumnIndexOrThrow("endDate"));
+
+        Log.i("full start time",fullStartDate);
+        Log.i("full end time", fullendDate);
+
+
+        String[] startTimeS = fullStartDate.split(" ");
+        String[] startDating = startTimeS[0].split("-");
+        String[] startTiming = startTimeS[1].split(":");
+
+        String[] endTimeS = fullendDate.split(" ");
+        String[] endDating = endTimeS[0].split("-");
+        String[] endTiming = endTimeS[1].split(":");
+
+   /*     startTime.set(Calendar.HOUR_OF_DAY, Integer.parseInt(startTiming[0]));
+        startTime.set(Calendar.MINUTE, Integer.parseInt(startTiming[1]));
+        startTime.set(Calendar.DAY_OF_MONTH, Integer.parseInt(startDating[2]));
+        startTime.set(Calendar.MONTH, Integer.parseInt(startDating[1]));
+        startTime.set(Calendar.YEAR, Integer.parseInt(startDating[0]));
+        Calendar endTime = (Calendar) startTime.clone();
+        endTime.set(Calendar.HOUR_OF_DAY, Integer.parseInt(endTiming[0]));
+        endTime.set(Calendar.MINUTE, Integer.parseInt(endTiming[1]));*/
+        startTime = Calendar.getInstance();
+        startTime.set(Calendar.DAY_OF_MONTH, (int)(Integer.parseInt(startDating[2])));
+        startTime.set(Calendar.HOUR_OF_DAY, (int)(Integer.parseInt(startTiming[0])));
+        startTime.set(Calendar.MINUTE, (int)(Integer.parseInt(startTiming[1])));
+        startTime.set(Calendar.MONTH, newMonth-1);
+        startTime.set(Calendar.YEAR, newYear);
+        Calendar endTime = (Calendar) startTime.clone();
+        endTime.set(Calendar.HOUR_OF_DAY, (int)(Integer.parseInt(endTiming[0])));
+
+        int id = cursor.getInt(cursor.getColumnIndexOrThrow("incidentId"));
+        String title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
+        return new WeekViewEvent(id, getEventTitle(startTime), startTime, endTime);
+
+        //   return new WeekViewEvent(id, title, startTime, endTime);
+    }
+
+
+    /**
+     * Set up a date time interpreter which will show short date values when in week view and long
+     * date values otherwise.
+     * @param shortDate True if the date values should be short.
+     */
+    private void setupDateTimeInterpreter(final boolean shortDate) {
+        mWeekView.setDateTimeInterpreter(new DateTimeInterpreter() {
+            @Override
+            public String interpretDate(Calendar date) {
+                SimpleDateFormat weekdayNameFormat = new SimpleDateFormat("EEE", Locale.getDefault());
+                String weekday = weekdayNameFormat.format(date.getTime());
+                SimpleDateFormat format = new SimpleDateFormat(" M/d", Locale.getDefault());
+
+                // All android api level do not have a standard way of getting the first letter of
+                // the week day name. Hence we get the first char programmatically.
+                // Details: http://stackoverflow.com/questions/16959502/get-one-letter-abbreviation-of-week-day-of-a-date-in-java#answer-16959657
+                if (shortDate)
+                    weekday = String.valueOf(weekday.charAt(0));
+                return weekday.toUpperCase() + format.format(date.getTime());
+            }
+
+            @Override
+            public String interpretTime(int hour) {
+                return hour > 11 ? (hour - 12) + " PM" : (hour == 0 ? "12 AM" : hour + " AM");
+            }
+        });
+    }
+
+    protected String getEventTitle(Calendar time) {
+        return String.format("Event of %02d:%02d %s/%d", time.get(Calendar.HOUR_OF_DAY), time.get(Calendar.MINUTE), time.get(Calendar.MONTH)+1, time.get(Calendar.DAY_OF_MONTH));
+    }
+
+    @Override
+    public void onEventClick(WeekViewEvent event, RectF eventRect) {
+        Toast.makeText(this, "Clicked " + event.getName(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onEventLongPress(WeekViewEvent event, RectF eventRect) {
+        Toast.makeText(this, "Long pressed event: " + event.getName(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onEmptyViewLongPress(Calendar time) {
+        Toast.makeText(this, "Empty view long pressed: " + getEventTitle(time), Toast.LENGTH_SHORT).show();
+    }
+
+    public WeekView getWeekView() {
+        return mWeekView;
+    }
 }

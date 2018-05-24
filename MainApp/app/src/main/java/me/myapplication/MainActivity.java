@@ -64,9 +64,6 @@ public class MainActivity extends AppCompatActivity {
         userId = intent.getIntExtra("userId", 0);
         try{
             user = new User(IncidentDBHelper.getSingleton().getUserCursor(userId));
-            Log.i("Appelle user","Done");
-            Log.i("Appelle user",user.getUsername());
-
             //incidents initiaux
             if(IncidentDBHelper.getSingleton().isUserSubscribed(0,1)) {
                 Logger.getAnonymousLogger().log(Level.WARNING, "subs");
@@ -108,6 +105,8 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(MainActivity.this, PlanningActivity.class);
+                    intent.removeExtra("userId");
+                    intent.putExtra("userId",userId);
                     startActivity(intent);
                 }
             });
