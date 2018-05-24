@@ -1,7 +1,11 @@
 package me.myapplication;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
@@ -276,15 +280,34 @@ public class DeclarationActivity extends Activity {
                 return;
             }
 
-            IncidentDBHelper.getSingleton()
-                    .insertIncident(DeclarationActivity.this.userId, locationSpinner.getSelectedItemPosition()+1,
-                            typeSpinner.getSelectedItemPosition()+1,importanceSeekBar.getProgress(),
-                            titleEditText.getText().toString(), descriptionEditText.getText().toString(),
-                            image, 0, Calendar.getInstance().getTime()
-                    );
-            IncidentDBHelper.getSingleton().logIncidents();
+            AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
 
-            finish();
+// 2. Chain together various setter methods to set the dialog characteristics
+            builder.setMessage("Confirmez-vous l'envoi ?")
+                    .setTitle("Confirmation");
+// 3. Get the AlertDialog from create()
+            AlertDialog dialog = builder.create();
+
+            builder.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    IncidentDBHelper.getSingleton()
+                            .insertIncident(DeclarationActivity.this.userId, locationSpinner.getSelectedItemPosition()+1,
+                                    typeSpinner.getSelectedItemPosition()+1,importanceSeekBar.getProgress(),
+                                    titleEditText.getText().toString(), descriptionEditText.getText().toString(),
+                                    image, 0, Calendar.getInstance().getTime()
+                            );
+                    IncidentDBHelper.getSingleton().logIncidents();
+
+                    finish();
+                }
+            });
+            builder.setNegativeButton("Non", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // User cancelled the dialog
+                }
+            });
+            builder.show();
+
         }
     }
 
@@ -430,4 +453,24 @@ public class DeclarationActivity extends Activity {
         return image;
     }
 
+    public static class ConfirmationDialogFragment extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the Builder class for convenient dialog construction
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage("Confirmer l'envoi ?")
+                    .setPositiveButton("Oui", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // FIRE ZE MISSILES!
+                        }
+                    })
+                    .setNegativeButton("Non", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User cancelled the dialog
+                        }
+                    });
+            // Create the AlertDialog object and return it
+            return builder.create();
+        }
+    }
 }
