@@ -3,27 +3,15 @@ package me.myapplication;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.constraint.ConstraintLayout;
-import android.support.constraint.ConstraintSet;
-import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -39,8 +27,6 @@ import android.widget.VideoView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -82,7 +68,7 @@ public class DeclarationActivity extends Activity {
     private ImageButton[] mediaButtons;
 
     private ImageButton mediaSelectionButton;
-
+    private ImageButton mediaDeletionButton;
 
     private VideoView videoView;
     private ImageView imageView;
@@ -177,6 +163,15 @@ public class DeclarationActivity extends Activity {
 
         mediaSelectionButton.setVisibility(View.VISIBLE);
 
+        mediaDeletionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideMediaViews();
+                DeclarationActivity.this.mediaSelectionButton.setVisibility(View.VISIBLE);
+            }
+        });
+
+
         image = new byte[]{};
     }
 
@@ -196,6 +191,7 @@ public class DeclarationActivity extends Activity {
         this.btnCapture = findViewById(R.id.btnCapture);
         this.btnVideo = findViewById(R.id.btnVideo);
         this.mediaSelectionButton = findViewById(R.id.mediaSelectionButton);
+        this.mediaDeletionButton = findViewById(R.id.deleteMediaButton);
 
         this.imageView = findViewById(R.id.imageView4);
         this.videoView = findViewById(R.id.videoView);
@@ -235,6 +231,7 @@ public class DeclarationActivity extends Activity {
 
         this.videoView.setVisibility(View.GONE);
         this.imageView.setVisibility(View.GONE);
+        this.mediaDeletionButton.setVisibility(View.GONE);
 
     }
 
@@ -338,6 +335,7 @@ public class DeclarationActivity extends Activity {
                         imageView.setImageBitmap(bm);
                         imageView.setVisibility(View.VISIBLE);
                         setMediaSelectionButtonsVisibility(View.GONE);
+                        this.mediaDeletionButton.setVisibility(View.VISIBLE);
 
                         ByteArrayOutputStream stream = new ByteArrayOutputStream();
                         bm.compress(Bitmap.CompressFormat.JPEG,0,stream);
@@ -352,6 +350,7 @@ public class DeclarationActivity extends Activity {
                     MediaController mc = new MediaController(this);
                     videoView.setMediaController(mc);
                     setMediaSelectionButtonsVisibility(View.GONE);
+                    this.mediaDeletionButton.setVisibility(View.VISIBLE);
 
                 }
 
@@ -363,6 +362,9 @@ public class DeclarationActivity extends Activity {
                 Log.i("uhjk", "ujhnk");
                 imageView.setImageBitmap(imageBitmap);
                 imageView.setVisibility(View.VISIBLE);
+                this.mediaDeletionButton.setVisibility(View.VISIBLE);
+                setMediaSelectionButtonsVisibility(View.GONE);
+
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 imageBitmap.compress(Bitmap.CompressFormat.JPEG,0,stream);
                 this.image = stream.toByteArray();
@@ -374,6 +376,7 @@ public class DeclarationActivity extends Activity {
                 videoView.setVideoURI(videoUri);
                 videoView.setVisibility(View.VISIBLE);
                 setMediaSelectionButtonsVisibility(View.GONE);
+                this.mediaDeletionButton.setVisibility(View.VISIBLE);
 
 
                 MediaController mc = new MediaController(this);
