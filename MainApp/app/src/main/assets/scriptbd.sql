@@ -15,6 +15,7 @@ CREATE TABLE users (
     password varchar(100),
     telephoneNumber VARCHAR(20),
     emailAddress VARCHAR(50),
+    img BLOB,
     roles VARCHAR(20) NOT NULL CHECK (roles IN ('UTILISATEUR','ADMINISTRATEUR', 'TECHNICIEN'))
 );
 
