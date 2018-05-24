@@ -37,7 +37,6 @@ public class NotificationService extends Service {
 
     NotificationCompat.Builder notification;
     private static final int uniqueID = 1234;
-    public ArrayList<Integer> subscrbedTypesId = new ArrayList<>();
 
     public NotificationService() {
     }
@@ -58,7 +57,6 @@ public class NotificationService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
-        this.subscrbedTypesId = (ArrayList<Integer>) intent.getSerializableExtra("subs");
 
         final IncidentDBHelper dbHelper = IncidentDBHelper.getSingleton();
 
@@ -70,13 +68,26 @@ public class NotificationService extends Service {
                         synchronized (this){
                             try{
                                 wait(5000);
+                                ArrayList<Integer> subscrbedTypesId = new ArrayList<>();
+
                                 SharedPreferences sharedPreferences = getSharedPreferences("Notifications", MODE_PRIVATE);
+
                                 boolean enabled = sharedPreferences.getBoolean("Enabled", true);
                                 Logger.getAnonymousLogger().log(Level.WARNING,"enabled :"+enabled);
 
+                                boolean enabled1 = sharedPreferences.getBoolean("Furniture", true);
+                                if(enabled1){subscrbedTypesId.add(1);}
+                                boolean enabled2 = sharedPreferences.getBoolean("Mat", true);
+                                if(enabled2){subscrbedTypesId.add(2);}
+                                boolean enabled3 = sharedPreferences.getBoolean("Others", true);
+                                if(enabled3){subscrbedTypesId.add(3);}
+
+                                Logger.getAnonymousLogger().log(Level.WARNING,"OKAY :"+subscrbedTypesId.get(0));
+
+
                                 Cursor cursor = dbHelper.getLastIncidentCursor();
                                 if(prev < dbHelper.getIncidentNumber() && cursor.getInt(cursor.getColumnIndexOrThrow("reporterId")) != 0 && enabled){
-                                    if(getSubscribed().contains(cursor.getInt(cursor.getColumnIndexOrThrow("typeId")))) {
+                                    if(subscrbedTypesId.contains(cursor.getInt(cursor.getColumnIndexOrThrow("typeId")))) {
                                         sendNotif(cursor.getString(cursor.getColumnIndexOrThrow("title")), cursor.getString(cursor.getColumnIndexOrThrow("description")), cursor);
                                     }
                                 }
@@ -95,10 +106,6 @@ public class NotificationService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-    }
-
-    public List<Integer> getSubscribed(){
-        return this.subscrbedTypesId;
     }
 
     public void sendNotif(String title, String desc, Cursor cursor){
