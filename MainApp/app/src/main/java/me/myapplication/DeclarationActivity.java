@@ -59,6 +59,8 @@ public class DeclarationActivity extends Activity {
 
     private String mCurrentPhotoPath="";
 
+    private int userId;
+
     //GUI components
     private Spinner typeSpinner;
     private TextView typeLabel;
@@ -111,7 +113,7 @@ public class DeclarationActivity extends Activity {
 
         this.importanceSeekBar.setMax(Importance.values().length - 1);
 
-
+        this.userId = getIntent().getIntExtra("userId", 0);
 
         btnGalery.setOnClickListener(new View.OnClickListener() {
 
@@ -278,7 +280,7 @@ public class DeclarationActivity extends Activity {
             }
 
             IncidentDBHelper.getSingleton()
-                    .insertIncident(0, locationSpinner.getSelectedItemPosition()+1,
+                    .insertIncident(DeclarationActivity.this.userId, locationSpinner.getSelectedItemPosition()+1,
                             typeSpinner.getSelectedItemPosition()+1,importanceSeekBar.getProgress(),
                             titleEditText.getText().toString(), descriptionEditText.getText().toString(),
                             image, 0, Calendar.getInstance().getTime()
