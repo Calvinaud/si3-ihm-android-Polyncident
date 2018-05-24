@@ -20,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -58,6 +59,8 @@ public class NotificationService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
 
+        final int userId = intent.getIntExtra("userId", 0);
+
         final IncidentDBHelper dbHelper = IncidentDBHelper.getSingleton();
 
         Runnable r = new Runnable() {
@@ -86,7 +89,7 @@ public class NotificationService extends Service {
 
 
                                 Cursor cursor = dbHelper.getLastIncidentCursor();
-                                if(prev < dbHelper.getIncidentNumber() && cursor.getInt(cursor.getColumnIndexOrThrow("reporterId")) != 0 && enabled){
+                                if(prev < dbHelper.getIncidentNumber() && cursor.getInt(cursor.getColumnIndexOrThrow("reporterId")) != userId && enabled){
                                     if(subscrbedTypesId.contains(cursor.getInt(cursor.getColumnIndexOrThrow("typeId")))) {
                                         sendNotif(cursor.getString(cursor.getColumnIndexOrThrow("title")), cursor.getString(cursor.getColumnIndexOrThrow("description")), cursor);
                                     }
@@ -152,6 +155,6 @@ public class NotificationService extends Service {
         notification.setContentIntent(pendingIntent);
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.notify(uniqueID,notification.build());
+        notificationManager.notify(new Random().nextInt(),notification.build());
     }
 }

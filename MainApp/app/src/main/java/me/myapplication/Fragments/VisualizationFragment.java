@@ -1,23 +1,16 @@
 package me.myapplication.Fragments;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.app.Fragment;
-import java.util.ArrayList;
-import java.util.List;
 
 import me.myapplication.Adapters.VisualizationCustomAdapter;
 import me.myapplication.Helpers.IncidentDBHelper;
 import me.myapplication.MainActivity;
-import me.myapplication.Models.Importance;
-import me.myapplication.Models.Incident;
 import me.myapplication.R;
 
 /**
@@ -60,7 +53,7 @@ public class VisualizationFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        adapter = new VisualizationCustomAdapter(getContext(), this.myIncidents);
+        adapter = new VisualizationCustomAdapter(getContext(), this.myIncidents, ((MainActivity) getContext()).getUserId());
         recyclerView.setAdapter(adapter);
     }
 
@@ -72,7 +65,7 @@ public class VisualizationFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
-        adapter = new VisualizationCustomAdapter(getContext(), this.myIncidents);
+        adapter = new VisualizationCustomAdapter(getContext(), this.myIncidents, ((MainActivity) getContext()).getUserId());
         recyclerView.setAdapter(adapter);
         return rootView;
     }

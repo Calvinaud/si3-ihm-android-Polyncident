@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, DeclarationActivity.class);
+                intent.putExtra("userId", userId);
                 startActivity(intent);
             }
         });
@@ -131,9 +132,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Intent i= new Intent(this, NotificationService.class);
-        ArrayList<Integer> subs = new ArrayList<Integer>();
-        subs.add(1);
-        i.putExtra("subs", subs );
+        intent.putExtra("userId",userId);
         startService(i);
 
         Intent intentSim =new Intent(this, AddedIncidentSimService.class);
@@ -259,5 +258,7 @@ public class MainActivity extends AppCompatActivity {
     public IncidentDBHelper getDBHelper(){
         return dbHelper;
     }
+
+    public int getUserId(){return userId;}
 
 }
