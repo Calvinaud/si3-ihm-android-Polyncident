@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.text.DateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.sql.SQLException;
@@ -194,7 +195,7 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
         int reporterId = cursor.getInt(cursor.getColumnIndexOrThrow("reporterId"));
         int locationId = cursor.getInt(cursor.getColumnIndexOrThrow("locationId"));
         int typeId = cursor.getInt(cursor.getColumnIndexOrThrow("typeId"));
-        String url = cursor.getString(cursor.getColumnIndexOrThrow("urlPhoto"));
+        byte[] img= cursor.getBlob(cursor.getColumnIndexOrThrow("img"));
         String sdate = cursor.getString(cursor.getColumnIndexOrThrow("declarationDate"));
 
         Date date = new Date();
@@ -212,7 +213,7 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
                 typeId,
                 Importance.URGENT,
                 title,
-                desc,url,date);
+                desc,img,date);
     }
 
     public List<PlanningIncident> getDayPlanningIncident(int id, Date date){
@@ -534,7 +535,7 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
     }
 
     public void insertIncident(int reporterdID, int locationID, int typeID,
-                            int importance, String title, String description, String imgUrl, int status, Date date){
+                            int importance, String title, String description, byte[] img, int status, Date date){
 
         ContentValues contentValues = new ContentValues();
         contentValues.put("reporterId", reporterdID);
@@ -543,7 +544,7 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
         contentValues.put("importance", importance);
         contentValues.put("title", title);
         contentValues.put("description", description);
-        contentValues.put("urlPhoto",imgUrl);
+        contentValues.put("img",img);
         contentValues.put("status", status);
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -603,7 +604,8 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
         cursor.moveToFirst();
         while(!cursor.isAfterLast()){
             for (int i = 0; i < cursor.getColumnCount(); i++) {
-                s += " " + cursor.getString(i) + " ";
+                if(i==5) s += " " + Arrays.toString(cursor.getBlob(i)) + " ";
+                else {s += " " + cursor.getString(i) + " ";}
             }
             Logger.getAnonymousLogger().warning(s);
 

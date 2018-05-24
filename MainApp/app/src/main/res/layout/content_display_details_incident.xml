@@ -24,19 +24,19 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_alignParentStart="true"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:layout_marginBottom="30dp"
         android:contentDescription="incident"
         app:layout_constraintBottom_toTopOf="@+id/description"
-        app:layout_constraintTop_toBottomOf="@+id/titleDetail"/>
+        app:layout_constraintTop_toBottomOf="@+id/titleDetail"
+        tools:layout_editor_absoluteX="122dp" />
 
 
     <VideoView
         android:id="@+id/VideoView"
-        android:layout_width="126dp"
-        android:layout_height="0dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:layout_alignParentStart="true"
         android:layout_marginBottom="30dp"
         android:contentDescription="incident"

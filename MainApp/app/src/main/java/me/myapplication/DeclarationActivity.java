@@ -4,12 +4,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -27,12 +29,17 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -42,6 +49,7 @@ import java.util.logging.Logger;
 
 import me.myapplication.Helpers.IncidentDBHelper;
 import me.myapplication.Models.Importance;
+import okhttp3.internal.Util;
 
 public class DeclarationActivity extends Activity {
 
@@ -73,6 +81,7 @@ public class DeclarationActivity extends Activity {
     private ImageView imageView;
 
     private Button submitButton;
+    private byte[] image;
 
     //list of views
     private View[] collapsibleViews;
@@ -148,6 +157,8 @@ public class DeclarationActivity extends Activity {
 
             }
         });
+
+        image = new byte[]{};
     }
 
     private void initElementReferences(){
@@ -236,7 +247,7 @@ public class DeclarationActivity extends Activity {
 
             if(titleEditText.getText().toString().equals("")
                 || descriptionEditText.getText().toString().equals("")){
-
+                Toast.makeText(view.getContext(),"Titre ou description vide",Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -244,7 +255,7 @@ public class DeclarationActivity extends Activity {
                     .insertIncident(0, locationSpinner.getSelectedItemPosition()+1,
                             typeSpinner.getSelectedItemPosition()+1,importanceSeekBar.getProgress(),
                             titleEditText.getText().toString(), descriptionEditText.getText().toString(),
-                            mCurrentPhotoPath, 0, Calendar.getInstance().getTime()
+                            image, 0, Calendar.getInstance().getTime()
                     );
             IncidentDBHelper.getSingleton().logIncidents();
 
@@ -298,12 +309,19 @@ public class DeclarationActivity extends Activity {
                         Bitmap bm = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedMediaUri);
                         imageView.setImageBitmap(bm);
                         imageView.setVisibility(View.VISIBLE);
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        bm.compress(Bitmap.CompressFormat.JPEG,0,stream);
+                        this.image = stream.toByteArray();
+
                     } catch (IOException e){
                         e.printStackTrace();
                     }
                 } else  if (selectedMediaUri.toString().contains("video")) {
                     videoView.setVideoURI(selectedMediaUri);
                     videoView.setVisibility(View.VISIBLE);
+                    MediaController mc = new MediaController(this);
+                    videoView.setMediaController(mc);
+                    imageView.setVisibility(View.INVISIBLE);
                 }
 
             }
@@ -314,12 +332,45 @@ public class DeclarationActivity extends Activity {
                 Log.i("uhjk", "ujhnk");
                 imageView.setImageBitmap(imageBitmap);
                 imageView.setVisibility(View.VISIBLE);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                imageBitmap.compress(Bitmap.CompressFormat.JPEG,0,stream);
+                this.image = stream.toByteArray();
+
             }
 
             else if (requestCode == REQUEST_VIDEO_CAPTURE){
                 Uri videoUri = data.getData();
                 videoView.setVideoURI(videoUri);
                 videoView.setVisibility(View.VISIBLE);
+                MediaController mc = new MediaController(this);
+                videoView.setMediaController(mc);
+
+                /*ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                FileInputStream fis;
+                String[] filePathColumn = {MediaStore.Video.Media.DATA};
+                Cursor cursor = getContentResolver().query(videoUri,filePathColumn,null,null,null);
+                String path="";
+                if(cursor.moveToFirst()){
+                    int columnIndex=cursor.getColumnIndex(filePathColumn[0]);
+                    path = cursor.getString(columnIndex);
+                }
+                cursor.close();
+
+                try {
+                    fis = new FileInputStream(new File(path));
+                    byte[] buf = new byte[1024];
+                    int n;
+                    while(-1 != (n=fis.read(buf))){
+                        stream.write(buf,0,n);
+                    }
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                this.image=stream.toByteArray();
+                Log.i("ok",""+image.length);*/
+
 
             }
         }

@@ -83,7 +83,7 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
         int reporterId = cursor.getInt(cursor.getColumnIndexOrThrow("reporterId"));
         int locationId = cursor.getInt(cursor.getColumnIndexOrThrow("locationId"));
         int typeId = cursor.getInt(cursor.getColumnIndexOrThrow("typeId"));
-        String url = cursor.getString(cursor.getColumnIndexOrThrow("urlPhoto"));
+        //String url = cursor.getString(cursor.getColumnIndexOrThrow("urlPhoto"));
         Log.i("id2: ",""+incidentID);
         holder.incident.setText(title);
         String fulldate = cursor.getString(cursor.getColumnIndexOrThrow("declarationDate"));

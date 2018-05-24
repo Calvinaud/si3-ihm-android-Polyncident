@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 
 import java.io.BufferedInputStream;
@@ -30,6 +31,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -58,9 +60,13 @@ public class DisplayDetailsIncidentActivity extends AppCompatActivity {
         Log.i("incidentId:",""+intent.getExtras());
 
         incident = IncidentDBHelper.getSingleton().getIncidentById(incidentId);
-
+        VideoView videoView = findViewById(R.id.VideoView);
         ImageView imageView = (ImageView) findViewById(R.id.imageView2);
-
+        if(incident.getImg() != null && incident.getImg().length>0) {
+            byte[] img = incident.getImg();
+            Bitmap bm = BitmapFactory.decodeByteArray(img, 0, img.length);
+            imageView.setImageBitmap(bm);
+        }
      //   InputStream in = null;
        // if (incident.getUrlPhoto() != null) {
         //    Log.i("url",incident.getUrlPhoto());

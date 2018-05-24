@@ -116,7 +116,7 @@ public class NotificationService extends Service {
         int reporterId = cursor.getInt(cursor.getColumnIndexOrThrow("reporterId"));
         int locationId = cursor.getInt(cursor.getColumnIndexOrThrow("locationId"));
         int typeId = cursor.getInt(cursor.getColumnIndexOrThrow("typeId"));
-        String url = cursor.getString(cursor.getColumnIndexOrThrow("urlPhoto"));
+        byte[] img = cursor.getBlob(cursor.getColumnIndexOrThrow("img"));
         String sdate = cursor.getString(cursor.getColumnIndexOrThrow("declarationDate"));
 
         Date date = new Date();
@@ -129,7 +129,7 @@ public class NotificationService extends Service {
             e.printStackTrace();
         }
 
-        Incident incident=new Incident(incidentId,reporterId,locationId,typeId, Importance.MINOR,title,desc,url, date);
+        Incident incident=new Incident(incidentId,reporterId,locationId,typeId, Importance.MINOR,title,desc,img, date);
 
         Intent intentActionSub = new Intent(this,NotificationActionReceiver.class);
         intentActionSub.putExtra("action","S'ABONNER");
