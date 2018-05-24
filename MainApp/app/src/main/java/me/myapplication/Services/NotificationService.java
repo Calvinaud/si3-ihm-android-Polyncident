@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -69,12 +70,17 @@ public class NotificationService extends Service {
                         synchronized (this){
                             try{
                                 wait(5000);
+                                SharedPreferences sharedPreferences = getSharedPreferences("Notifications", MODE_PRIVATE);
+                                boolean enabled = sharedPreferences.getBoolean("Enabled", true);
+                                Logger.getAnonymousLogger().log(Level.WARNING,"enabled :"+enabled);
+
                                 Cursor cursor = dbHelper.getLastIncidentCursor();
-                                if(prev < dbHelper.getIncidentNumber() && cursor.getInt(cursor.getColumnIndexOrThrow("reporterId")) != 0){
+                                if(prev < dbHelper.getIncidentNumber() && cursor.getInt(cursor.getColumnIndexOrThrow("reporterId")) != 0 && enabled){
                                     if(getSubscribed().contains(cursor.getInt(cursor.getColumnIndexOrThrow("typeId")))) {
                                         sendNotif(cursor.getString(cursor.getColumnIndexOrThrow("title")), cursor.getString(cursor.getColumnIndexOrThrow("description")), cursor);
                                     }
                                 }
+
                                 prev=dbHelper.getIncidentNumber();
                             }catch (Exception ignored){}
                         }
