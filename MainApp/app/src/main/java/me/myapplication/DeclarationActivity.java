@@ -28,6 +28,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.SeekBar;
@@ -73,9 +74,9 @@ public class DeclarationActivity extends Activity {
     private EditText descriptionEditText;
 
 
-    private Button btnGalery;
-    private Button btnCapture;
-    private Button btnVideo;
+    private ImageButton btnGalery;
+    private ImageButton btnCapture;
+    private ImageButton btnVideo;
 
     private VideoView videoView;
     private ImageView imageView;
