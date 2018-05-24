@@ -13,14 +13,15 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.concurrent.TimeUnit;
 
+import me.myapplication.AdminActivity;
 import me.myapplication.AdminPlanningActivity;
 import me.myapplication.Helpers.CalendarQueryHandler;
 import me.myapplication.Helpers.IncidentDBHelper;
@@ -31,23 +32,26 @@ import me.myapplication.R;
 
 public class TechosRecyclerViewAdapter extends RecyclerView.Adapter<TechosRecyclerViewAdapter.ViewHolder> {
 
+    public interface OnItemClickListener {
+        void onItemClick(Cursor cursor);
+    }
+
     private Context context;
     private Cursor userCursor;
+    private final OnItemClickListener listener;
 
-    public TechosRecyclerViewAdapter(Context context) {
+    public TechosRecyclerViewAdapter(Context context, OnItemClickListener listener) {
         this.context = context;
+        this.listener = listener;
         userCursor = IncidentDBHelper.getSingleton().getTechnicien();
     }
 
-    @NonNull
-    @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_layout_technicien, parent, false);
         return new ViewHolder(v);
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    @Override public void onBindViewHolder(ViewHolder holder, int position) {
         this.userCursor.moveToPosition(position);
 
         String status = "Status: ";
@@ -76,47 +80,40 @@ public class TechosRecyclerViewAdapter extends RecyclerView.Adapter<TechosRecycl
 
         weekcharge += hours + "h" + min + " (" + IncidentDBHelper.getSingleton().getTechoWeekCount(id) + " tâches)";
 
-        holder.card.setOnClickListener(new DetailsListener());
         holder.username.setText(username);
         holder.todaycharge.setText(todaycharge);
         holder.status.setText(status);
         holder.weekcharge.setText(weekcharge);
+        holder.bind(userCursor, listener);
     }
 
-    @Override
-    public int getItemCount() {
+    @Override public int getItemCount() {
         return userCursor.getCount();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
 
-        CardView card;
+        View card;
         TextView status;
         TextView username;
         TextView todaycharge;
         TextView weekcharge;
 
-        ViewHolder(View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
-
             card = (CardView) itemView.findViewById(R.id.card);
             username = (TextView) itemView.findViewById(R.id.Username);
             todaycharge = (TextView) itemView.findViewById(R.id.todayCharge);
             status = (TextView) itemView.findViewById(R.id.status);
             weekcharge = (TextView) itemView.findViewById(R.id.weekCharge);
-
         }
-    }
 
-    public class DetailsListener implements View.OnClickListener {
-
-        @Override
-        public void onClick(View view)
-        {
-           /* Intent intent = new Intent(MainActivity.this, AdminPlanningActivity.class);
-            intent.removeExtra("userId");
-            intent.putExtra("userId",userId);
-            startActivity(intent);*/
+        public void bind(final Cursor cursor, final OnItemClickListener listener) {
+            card.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    listener.onItemClick(cursor);
+                }
+            });
         }
     }
 }
