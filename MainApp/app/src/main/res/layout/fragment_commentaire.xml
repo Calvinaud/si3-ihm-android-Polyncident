@@ -24,13 +24,14 @@
             android:layout_height="match_parent">
 
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/profilPicture"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                app:srcCompat="@drawable/ic_check_circle_black_24dp" />
+                app:srcCompat="@drawable/ic_check_circle_black_24dp"
+                android:background="@android:color/transparent"/>
 
 
             <TextView

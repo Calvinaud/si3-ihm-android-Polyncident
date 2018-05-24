@@ -24,6 +24,7 @@ import me.myapplication.Helpers.IncidentDBHelper;
 import me.myapplication.MainActivity;
 import me.myapplication.Models.Importance;
 import me.myapplication.Models.Incident;
+import me.myapplication.ProfileActivity;
 import me.myapplication.R;
 
 /**
@@ -51,11 +52,11 @@ public class DisplayCommentariesAdapter extends RecyclerView.Adapter<DisplayComm
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             this.cursorComms.moveToPosition(position);
             Log.i("n",""+this.cursorComms.getCount());
-            String contentComment = this.cursorComms.getString(this.cursorComms.getColumnIndexOrThrow("comment"));
+            final String contentComment = this.cursorComms.getString(this.cursorComms.getColumnIndexOrThrow("comment"));
             String fulldate = this.cursorComms.getString(this.cursorComms.getColumnIndexOrThrow("date"));
             String[] date=fulldate.split(" ");
             String username = this.cursorComms.getString(this.cursorComms.getColumnIndexOrThrow("username"));
-            int userId= this.cursorComms.getInt(this.cursorComms.getColumnIndexOrThrow("userId"));
+            final int userId= this.cursorComms.getInt(this.cursorComms.getColumnIndexOrThrow("userId"));
 
         try {
             Cursor cursorUser = IncidentDBHelper.getSingleton().getUserCursor(userId);
@@ -69,6 +70,16 @@ public class DisplayCommentariesAdapter extends RecyclerView.Adapter<DisplayComm
             if(cursorUser.getString(cursorUser.getColumnIndexOrThrow("roles")).equals("TECHNICIEN")){
                 holder.profilPicture.setImageResource(R.mipmap.technicien);
             }
+
+            holder.profilPicture.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent profileIntent = new Intent(context, ProfileActivity.class);
+                    profileIntent.putExtra("userId", userId);
+                    context.startActivity(profileIntent);
+                }
+            });
 
         } catch (IncidentDBHelper.NoRecordException e) {
             e.printStackTrace();

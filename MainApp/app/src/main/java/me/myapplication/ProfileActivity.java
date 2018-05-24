@@ -101,7 +101,7 @@ public class ProfileActivity extends Activity {
                     Intent mailIntent = new Intent(Intent.ACTION_SENDTO);
                     mailIntent.setType("message/rfc822");
                     mailIntent.setData(Uri.parse("mailto:" + user.getEmailAddress()));
-                    mailIntent.putExtra(Intent.EXTRA_SUBJECT, "Incident - Titre incident ");
+                    mailIntent.putExtra(Intent.EXTRA_SUBJECT, "Incident PNS");
                     startActivity(Intent.createChooser(mailIntent, "MAIL:"));
                 }
             });
@@ -145,7 +145,7 @@ public class ProfileActivity extends Activity {
     private void displayDataAndButtons(){
 
         this.nameLabel.setText(user.getUsername());
-        this.roleLabel.setText(user.getRole());
+        this.roleLabel.setText(user.getRole().toLowerCase());
 
 
         if (!this.hasEmailAddress){
