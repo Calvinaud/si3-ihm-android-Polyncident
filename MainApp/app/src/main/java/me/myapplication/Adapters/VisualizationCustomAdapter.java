@@ -99,6 +99,8 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
         holder.urgence.setText(urgence.getText());
         holder.description.setText(desc);
 
+        holder.itemView.findViewById(R.id.card_border)
+                       .setBackgroundColor(urgence.getColor(context));
 
         Logger.getAnonymousLogger().log(Level.WARNING,"status ="+cursor.getInt(cursor.getColumnIndexOrThrow("status")));
         switch (cursor.getInt(cursor.getColumnIndexOrThrow("status"))){
