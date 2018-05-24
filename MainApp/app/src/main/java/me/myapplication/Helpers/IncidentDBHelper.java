@@ -500,7 +500,7 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
     }
 
     public void insertIncident(int reporterdID, int locationID, int typeID,
-                            int importance, String title, String description, String imgUrl, int status){
+                            int importance, String title, String description, String imgUrl, int status, Date date){
 
         ContentValues contentValues = new ContentValues();
         contentValues.put("reporterId", reporterdID);
@@ -511,6 +511,10 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
         contentValues.put("description", description);
         contentValues.put("urlPhoto",imgUrl);
         contentValues.put("status", status);
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
+        contentValues.put("declarationDate", format.format(date));
 
         myDataBase.insert("incidents",null, contentValues);
     }

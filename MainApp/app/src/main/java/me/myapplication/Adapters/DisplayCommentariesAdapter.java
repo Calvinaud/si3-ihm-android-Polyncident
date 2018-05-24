@@ -58,7 +58,6 @@ public class DisplayCommentariesAdapter extends RecyclerView.Adapter<DisplayComm
             holder.heure.setText("" + i);
             holder.content.setText(contentComment);
             i++;
-
     }
 
     @Override

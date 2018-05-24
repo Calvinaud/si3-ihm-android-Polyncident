@@ -4,6 +4,8 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
+import java.util.Calendar;
+
 import me.myapplication.Helpers.IncidentDBHelper;
 
 public class AddedIncidentSimService extends Service {
@@ -30,7 +32,7 @@ public class AddedIncidentSimService extends Service {
                             IncidentDBHelper.getSingleton()
                                     .insertIncident(2, 3, i%3+1
                                             ,
-                                            2, "Je suis ds le service aled", "Type = "+i%3,"",2
+                                            2, "Je suis ds le service aled", "Type = "+i%3,"",2, Calendar.getInstance().getTime()
                                     );
                         } catch (InterruptedException e) {
                             e.printStackTrace();

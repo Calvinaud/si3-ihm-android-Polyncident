@@ -35,6 +35,7 @@ import android.widget.VideoView;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -243,7 +244,7 @@ public class DeclarationActivity extends Activity {
                     .insertIncident(0, locationSpinner.getSelectedItemPosition()+1,
                             typeSpinner.getSelectedItemPosition()+1,importanceSeekBar.getProgress(),
                             titleEditText.getText().toString(), descriptionEditText.getText().toString(),
-                            mCurrentPhotoPath, 0
+                            mCurrentPhotoPath, 0, Calendar.getInstance().getTime()
                     );
             IncidentDBHelper.getSingleton().logIncidents();
 
