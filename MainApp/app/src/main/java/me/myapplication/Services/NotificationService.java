@@ -37,7 +37,7 @@ import static android.app.Notification.EXTRA_NOTIFICATION_ID;
 public class NotificationService extends Service {
 
     NotificationCompat.Builder notification;
-    private static final int uniqueID = 1234;
+    private int uniqueID = 0;
 
     public NotificationService() {
     }
@@ -155,6 +155,6 @@ public class NotificationService extends Service {
         notification.setContentIntent(pendingIntent);
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.notify(new Random().nextInt(),notification.build());
+        notificationManager.notify(uniqueID++,notification.build());
     }
 }
