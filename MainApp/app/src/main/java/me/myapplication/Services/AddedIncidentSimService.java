@@ -30,8 +30,8 @@ public class AddedIncidentSimService extends Service {
                 //for ( int i = 1; i < 3; i++){
                     synchronized (this) {
                         try {
-                            wait(20000);
-                            IncidentDBHelper.getSingleton().insertComm(1,1, new Date(), "cont");
+                            wait(10000);
+                            IncidentDBHelper.getSingleton().insertComm(2,1, new Date(), "cont");
                             IncidentDBHelper.getSingleton()
                                     .insertIncident(2, 3, 1
                                             ,

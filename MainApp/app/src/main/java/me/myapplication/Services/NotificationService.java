@@ -150,7 +150,7 @@ public class NotificationService extends Service {
 
 
         Intent intent = new Intent(this, DisplayDetailsIncidentActivity.class);
-        intent.putExtra("incident", incident);
+        intent.putExtra("incidentId", incidentId);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
         notification.setContentIntent(pendingIntent);
 

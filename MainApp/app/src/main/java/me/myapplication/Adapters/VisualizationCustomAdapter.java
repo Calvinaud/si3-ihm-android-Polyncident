@@ -100,7 +100,7 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
         }
         Importance urgence = getImportance(cursor.getInt(cursor.getColumnIndex("importance")));
         String title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
-        String desc = cursor.getString(cursor.getColumnIndex("description"));
+        String lieu = cursor.getString(cursor.getColumnIndex("locationId"));
         int reporterId = cursor.getInt(cursor.getColumnIndexOrThrow("reporterId"));
         int locationId = cursor.getInt(cursor.getColumnIndexOrThrow("locationId"));
         int typeId = cursor.getInt(cursor.getColumnIndexOrThrow("typeId"));
@@ -112,7 +112,7 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
         reduceDate(holder, fulldate);
 
         holder.urgence.setText(urgence.getText());
-        holder.description.setText(desc);
+        holder.lieu.setText(lieu);
 
         holder.itemView.findViewById(R.id.card_border)
                        .setBackgroundColor(urgence.getColor(context));
@@ -176,7 +176,7 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
         TextView date;
         TextView heure;
         TextView urgence;
-        TextView description;
+        TextView lieu;
         TextView commentNumer;
         CardView cardView;
 
@@ -192,7 +192,7 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
             date=(TextView) itemView.findViewById(R.id.dateTextView);
             heure=(TextView) itemView.findViewById(R.id.timeTextView);
             urgence=(TextView) itemView.findViewById(R.id.emergencyTextView);
-            description=(TextView) itemView.findViewById(R.id.descView);
+            lieu =(TextView) itemView.findViewById(R.id.lieuTextView);
             commentNumer=(TextView) itemView.findViewById(R.id.unreadCommentNumber);
 
             subscribe.setOnClickListener(new View.OnClickListener() {
