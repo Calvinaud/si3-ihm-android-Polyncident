@@ -61,10 +61,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         try{
-            IncidentDBHelper.createSingleton(this);
-            IncidentDBHelper.getSingleton().createDataBase();
-            IncidentDBHelper.getSingleton().openDataBase();
-            IncidentDBHelper.getSingleton().initTables();
             user = new User(IncidentDBHelper.getSingleton().getUserCursor(userId));
 
             //incidents initiaux
@@ -101,23 +97,32 @@ public class MainActivity extends AppCompatActivity {
         });
 
         FloatingActionButton planning = (FloatingActionButton) findViewById(R.id.planning);
-        planning.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, PlanningActivity.class);
-                startActivity(intent);
-            }
-        });
+        if(user.getRole().equals("TECHNICIEN")) {
+            planning.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(MainActivity.this, PlanningActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
+        else {
+            planning.setVisibility(View.GONE);
+        }
 
         FloatingActionButton admin = (FloatingActionButton) findViewById(R.id.admin);
-        admin.setOnClickListener(new View.OnClickListener() {
+        if(user.getRole().equals("ADMINISTRATEUR")){
+       admin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Intent intent = new Intent(MainActivity.this, AdminActivity.class);
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
             }
-        });
+        });}
+        else {
+            admin.setVisibility(View.GONE);
+        }
 
         Intent i= new Intent(this, NotificationService.class);
         ArrayList<Integer> subs = new ArrayList<Integer>();
