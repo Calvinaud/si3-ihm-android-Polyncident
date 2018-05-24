@@ -55,7 +55,6 @@ public class DisplayCommentariesAdapter extends RecyclerView.Adapter<DisplayComm
             String[] date=fulldate.split(" ");
             String username = this.cursor.getString(cursor.getColumnIndexOrThrow("username"));
 
-
             holder.profilName.setText(username);
             holder.date.setText(date[0]);
             holder.heure.setText(date[1]);

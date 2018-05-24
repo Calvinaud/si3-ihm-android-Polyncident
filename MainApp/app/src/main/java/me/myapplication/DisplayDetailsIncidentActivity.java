@@ -42,30 +42,32 @@ import me.myapplication.Models.Incident;
 public class DisplayDetailsIncidentActivity extends AppCompatActivity {
     private Incident incident;
     private Button addCom;
+    private int incidentId;
     private EditText newCom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_display_details_incident);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Intent intent = getIntent();
-        int incidentId = intent.getIntExtra("incident", 1);
+        incidentId = intent.getIntExtra("incidentId", 1);
         Log.i("incidentId:",""+intent.getExtras());
 
         incident = IncidentDBHelper.getSingleton().getIncidentById(incidentId);
 
         ImageView imageView = (ImageView) findViewById(R.id.imageView2);
 
-        InputStream in = null;
-        if (incident.getUrlPhoto() != null) {
-            Log.i("url",incident.getUrlPhoto());
+     //   InputStream in = null;
+       // if (incident.getUrlPhoto() != null) {
+        //    Log.i("url",incident.getUrlPhoto());
             //ImageView myImage = new ImageView(this);
-            try {
-                Uri photoURI = FileProvider.getUriForFile(this,
+         //   try {
+            /*    Uri photoURI = FileProvider.getUriForFile(this,
                         "me.myapplication.android.fileprovider",
                         new File(incident.getUrlPhoto()));
                 Bitmap bm = MediaStore.Images.Media.getBitmap(getContentResolver(),photoURI);
@@ -73,7 +75,7 @@ public class DisplayDetailsIncidentActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
 
         TextView title = findViewById(R.id.titleDetail);
         TextView description = findViewById(R.id.description);
