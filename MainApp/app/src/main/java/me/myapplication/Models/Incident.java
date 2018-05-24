@@ -1,6 +1,7 @@
 package me.myapplication.Models;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by Aurelien on 28/04/2018.
@@ -12,17 +13,15 @@ public class Incident implements Serializable{
     final private int reporterdID;
     final private int locationID;
     final private int typeID;
-
     final private Importance importance;
-
     final private String title;
     final private String description;
-
     private String urlPhoto;
+    private Date declarationDate;
 
 
     public Incident(int incidentID, int reporterdID, int locationID, int typeID, Importance importance,
-                    String title, String description, String url) {
+                    String title, String description, String url, Date declarationDate) {
         this.reporterdID = reporterdID;
         this.locationID = locationID;
         this.typeID = typeID;
@@ -31,8 +30,12 @@ public class Incident implements Serializable{
         this.description = description;
         this.urlPhoto = url;
         this.incidentID=incidentID;
+        this.declarationDate = declarationDate;
     }
 
+    public Date getDeclarationDate(){
+        return declarationDate;
+    }
 
     public int getReporterdID() {
         return reporterdID;

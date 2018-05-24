@@ -14,7 +14,10 @@ import android.view.View;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -101,8 +104,19 @@ public class NotificationService extends Service {
         int locationId = cursor.getInt(cursor.getColumnIndexOrThrow("locationId"));
         int typeId = cursor.getInt(cursor.getColumnIndexOrThrow("typeId"));
         String url = cursor.getString(cursor.getColumnIndexOrThrow("urlPhoto"));
+        String sdate = cursor.getString(cursor.getColumnIndexOrThrow("declarationDate"));
 
-        Incident incident=new Incident(incidentId,reporterId,locationId,typeId, Importance.MINOR,title,desc,url);
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        try {
+            date = dateFormat.parse(sdate);
+        }
+        catch (ParseException e){
+            e.printStackTrace();
+        }
+
+        Incident incident=new Incident(incidentId,reporterId,locationId,typeId, Importance.MINOR,title,desc,url, date);
 
         Intent intentActionSub = new Intent(this,NotificationActionReceiver.class);
         intentActionSub.putExtra("action","S'ABONNER");

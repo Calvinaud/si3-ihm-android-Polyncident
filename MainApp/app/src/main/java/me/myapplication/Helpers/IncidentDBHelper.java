@@ -195,13 +195,24 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
         int locationId = cursor.getInt(cursor.getColumnIndexOrThrow("locationId"));
         int typeId = cursor.getInt(cursor.getColumnIndexOrThrow("typeId"));
         String url = cursor.getString(cursor.getColumnIndexOrThrow("urlPhoto"));
+        String sdate = cursor.getString(cursor.getColumnIndexOrThrow("declarationDate"));
+
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        try {
+            date = dateFormat.parse(sdate);
+        }
+        catch (ParseException e){
+            e.printStackTrace();
+        }
 
         return new Incident(incidentId,reporterId,
                 locationId,
                 typeId,
                 Importance.URGENT,
                 title,
-                desc,url);
+                desc,url,date);
     }
 
     public List<PlanningIncident> getDayPlanningIncident(int id, Date date){
@@ -340,8 +351,6 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
 
         queryString +="' AND endDate<='";
         queryString +=currentString+" 23:59:59'";
-
-        Log.i("re",queryString);
 
         Cursor cursor = myDataBase.rawQuery(queryString,null);
         cursor.moveToFirst();

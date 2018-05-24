@@ -72,8 +72,13 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
         Log.i("id2: ",""+incidentID);
         holder.cardView.setOnClickListener(new DetailsListener());
         holder.incident.setText(title);
-        holder.date.setText("0");
-        holder.heure.setText("0");
+        String fulldate = cursor.getString(cursor.getColumnIndexOrThrow("declarationDate"));
+
+        String[] date=fulldate.split(" ");
+
+        holder.date.setText(date[0]);
+        holder.heure.setText(date[1]);
+
         holder.urgence.setText(urgence.getText());
         holder.description.setText(desc);
 
