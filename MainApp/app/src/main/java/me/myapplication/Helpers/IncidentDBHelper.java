@@ -345,7 +345,7 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
 
         queryString += " AND typeId ";
         queryString += (typeId != -1 ? "="+typeId : "<> -1");
-
+        Log.i("imp",""+importance);
         queryString += " AND importance ";
         queryString += (importance != -1 ? "="+importance : "<> -1");
 

@@ -1,5 +1,6 @@
 package me.myapplication;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
@@ -21,10 +22,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -257,5 +261,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public int getUserId(){return userId;}
+
+     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.constraintLayout);
+        fragment.onActivityResult(requestCode,resultCode,data);
+    }
 
 }
