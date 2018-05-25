@@ -104,7 +104,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".AdminPlanningActivity" />
-        <activity android:name=".SettingsActivity"></activity>
+        <activity android:name=".SettingsActivity" />
+        <activity
+            android:name=".AssignationActivity"
+            android:label="@string/title_activity_assignation"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
