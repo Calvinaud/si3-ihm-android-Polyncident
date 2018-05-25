@@ -282,6 +282,12 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
         return cursor;
     }
 
+    public String getUserName(int userId){
+        Cursor cursor = myDataBase.rawQuery("SELECT username FROM users WHERE userId="+userId,null);
+        cursor.moveToFirst();
+        return cursor.getString(cursor.getColumnIndexOrThrow("username"));
+    }
+
     public String getLocationName(int lieuId){
         Cursor cursor = myDataBase.rawQuery("SELECT name FROM locations WHERE locationId="+lieuId,null);
         cursor.moveToFirst();
@@ -293,7 +299,6 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
         cursor.moveToFirst();
         return cursor.getString(cursor.getColumnIndexOrThrow("username"));
     }
-
 
     private PlanningIncident createPlanningIncident(Cursor cursor){
 
@@ -586,8 +591,19 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
         contentValues.put("incidentId",incidentId);
         contentValues.put("userId",userId);
 
+        myDataBase.insert("assignations",null,contentValues);
+    }
+
+    public void insertAssignation(int userId, int incidentId, String startDate, String endDate){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("incidentId",incidentId);
+        contentValues.put("userId",userId);
+        contentValues.put("startDate",startDate);
+        contentValues.put("endDate",endDate);
+
         myDataBase.insert("subscriptions",null,contentValues);
     }
+
 
     public void logComms(){ logTable("comments");}
 

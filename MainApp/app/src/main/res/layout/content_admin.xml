@@ -9,42 +9,13 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="me.myapplication.AdminActivity">
 
-
-    <LinearLayout
-        android:id="@+id/option"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="truc" />
-
-        <TextView
-            android:id="@+id/todayDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Date" />
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Refresh" />
-    </LinearLayout>
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/option" />
+        tools:layout_editor_absoluteY="48dp" />
 
 
 </android.support.constraint.ConstraintLayout>

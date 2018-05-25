@@ -83,7 +83,7 @@ public class DisplayDetailsIncidentActivity extends AppCompatActivity {
         );
 
         infos = findViewById(R.id.infos);
-        infos.setText("Lieu : "+displayLieu(incident.getLocationID())+"     Type : "+displayType(incident.getTypeID())+"       Statut : "+displayStatus(incident.getStatus())+"     Priorité : "+incident.getImportance().getText());
+        infos.setText("L bnieu : "+displayLieu(incident.getLocationID())+"     Type : "+displayType(incident.getTypeID())+"       Statut : "+displayStatus(incident.getStatus())+"     Priorité : "+incident.getImportance().getText());
         profilePicture = findViewById(R.id.ProfileImageView);
 
 

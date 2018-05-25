@@ -9,6 +9,8 @@
         import android.util.TypedValue;
         import android.view.Menu;
         import android.view.MenuItem;
+        import android.view.View;
+        import android.widget.Button;
         import android.widget.Toast;
 
         import com.alamkanak.weekview.DateTimeInterpreter;
@@ -22,6 +24,7 @@
         import java.util.List;
         import java.util.Locale;
 
+        import me.myapplication.Helpers.CalendarQueryHandler;
         import me.myapplication.Helpers.IncidentDBHelper;
 
 
@@ -32,6 +35,7 @@
     private int mWeekViewType = TYPE_THREE_DAY_VIEW;
     private WeekView mWeekView;
     private int userId;
+     private Button affectation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +63,17 @@
         // Set up a date time interpreter to interpret how the date and time will be formatted in
         // the week view. This is optional.
         setupDateTimeInterpreter(false);
+
+        affectation = findViewById(R.id.synchroniser);
+        affectation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), AssignationActivity.class);
+                intent.putExtra("userId",userId);
+                startActivity(intent);
+            }
+        });
+
     }
 
 

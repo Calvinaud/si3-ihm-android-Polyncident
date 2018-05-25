@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
@@ -27,18 +28,14 @@ import me.myapplication.R;
 
 import static android.content.Context.MODE_PRIVATE;
 
-/**
- * Created by user on 29/04/2018.
- */
-
-public class VisualizationCustomAdapter extends RecyclerView.Adapter<VisualizationCustomAdapter.ViewHolder> {
+public class SelectionAdaptateur extends RecyclerView.Adapter<SelectionAdaptateur.ViewHolder> {
 
     private Context context;
     private Cursor cursor;
     private int incidentID;
     private final int userId;
 
-    public VisualizationCustomAdapter(Context context, Boolean myIncident, int userId, int importance, int type) {
+    public SelectionAdaptateur(Context context, Boolean myIncident, int userId, int importance, int type) {
         this.context = context;
         this.userId = userId;
 
@@ -47,6 +44,7 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
         } else {
             this.cursor = IncidentDBHelper.getSingleton().getIncidentCursor(-1, type, importance, 100);
         }
+
 
     }
 
@@ -64,15 +62,7 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                cursor.moveToFirst();
-                Cursor cursorId = IncidentDBHelper.getSingleton().getIncidentCursor(-1, -1, -1, 100);
-                cursorId.moveToPosition(holder.getAdapterPosition());
-                int incidentId = cursorId.getInt(cursorId.getColumnIndexOrThrow("incidentId"));
-                Intent intent = new Intent(context,DisplayDetailsIncidentActivity.class);
-                Log.i("id: ","");
-                intent.putExtra("incidentId",incidentId);
-                view.getContext().startActivity(intent);
-
+                holder.cardView.setCardBackgroundColor(Color.RED);
             }
         });
         return holder;
@@ -97,7 +87,7 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
             editor.apply();
 
             if(commNumber>=0){
-            holder.commentNumer.setText(Integer.toString(commNumber));
+                holder.commentNumer.setText(Integer.toString(commNumber));
             }else {holder.commentNumer.setText(Integer.toString(1));}
 
 
@@ -125,7 +115,7 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
         holder.lieu.setText(lieu);
 
         holder.itemView.findViewById(R.id.card_border)
-                       .setBackgroundColor(urgence.getColor(context));
+                .setBackgroundColor(urgence.getColor(context));
 
         Logger.getAnonymousLogger().log(Level.WARNING,"status ="+cursor.getInt(cursor.getColumnIndexOrThrow("status")));
         switch (cursor.getInt(cursor.getColumnIndexOrThrow("status"))){
@@ -139,7 +129,7 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
                 break;
             case 2:
                 holder.status.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_check_circle_black_24dp));
-                    holder.etat.setText("Résolu");
+                holder.etat.setText("Résolu");
                 break;
         }
     }
@@ -215,16 +205,7 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
 
             subscribe.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
-                    if(!subscribed) {
-                        subscribe.setImageResource(R.drawable.ic_star_black_24dp);
-                        subscribed = true;
-                        IncidentDBHelper.getSingleton().insertSub(userId,cursor.getInt(cursor.getColumnIndexOrThrow("incidentId")));
-                    }else {
-                        subscribe.setImageResource(R.drawable.ic_star_border_black_24dp);
-                        subscribed=false;
-                    }
-
+                public void onClick(View view) {
 
                 }
             });
