@@ -294,6 +294,12 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
         return cursor.getString(cursor.getColumnIndexOrThrow("name"));
     }
 
+    public String getTypeName(int lieuId){
+        Cursor cursor = myDataBase.rawQuery("SELECT name FROM types WHERE typeId="+lieuId,null);
+        cursor.moveToFirst();
+        return cursor.getString(cursor.getColumnIndexOrThrow("name"));
+    }
+
     public String getUsername(int userId){
         Cursor cursor = myDataBase.rawQuery("SELECT username FROM users WHERE userId="+userId,null);
         cursor.moveToFirst();

@@ -290,10 +290,10 @@ public class DeclarationActivity extends Activity {
 
             builder.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
-                    Log.i("priooo",""+importanceSeekBar.getProgress());
+                    Log.i("typeee",""+(typeSpinner.getSelectedItemPosition()+1));
                     IncidentDBHelper.getSingleton()
                             .insertIncident(DeclarationActivity.this.userId, locationSpinner.getSelectedItemPosition()+1,
-                                    typeSpinner.getSelectedItemPosition()+1,importanceSeekBar.getProgress()+1,
+                                    (typeSpinner.getSelectedItemPosition()+1),importanceSeekBar.getProgress()+1,
                                     titleEditText.getText().toString(), descriptionEditText.getText().toString(),
                                     image, 0, Calendar.getInstance().getTime()
                             );

@@ -15,15 +15,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.VideoView;
 
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.logging.Logger;
 
 import me.myapplication.Adapters.DisplayCommentariesAdapter;
-import me.myapplication.Adapters.VisualizationCustomAdapter;
 import me.myapplication.Helpers.IncidentDBHelper;
 import me.myapplication.Models.Incident;
 
@@ -40,6 +41,8 @@ public class DisplayDetailsIncidentActivity extends AppCompatActivity {
     private TextView name;
     private ImageView profilePicture;
     private ImageView status;
+    private TextView locationView;
+    private TextView typeView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,9 +75,9 @@ public class DisplayDetailsIncidentActivity extends AppCompatActivity {
 
 
         dateText = findViewById(R.id.date);
-        dateText.setText(incident.getDeclarationDate().toString());
-        String[] fulldate = incident.getDeclarationDate().toString().split(" ");
-//        dateText.setText(fulldate[2] + " " + fulldate[3] + " " +fulldate[5]);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd hh:mm");
+        dateText.setText(format.format(incident.getDeclarationDate()));
+
 
 
         name = findViewById(R.id.username);
@@ -82,10 +85,35 @@ public class DisplayDetailsIncidentActivity extends AppCompatActivity {
                 IncidentDBHelper.getSingleton().getUsername(incident.getReporterdID())
         );
 
-        infos = findViewById(R.id.infos);
-        infos.setText("L bnieu : "+displayLieu(incident.getLocationID())+"     Type : "+displayType(incident.getTypeID())+"       Statut : "+displayStatus(incident.getStatus())+"     Priorité : "+incident.getImportance().getText());
+
+        locationView = findViewById(R.id.location);
+        typeView = findViewById(R.id.type);
+
+        locationView.setText(
+                IncidentDBHelper.getSingleton().getLocationName(incident.getLocationID())
+        );
+
+        typeView.setText(
+                IncidentDBHelper.getSingleton().getTypeName(incident.getTypeID())
+        );
+
         profilePicture = findViewById(R.id.ProfileImageView);
 
+        profilePicture.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                Intent profileIntent = new Intent(getApplicationContext(), ProfileActivity.class);
+                profileIntent.putExtra("userId",incident.getReporterdID());
+
+                startActivity(profileIntent);
+
+            }
+
+
+
+        });
 
         status = (ImageView)findViewById(R.id.statusView);
         switch (incident.getStatus()){

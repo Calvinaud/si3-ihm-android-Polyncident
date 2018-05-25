@@ -41,7 +41,7 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
     public VisualizationCustomAdapter(Context context, Boolean myIncident, int userId, int importance, int type) {
         this.context = context;
         this.userId = userId;
-
+        Log.i("TYPE",""+type);
         if (myIncident) {
             this.cursor = IncidentDBHelper.getSingleton().getIncidentCursor(userId, type, importance, 100);
         } else {
@@ -116,7 +116,7 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
         String fulldate = cursor.getString(cursor.getColumnIndexOrThrow("declarationDate"));
 
         reduceDate(holder, fulldate);
-        String urgenceS="Urgence: "+urgence.getText();
+        String urgenceS="Urgence: "+typeId;
         holder.urgence.setText(urgenceS);
 
 

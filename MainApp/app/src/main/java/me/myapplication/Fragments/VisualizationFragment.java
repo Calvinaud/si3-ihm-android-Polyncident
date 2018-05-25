@@ -89,13 +89,13 @@ public class VisualizationFragment extends Fragment {
         return rootView;
     }
 
-    private void fillImportance(Spinner impSpin){
+    private void fillImportance(final Spinner impSpin){
         List<String> listImp = new ArrayList<>();
         listImp.add("Filtrer par importance");
-        listImp.add("négligeable");
-        listImp.add("mineur");
-        listImp.add("forte");
-        listImp.add("urgent");
+        listImp.add("Négligeable");
+        listImp.add("Mineur");
+        listImp.add("Forte");
+        listImp.add("Urgente");
         listImp.add("Tous");
         ArrayAdapter<String> importances = new ArrayAdapter<String>(getActivity().getBaseContext(),
                 android.R.layout.simple_spinner_item,
@@ -106,10 +106,10 @@ public class VisualizationFragment extends Fragment {
 
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+
                 if(i!=0) {
                     if(i==5) i=-1;
-                    int j = typeSpin.getSelectedItemPosition()+1;
-                    if(j==0 || j==4) j=-1;
                     adapter = new VisualizationCustomAdapter(getContext(), myIncidents,
                             ((MainActivity) getContext()).getUserId(),i,-1);
                     recyclerView.setAdapter(adapter);
@@ -119,7 +119,6 @@ public class VisualizationFragment extends Fragment {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
             }
         });
     }
@@ -142,13 +141,14 @@ public class VisualizationFragment extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if(i!=0) {
                     if(i==4) i=-1;
-                    int j = impSpin.getSelectedItemPosition()+1;
-                    if(j==0 || j==5) j=-1;
+                    impSpin.setSelection(0);
                     adapter = new VisualizationCustomAdapter(getContext(), myIncidents,
-                            ((MainActivity) getContext()).getUserId(),j,-1);
+                            ((MainActivity) getContext()).getUserId(),-1,i);
                     recyclerView.setAdapter(adapter);
 
                 }
+
+
             }
 
             @Override
