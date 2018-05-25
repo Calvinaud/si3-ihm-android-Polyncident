@@ -2,6 +2,7 @@ package me.myapplication;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
@@ -35,6 +36,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 import me.myapplication.Adapters.DisplayCommentariesAdapter;
 import me.myapplication.Adapters.VisualizationCustomAdapter;
@@ -86,9 +88,38 @@ public class DisplayDetailsIncidentActivity extends AppCompatActivity {
 
         TextView title = findViewById(R.id.titleDetail);
         TextView description = findViewById(R.id.description);
-
+        TextView infos = findViewById(R.id.infos);
         title.setText(incident.getTitle());
-        description.setText(incident.getDescription());
+        description.setText("Description de l'incident :\n"+incident.getDescription());
+        TextView textDate = findViewById(R.id.textView5);
+        Date date = incident.getDeclarationDate();
+        textDate.setText("Incident posté le "+date.toString());
+        TextView nameView = findViewById(R.id.username);
+        String userName="";
+        try {
+            Cursor cursorUser = IncidentDBHelper.getSingleton().getUserCursor(incident.getReporterdID());
+            userName=cursorUser.getString(cursorUser.getColumnIndexOrThrow("username"));
+            nameView.setText(userName);
+        } catch (IncidentDBHelper.NoRecordException e) {
+            e.printStackTrace();
+        }
+        infos.setText("Lieu : "+displayLieu(incident.getLocationID())+"     Type : "+displayType(incident.getTypeID())+"       Statut : "+displayStatus(incident.getStatus())+"     Priorité : "+incident.getImportance().getText());
+        ImageView profilPicture = findViewById(R.id.imageView5);
+        try {
+            Cursor cursorUser = IncidentDBHelper.getSingleton().getUserCursor(incident.getReporterdID());
+            cursorUser.moveToFirst();
+            if (cursorUser.getString(cursorUser.getColumnIndexOrThrow("roles")).equals("ADMINISTRATEUR")) {
+                profilPicture.setImageResource(R.mipmap.director);
+            }
+            if (cursorUser.getString(cursorUser.getColumnIndexOrThrow("roles")).equals("UTILISATEUR")) {
+                profilPicture.setImageResource(R.mipmap.etudiant);
+            }
+            if (cursorUser.getString(cursorUser.getColumnIndexOrThrow("roles")).equals("TECHNICIEN")) {
+                profilPicture.setImageResource(R.mipmap.technicien);
+            }
+        } catch (IncidentDBHelper.NoRecordException e) {
+            e.printStackTrace();
+        }
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView2);
         recyclerView.setHasFixedSize(true);
@@ -115,6 +146,38 @@ public class DisplayDetailsIncidentActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public String displayStatus(int n){
+        switch(n){
+            case 0 : return "Pas vu";
+            case 1 : return "En cours";
+            case 2 : return "Traité";
+        }
+        return "";
+    }
+
+    public String displayType(int n){
+        switch(n){
+            case 0 : return "Fournitures";
+            case 1 : return "Matériel cassé";
+            case 2 : return "Autres";
+        }
+        return "";
+    }
+
+    public String displayLieu(int n){
+        switch(n){
+            case 0 : return "E130";
+            case 1 : return "E131";
+            case 2 : return "E130";
+            case 3 : return "0108";
+            case 4 : return "0109";
+            case 5 : return "0110";
+            case 6 : return "Parking";
+
+        }
+        return "";
     }
 
 }

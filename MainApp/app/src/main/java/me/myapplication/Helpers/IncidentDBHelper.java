@@ -197,6 +197,7 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
         int typeId = cursor.getInt(cursor.getColumnIndexOrThrow("typeId"));
         byte[] img= cursor.getBlob(cursor.getColumnIndexOrThrow("img"));
         String sdate = cursor.getString(cursor.getColumnIndexOrThrow("declarationDate"));
+        int status = cursor.getInt(cursor.getColumnIndexOrThrow("status"));
 
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -213,7 +214,7 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
                 typeId,
                 Importance.URGENT,
                 title,
-                desc,img,date);
+                desc,img,date,status);
     }
 
     public List<PlanningIncident> getDayPlanningIncident(int id, Date date){

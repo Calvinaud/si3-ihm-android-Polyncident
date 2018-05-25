@@ -18,10 +18,10 @@ public class Incident implements Serializable{
     final private String description;
     private byte[] img;
     private Date declarationDate;
-
+    private int status;
 
     public Incident(int incidentID, int reporterdID, int locationID, int typeID, Importance importance,
-                    String title, String description, byte[] img, Date declarationDate) {
+                    String title, String description, byte[] img, Date declarationDate, int status) {
         this.reporterdID = reporterdID;
         this.locationID = locationID;
         this.typeID = typeID;
@@ -31,6 +31,7 @@ public class Incident implements Serializable{
         this.img = img;
         this.incidentID=incidentID;
         this.declarationDate = declarationDate;
+        this.status=status;
     }
 
     public Date getDeclarationDate(){
@@ -68,5 +69,9 @@ public class Incident implements Serializable{
 
     public byte[] getImg() {
         return img;
+    }
+
+    public int getStatus() {
+        return status;
     }
 }

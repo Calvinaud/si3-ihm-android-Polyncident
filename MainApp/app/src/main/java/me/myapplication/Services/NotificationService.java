@@ -121,7 +121,7 @@ public class NotificationService extends Service {
         int typeId = cursor.getInt(cursor.getColumnIndexOrThrow("typeId"));
         byte[] img = cursor.getBlob(cursor.getColumnIndexOrThrow("img"));
         String sdate = cursor.getString(cursor.getColumnIndexOrThrow("declarationDate"));
-
+        int status= cursor.getInt(cursor.getColumnIndexOrThrow("status"));
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -132,7 +132,7 @@ public class NotificationService extends Service {
             e.printStackTrace();
         }
 
-        Incident incident=new Incident(incidentId,reporterId,locationId,typeId, Importance.MINOR,title,desc,img, date);
+        Incident incident=new Incident(incidentId,reporterId,locationId,typeId, Importance.MINOR,title,desc,img, date,status);
 
         Intent intentActionSub = new Intent(this,NotificationActionReceiver.class);
         intentActionSub.putExtra("action","S'ABONNER");

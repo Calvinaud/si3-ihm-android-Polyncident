@@ -66,11 +66,10 @@
                 android:text="name"
                 android:textSize="10sp" />
 
-            android:layout_width="300dp"
-            android:layout_height="60dp"
-            android:layout_above="@+id/dateTextView2"
-            android:layout_alignParentEnd="true">
-
+             <TextView  android:layout_width="300dp"
+                android:layout_height="60dp"
+                android:layout_above="@+id/dateTextView2"
+                android:layout_alignParentEnd="true"/>
             <TextView
                 android:id="@+id/commentary"
                 android:layout_width="275dp"
