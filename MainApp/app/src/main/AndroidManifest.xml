@@ -107,8 +107,7 @@
         <activity android:name=".SettingsActivity" />
         <activity
             android:name=".AssignationActivity"
-            android:label="Poly-incident"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:label="Poly-incident"></activity>
     </application>
 
 </manifest>

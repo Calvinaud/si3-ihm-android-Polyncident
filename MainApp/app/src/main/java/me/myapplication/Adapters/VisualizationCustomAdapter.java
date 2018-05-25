@@ -116,7 +116,7 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
         String fulldate = cursor.getString(cursor.getColumnIndexOrThrow("declarationDate"));
 
         reduceDate(holder, fulldate);
-        String urgenceS="Urgence: "+typeId;
+        String urgenceS="Urgence: "+urgence.getText();
         holder.urgence.setText(urgenceS);
 
 
