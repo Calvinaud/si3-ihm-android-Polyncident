@@ -1,18 +1,10 @@
 package me.myapplication;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,20 +18,10 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 import me.myapplication.Adapters.DisplayCommentariesAdapter;
-import me.myapplication.Adapters.VisualizationCustomAdapter;
 import me.myapplication.Helpers.IncidentDBHelper;
 import me.myapplication.Models.Incident;
 
@@ -63,7 +45,7 @@ public class DisplayDetailsIncidentActivity extends AppCompatActivity {
 
         incident = IncidentDBHelper.getSingleton().getIncidentById(incidentId);
         VideoView videoView = findViewById(R.id.VideoView);
-        ImageView imageView = (ImageView) findViewById(R.id.imageView2);
+        ImageView imageView = (ImageView) findViewById(R.id.incidentImageView);
         if(incident.getImg() != null && incident.getImg().length>0) {
             byte[] img = incident.getImg();
             Bitmap bm = BitmapFactory.decodeByteArray(img, 0, img.length);
@@ -71,27 +53,13 @@ public class DisplayDetailsIncidentActivity extends AppCompatActivity {
             imageView.setVisibility(View.VISIBLE);
         }
         else imageView.setVisibility(View.GONE);
-     //   InputStream in = null;
-       // if (incident.getUrlPhoto() != null) {
-        //    Log.i("url",incident.getUrlPhoto());
-            //ImageView myImage = new ImageView(this);
-         //   try {
-            /*    Uri photoURI = FileProvider.getUriForFile(this,
-                        "me.myapplication.android.fileprovider",
-                        new File(incident.getUrlPhoto()));
-                Bitmap bm = MediaStore.Images.Media.getBitmap(getContentResolver(),photoURI);
-                //imageView.setImageBitmap(bm);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }*/
 
         TextView title = findViewById(R.id.titleDetail);
         TextView description = findViewById(R.id.description);
         TextView infos = findViewById(R.id.infos);
         title.setText(incident.getTitle());
         description.setText("Description de l'incident :\n"+incident.getDescription());
-        TextView textDate = findViewById(R.id.textView5);
+        TextView textDate = findViewById(R.id.date);
         Date date = incident.getDeclarationDate();
         textDate.setText("Incident posté le "+date.toString());
         TextView nameView = findViewById(R.id.username);
@@ -104,7 +72,7 @@ public class DisplayDetailsIncidentActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         infos.setText("Lieu : "+displayLieu(incident.getLocationID())+"     Type : "+displayType(incident.getTypeID())+"       Statut : "+displayStatus(incident.getStatus())+"     Priorité : "+incident.getImportance().getText());
-        ImageView profilPicture = findViewById(R.id.imageView5);
+        ImageView profilPicture = findViewById(R.id.ProfileImageView);
         try {
             Cursor cursorUser = IncidentDBHelper.getSingleton().getUserCursor(incident.getReporterdID());
             cursorUser.moveToFirst();
