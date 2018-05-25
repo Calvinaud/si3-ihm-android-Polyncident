@@ -94,8 +94,8 @@ public class VisualizationFragment extends Fragment {
         listImp.add("Filtrer par importance");
         listImp.add("négligeable");
         listImp.add("mineur");
-        listImp.add("assez urgent");
-        listImp.add("très urgent");
+        listImp.add("forte");
+        listImp.add("urgent");
         listImp.add("Tous");
         ArrayAdapter<String> importances = new ArrayAdapter<String>(getActivity().getBaseContext(),
                 android.R.layout.simple_spinner_item,
@@ -106,7 +106,6 @@ public class VisualizationFragment extends Fragment {
 
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.i("att",""+i);
                 if(i!=0) {
                     if(i==5) i=-1;
                     int j = typeSpin.getSelectedItemPosition()+1;
