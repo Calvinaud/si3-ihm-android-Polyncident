@@ -19,7 +19,6 @@ import android.widget.VideoView;
 
 
 import java.util.Calendar;
-import java.util.Date;
 
 import me.myapplication.Adapters.DisplayCommentariesAdapter;
 import me.myapplication.Helpers.IncidentDBHelper;
@@ -65,15 +64,16 @@ public class DisplayDetailsIncidentActivity extends AppCompatActivity {
         title.setText(incident.getTitle());
 
         description = findViewById(R.id.description);
-        description.setText("Description de l'incident :\n"+incident.getDescription());
+        description.setText(incident.getDescription());
 
 
         dateText = findViewById(R.id.date);
         dateText.setText("Incident posté le "+incident.getDeclarationDate().toString());
 
         name = findViewById(R.id.username);
-
-        name.setText(IncidentDBHelper.getSingleton().getLieuName(incident.getLocationID()));
+        name.setText(
+                IncidentDBHelper.getSingleton().getUsername(incident.getReporterdID())
+        );
 
         infos = findViewById(R.id.infos);
         infos.setText("Lieu : "+displayLieu(incident.getLocationID())+"     Type : "+displayType(incident.getTypeID())+"       Statut : "+displayStatus(incident.getStatus())+"     Priorité : "+incident.getImportance().getText());

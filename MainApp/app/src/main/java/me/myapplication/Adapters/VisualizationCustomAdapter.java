@@ -116,7 +116,7 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
 
 
 
-        String lieu = "Lieu: "+ IncidentDBHelper.getSingleton().getLieuName(locationId);
+        String lieu = "Lieu: "+ IncidentDBHelper.getSingleton().getLocationName(locationId);
         holder.lieu.setText(lieu);
 
         holder.itemView.findViewById(R.id.card_border)
