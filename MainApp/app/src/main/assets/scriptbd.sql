@@ -90,13 +90,14 @@ INSERT INTO types (typeid, name) VALUES('3','Autres');
 
 --users
 INSERT INTO users (userId, username, emailAddress, password, roles, telephoneNumber) VALUES (0,'Mathieu', 'Mat@gmail.com', 'Mathieu', 'UTILISATEUR', "0645128214");
-INSERT INTO users (userId, username, emailAddress, password, roles) VALUES (1, 'Bob', 'Bob@gmail.com','BobBob', 'TECHNICIEN');
-INSERT INTO users (userId, username, emailAddress, password, roles) VALUES (2, 'Roger', 'Roger@gmail.com', 'Roger', 'ADMINISTRATEUR');
+INSERT INTO users (userId, username, emailAddress, password, roles) VALUES (1, 'Roger', 'Roger@gmail.com','Roger', 'TECHNICIEN');
+INSERT INTO users (userId, username, emailAddress, password, roles) VALUES (2, 'Bernard', 'Bernard@gmail.com','Roger', 'TECHNICIEN');
+INSERT INTO users (userId, username, emailAddress, password, roles, telephoneNumber) VALUES (3, 'Claudine', 'Claudine@gmail.com', 'Claudine', 'ADMINISTRATEUR','0678128214');
 
 --incident
-INSERT INTO incidents (incidentId, reporterId, locationId, typeId, importance, title, status, declarationDate) VALUES (1, 1, 3, 2, 3, 'Incident 1',0, '2018-05-22 11:15:00');
-INSERT INTO incidents (incidentId, reporterId, locationId, typeId, importance, title, status, declarationDate) VALUES (2, 1, 5, 1, 3, 'Incident 2',2, '2018-05-24 12:00:00');
-INSERT INTO incidents (incidentId, reporterId, locationId, typeId, importance, title, status, declarationDate) VALUES (3, 1, 5, 1, 3, 'Incident 3',2, '2018-05-21 15:00:00');
+INSERT INTO incidents (incidentId, reporterId, locationId, typeId, importance, title, status, declarationDate) VALUES (0, 0, 3, 1, 1, 'Plus de feuilles',0, '2018-05-22 11:15:00');
+INSERT INTO incidents (incidentId, reporterId, locationId, typeId, importance, title, status, declarationDate) VALUES (1, 1, 5, 1, 3, 'Plus de stylos',2, '2018-05-24 12:00:00');
+INSERT INTO incidents (incidentId, reporterId, locationId, typeId, importance, title, status, declarationDate) VALUES (2, 1, 5, 2, 3, 'Panne rétroprojecteur 3',2, '2018-05-21 15:00:00');
 
 --assignation
 INSERT INTO assignations (userId, incidentId, startDate, endDate) VALUES (1, 1, '2018-05-22 15:30:00', '2018-05-22 18:30:00');
@@ -107,4 +108,4 @@ INSERT INTO assignations (userId, incidentId, startDate, endDate) VALUES (1, 3, 
 INSERT INTO subscriptions (userId, incidentId) VALUES (0,1);
 
 --comment
-INSERT INTO comments (commentId, userId, incidentId, date, comment) VALUES (0, 0, 1, '2018-05-23 12:00:00', 'Sale noob')
+INSERT INTO comments (commentId, userId, incidentId, date, comment) VALUES (0, 3, 0, '2018-05-23 12:00:00', 'Veuillez me contactez')
