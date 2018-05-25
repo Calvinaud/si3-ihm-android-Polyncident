@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,8 +20,10 @@ import android.widget.VideoView;
 
 
 import java.util.Calendar;
+import java.util.logging.Logger;
 
 import me.myapplication.Adapters.DisplayCommentariesAdapter;
+import me.myapplication.Adapters.VisualizationCustomAdapter;
 import me.myapplication.Helpers.IncidentDBHelper;
 import me.myapplication.Models.Incident;
 
@@ -36,6 +39,7 @@ public class DisplayDetailsIncidentActivity extends AppCompatActivity {
     private TextView dateText;
     private TextView name;
     private ImageView profilePicture;
+    private ImageView status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +72,10 @@ public class DisplayDetailsIncidentActivity extends AppCompatActivity {
 
 
         dateText = findViewById(R.id.date);
-        dateText.setText("Incident posté le "+incident.getDeclarationDate().toString());
+        dateText.setText(incident.getDeclarationDate().toString());
+        String[] fulldate = incident.getDeclarationDate().toString().split(" ");
+//        dateText.setText(fulldate[2] + " " + fulldate[3] + " " +fulldate[5]);
+
 
         name = findViewById(R.id.username);
         name.setText(
@@ -78,6 +85,20 @@ public class DisplayDetailsIncidentActivity extends AppCompatActivity {
         infos = findViewById(R.id.infos);
         infos.setText("Lieu : "+displayLieu(incident.getLocationID())+"     Type : "+displayType(incident.getTypeID())+"       Statut : "+displayStatus(incident.getStatus())+"     Priorité : "+incident.getImportance().getText());
         profilePicture = findViewById(R.id.ProfileImageView);
+
+
+        status = (ImageView)findViewById(R.id.statusView);
+        switch (incident.getStatus()){
+            case 0:
+                status.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_watch_later_black_24dp));
+                break;
+            case 1:
+                status.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_sync_black_24dp));
+                break;
+            case 2:
+                status.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_check_circle_black_24dp));
+                break;
+        }
 
         try {
             Cursor cursorUser = IncidentDBHelper.getSingleton().getUserCursor(incident.getReporterdID());
@@ -125,6 +146,7 @@ public class DisplayDetailsIncidentActivity extends AppCompatActivity {
             }
         });
     }
+
 
     public String displayStatus(int n){
         switch(n){
