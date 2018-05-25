@@ -1,10 +1,12 @@
 package me.myapplication.Adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -36,14 +38,17 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
     private int incidentID;
     private final int userId;
 
-    public VisualizationCustomAdapter(Context context, Boolean myIncident, int userId) {
+    public VisualizationCustomAdapter(Context context, Boolean myIncident, int userId, int importance, int type) {
         this.context = context;
         this.userId = userId;
+
         if (myIncident) {
-            this.cursor = IncidentDBHelper.getSingleton().getIncidentCursor(userId, -1, -1, 100);
+            this.cursor = IncidentDBHelper.getSingleton().getIncidentCursor(userId, type, importance, 100);
         } else {
-            this.cursor = IncidentDBHelper.getSingleton().getIncidentCursor(-1, -1, -1, 100);
+            this.cursor = IncidentDBHelper.getSingleton().getIncidentCursor(-1, type, importance, 100);
         }
+
+
     }
 
     @NonNull
@@ -51,6 +56,7 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_layout_visualization, parent, false);
         final ViewHolder holder = new ViewHolder(v);
+
         SharedPreferences sharedPreferences = context.getSharedPreferences("Comments", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(Integer.toString(incidentID), IncidentDBHelper.getSingleton().getCommentaires(incidentID).getCount());
@@ -116,7 +122,7 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
 
 
 
-        String lieu = "Lieu: "+ IncidentDBHelper.getSingleton().getLieuName(locationId);
+        String lieu = "Lieu: "+ IncidentDBHelper.getSingleton().getLocationName(locationId);
         holder.lieu.setText(lieu);
 
         holder.itemView.findViewById(R.id.card_border)
@@ -158,7 +164,8 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
 
     @Override
     public int getItemCount() {
-        return cursor.getCount();
+        if (cursor!=null) return cursor.getCount();
+        return 0;
     }
 
     private Importance getImportance(int i){

@@ -20,135 +20,169 @@
             android:id="@+id/titleDetail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="edrtfyg"
+            android:text="Titre"
             android:textSize="30sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.501"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="148dp"
-            android:layout_height="145dp"
-
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:contentDescription="incident"
-            app:layout_constraintEnd_toStartOf="@+id/imageView5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/infos" />
-
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:text="date"
-            android:textSize="10sp"
-            app:layout_constraintBottom_toTopOf="@id/description"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.501"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/commentTitle"
-            app:layout_constraintVertical_bias="0.611" />
-
         <TextView
             android:id="@+id/infos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="28dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:padding="2dp"
             android:text="ceci est la ligne du status lieu priorite"
             android:textSize="10sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/titleDetail" />
-
-        <VideoView
-            android:id="@+id/VideoView"
-            android:layout_width="200dp"
-            android:layout_height="0dp"
-            android:layout_marginBottom="244dp"
-            android:contentDescription="incident"
             android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@+id/sendComm"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            tools:layout_editor_absoluteX="223dp"
+            tools:layout_editor_absoluteY="16dp" />
 
-        <TextView
-            android:id="@+id/username"
+        <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="128dp"
-            android:text="name"
-            android:textSize="10sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/description"
-            android:layout_width="251dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="76dp"
-            android:layout_marginTop="20dp"
-            android:text="C LA DESCRIPTION DE L'INCIDENT"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
-
-        <EditText
-            android:id="@+id/commentTitle"
-            android:layout_width="230dp"
-            android:layout_height="43dp"
-            android:layout_marginBottom="24dp"
-            android:layout_marginEnd="138dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
-            android:hint="Ajouter un commentaire..."
-            android:inputType="text|textMultiLine"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView5" />
-
-        <Button
-            android:id="@+id/sendComm"
-            android:layout_width="91dp"
-            android:layout_height="wrap_content"
-
-            android:layout_marginBottom="4dp"
-            android:layout_marginEnd="24dp"
-            android:text="Envoyer"
-            app:layout_constraintBottom_toTopOf="@id/recyclerView2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/commentTitle"
-            tools:ignore="NotSibling" />
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/titleDetail"
+            tools:layout_editor_absoluteX="0dp"
+            android:layout_margin="5dp">
 
 
-        <ImageView
-            android:id="@+id/imageView5"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_marginBottom="91dp"
-            android:layout_marginTop="68dp"
-            android:src="@drawable/ic_close_black_24dp"
-            app:layout_constraintBottom_toTopOf="@+id/username"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.039" />
+            <ImageView
+                android:id="@+id/statusView"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_check_circle_black_24dp"
+                android:layout_marginBottom="8dp"/>
+
+            <VideoView
+                android:id="@+id/VideoView"
+                android:layout_width="200dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="244dp"
+                android:contentDescription="incident"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@+id/sendComm"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_gravity="center_horizontal" />
+
+
+            <ImageView
+                android:id="@+id/incidentImageView"
+                android:layout_width="300dp"
+                android:layout_height="145dp"
+
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:contentDescription="incident"
+                app:layout_constraintTop_toBottomOf="@+id/titleDetail"
+                tools:layout_editor_absoluteX="106dp" />
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:layout_gravity="center_horizontal">
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/incidentDataLayout"
+                    android:layout_height="wrap_content"
+                    android:layout_width="350dp">
+
+
+                    <TextView
+                        android:id="@+id/description"
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="4dp"
+                        android:text="C LA DESCRIPTION DE L'INCIDENT"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toEndOf="@+id/ProfileImageView"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/username"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="28dp"
+                        android:layout_marginTop="4dp"
+                        android:text="name"
+                        android:textSize="10sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/ProfileImageView" />
+
+                    <TextView
+                        android:id="@+id/date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginStart="8dp"
+                        android:text="date"
+                        android:textSize="10sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/ProfileImageView" />
+
+                    <ImageView
+                        android:id="@+id/ProfileImageView"
+                        android:layout_width="68dp"
+                        android:layout_height="69dp"
+                        android:layout_marginStart="8dp"
+                        android:src="@drawable/ic_close_black_24dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:layout_editor_absoluteY="1dp" />
+
+                </android.support.constraint.ConstraintLayout>
+
+
+            </FrameLayout>
+
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/addCommentLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="23dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="11dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/incidentDataLayout">
+
+                <EditText
+                    android:id="@+id/commentTitle"
+                    android:layout_width="230dp"
+                    android:layout_height="43dp"
+                    android:hint="Ajouter un commentaire..."
+                    android:inputType="text|textMultiLine" />
+
+                <Button
+                    android:id="@+id/sendComm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+
+                    android:text="Envoyer"
+                    app:layout_constraintBottom_toTopOf="@id/recyclerView2"
+                    app:layout_constraintStart_toEndOf="@+id/commentTitle"
+                    tools:ignore="NotSibling" />
+
+            </android.support.constraint.ConstraintLayout>
+
+        </LinearLayout>
+
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView2"
             android:layout_width="368dp"
             android:layout_height="500dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/commentTitle" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

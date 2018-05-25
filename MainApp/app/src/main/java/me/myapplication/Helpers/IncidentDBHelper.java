@@ -282,11 +282,18 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
         return cursor;
     }
 
-    public String getLieuName(int lieuId){
+    public String getLocationName(int lieuId){
         Cursor cursor = myDataBase.rawQuery("SELECT name FROM locations WHERE locationId="+lieuId,null);
         cursor.moveToFirst();
         return cursor.getString(cursor.getColumnIndexOrThrow("name"));
     }
+
+    public String getUsername(int userId){
+        Cursor cursor = myDataBase.rawQuery("SELECT username FROM users WHERE userId="+userId,null);
+        cursor.moveToFirst();
+        return cursor.getString(cursor.getColumnIndexOrThrow("username"));
+    }
+
 
     private PlanningIncident createPlanningIncident(Cursor cursor){
 
@@ -338,7 +345,7 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
 
         queryString += " AND typeId ";
         queryString += (typeId != -1 ? "="+typeId : "<> -1");
-
+        Log.i("imp",""+importance);
         queryString += " AND importance ";
         queryString += (importance != -1 ? "="+importance : "<> -1");
 

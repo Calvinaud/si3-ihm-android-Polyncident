@@ -1,18 +1,11 @@
 package me.myapplication;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.FileProvider;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,17 +19,8 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.logging.Logger;
 
 import me.myapplication.Adapters.DisplayCommentariesAdapter;
 import me.myapplication.Adapters.VisualizationCustomAdapter;
@@ -48,6 +32,14 @@ public class DisplayDetailsIncidentActivity extends AppCompatActivity {
     private Button addCom;
     private int incidentId;
     private EditText newCom;
+
+    private TextView title;
+    private TextView description;
+    private TextView infos;
+    private TextView dateText;
+    private TextView name;
+    private ImageView profilePicture;
+    private ImageView status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +55,7 @@ public class DisplayDetailsIncidentActivity extends AppCompatActivity {
 
         incident = IncidentDBHelper.getSingleton().getIncidentById(incidentId);
         VideoView videoView = findViewById(R.id.VideoView);
-        ImageView imageView = (ImageView) findViewById(R.id.imageView2);
+        ImageView imageView = (ImageView) findViewById(R.id.incidentImageView);
         if(incident.getImg() != null && incident.getImg().length>0) {
             byte[] img = incident.getImg();
             Bitmap bm = BitmapFactory.decodeByteArray(img, 0, img.length);
@@ -71,56 +63,64 @@ public class DisplayDetailsIncidentActivity extends AppCompatActivity {
             imageView.setVisibility(View.VISIBLE);
         }
         else imageView.setVisibility(View.GONE);
-     //   InputStream in = null;
-       // if (incident.getUrlPhoto() != null) {
-        //    Log.i("url",incident.getUrlPhoto());
-            //ImageView myImage = new ImageView(this);
-         //   try {
-            /*    Uri photoURI = FileProvider.getUriForFile(this,
-                        "me.myapplication.android.fileprovider",
-                        new File(incident.getUrlPhoto()));
-                Bitmap bm = MediaStore.Images.Media.getBitmap(getContentResolver(),photoURI);
-                //imageView.setImageBitmap(bm);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }*/
 
-        TextView title = findViewById(R.id.titleDetail);
-        TextView description = findViewById(R.id.description);
-        TextView infos = findViewById(R.id.infos);
+        title = findViewById(R.id.titleDetail);
         title.setText(incident.getTitle());
-        description.setText("Description de l'incident :\n"+incident.getDescription());
-        TextView textDate = findViewById(R.id.textView5);
-        Date date = incident.getDeclarationDate();
-        textDate.setText("Incident posté le "+date.toString());
-        TextView nameView = findViewById(R.id.username);
-        String userName="";
-        try {
-            Cursor cursorUser = IncidentDBHelper.getSingleton().getUserCursor(incident.getReporterdID());
-            userName=cursorUser.getString(cursorUser.getColumnIndexOrThrow("username"));
-            nameView.setText(userName);
-        } catch (IncidentDBHelper.NoRecordException e) {
-            e.printStackTrace();
-        }
+
+        description = findViewById(R.id.description);
+        description.setText(incident.getDescription());
+
+
+        dateText = findViewById(R.id.date);
+        dateText.setText(incident.getDeclarationDate().toString());
+        String[] fulldate = incident.getDeclarationDate().toString().split(" ");
+//        dateText.setText(fulldate[2] + " " + fulldate[3] + " " +fulldate[5]);
+
+
+        name = findViewById(R.id.username);
+        name.setText(
+                IncidentDBHelper.getSingleton().getUsername(incident.getReporterdID())
+        );
+
+        infos = findViewById(R.id.infos);
         infos.setText("Lieu : "+displayLieu(incident.getLocationID())+"     Type : "+displayType(incident.getTypeID())+"       Statut : "+displayStatus(incident.getStatus())+"     Priorité : "+incident.getImportance().getText());
-        ImageView profilPicture = findViewById(R.id.imageView5);
+        profilePicture = findViewById(R.id.ProfileImageView);
+
+
+        status = (ImageView)findViewById(R.id.statusView);
+        switch (incident.getStatus()){
+            case 0:
+                status.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_watch_later_black_24dp));
+                break;
+            case 1:
+                status.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_sync_black_24dp));
+                break;
+            case 2:
+                status.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_check_circle_black_24dp));
+                break;
+        }
+
         try {
             Cursor cursorUser = IncidentDBHelper.getSingleton().getUserCursor(incident.getReporterdID());
             cursorUser.moveToFirst();
             if (cursorUser.getString(cursorUser.getColumnIndexOrThrow("roles")).equals("ADMINISTRATEUR")) {
-                profilPicture.setImageResource(R.mipmap.director);
+                profilePicture.setImageResource(R.mipmap.director);
             }
             if (cursorUser.getString(cursorUser.getColumnIndexOrThrow("roles")).equals("UTILISATEUR")) {
-                profilPicture.setImageResource(R.mipmap.etudiant);
+                profilePicture.setImageResource(R.mipmap.etudiant);
             }
             if (cursorUser.getString(cursorUser.getColumnIndexOrThrow("roles")).equals("TECHNICIEN")) {
-                profilPicture.setImageResource(R.mipmap.technicien);
+                profilePicture.setImageResource(R.mipmap.technicien);
             }
         } catch (IncidentDBHelper.NoRecordException e) {
             e.printStackTrace();
         }
 
+        initCommentSection();
+
+    }
+
+    private void initCommentSection(){
         RecyclerView recyclerView = findViewById(R.id.recyclerView2);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -145,8 +145,8 @@ public class DisplayDetailsIncidentActivity extends AppCompatActivity {
                 startActivity(getIntent());
             }
         });
-
     }
+
 
     public String displayStatus(int n){
         switch(n){
