@@ -86,97 +86,101 @@
             <FrameLayout
                 android:id="@+id/card_border"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="135dp"
                 android:layout_gravity="center_horizontal"
                 android:background="@color/cardview_dark_background"
                 android:foregroundGravity="center"
                 android:paddingTop="4dp">
 
 
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:layout_gravity="center_horizontal">
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@android:color/white">
 
-                <android.support.constraint.ConstraintLayout
-                    android:id="@+id/incidentDataLayout"
-                    android:layout_height="wrap_content"
-                    android:layout_width="350dp">
-
-
-                    <TextView
-                        android:id="@+id/description"
-                        android:layout_width="wrap_content"
-                        android:layout_height="25dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="4dp"
-                        android:text="C LA DESCRIPTION DE L'INCIDENT"
-                        android:textSize="12sp"
-                        app:layout_constraintStart_toEndOf="@+id/ProfileImageView"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/username"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="2dp"
-                        android:layout_marginStart="28dp"
-                        android:layout_marginTop="4dp"
-                        android:text="name"
-                        android:textSize="10sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/ProfileImageView" />
-
-                    <TextView
-                        android:id="@+id/date"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="2dp"
-                        android:layout_marginStart="8dp"
-                        android:text="date"
-                        android:textSize="10sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/ProfileImageView" />
-
-                    <ImageButton
-                        android:id="@+id/ProfileImageView"
-                        android:layout_width="68dp"
-                        android:layout_height="69dp"
-                        android:layout_marginStart="8dp"
-                        android:background="@android:color/transparent"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/ic_close_black_24dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        tools:layout_editor_absoluteY="1dp" />
-
-                    <TextView
-                        android:id="@+id/type"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="2dp"
-                        android:layout_marginStart="16dp"
-                        android:text="TextView"
-                        android:textSize="10sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/location" />
-
-                    <TextView
-                        android:id="@+id/location"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="2dp"
-                        android:layout_marginStart="16dp"
-                        android:text="TextView"
-                        android:textSize="10sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/date" />
-
-                </android.support.constraint.ConstraintLayout>
+                    <android.support.constraint.ConstraintLayout
+                        android:id="@+id/incidentDataLayout"
+                        android:layout_width="350dp"
+                        android:layout_height="match_parent">
 
 
-            </FrameLayout>
+                        <TextView
+                            android:id="@+id/description"
+                            android:layout_width="wrap_content"
+                            android:layout_height="25dp"
+                            android:layout_marginStart="84dp"
+                            android:layout_marginTop="4dp"
+                            android:text="C LA DESCRIPTION DE L'INCIDENT"
+                            android:textSize="15sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <LinearLayout
+                            android:id="@+id/linearLayout3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <ImageButton
+                                android:id="@+id/ProfileImageView"
+                                android:layout_width="68dp"
+                                android:layout_height="69dp"
+                                android:background="@android:color/transparent"
+                                android:scaleType="fitXY"
+                                android:src="@drawable/ic_close_black_24dp"
+                                tools:layout_editor_absoluteY="1dp" />
+
+                            <TextView
+                                android:id="@+id/username"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:text="name"
+                                android:textSize="10sp" />
+
+                        </LinearLayout>
+
+
+                        <TextView
+                            android:id="@+id/date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="84dp"
+                            android:text="date"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toTopOf="@+id/location"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+
+                        <TextView
+                            android:id="@+id/type"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="3dp"
+                            android:layout_marginStart="84dp"
+                            android:text="TextView"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                        <TextView
+                            android:id="@+id/location"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="1dp"
+                            android:layout_marginStart="84dp"
+                            android:text="TextView"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toTopOf="@+id/type"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                    </android.support.constraint.ConstraintLayout>
+
+
+                </FrameLayout>
             </FrameLayout>
 
             <android.support.constraint.ConstraintLayout

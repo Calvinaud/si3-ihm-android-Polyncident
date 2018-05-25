@@ -80,7 +80,7 @@ public class DisplayDetailsIncidentActivity extends AppCompatActivity {
 
         dateText = findViewById(R.id.date);
         SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd hh:mm");
-        dateText.setText(format.format(incident.getDeclarationDate()));
+        dateText.setText("Date: "+format.format(incident.getDeclarationDate()));
 
 
 
@@ -94,11 +94,11 @@ public class DisplayDetailsIncidentActivity extends AppCompatActivity {
         typeView = findViewById(R.id.type);
 
         locationView.setText(
-                IncidentDBHelper.getSingleton().getLocationName(incident.getLocationID())
+                "Lieu: "+IncidentDBHelper.getSingleton().getLocationName(incident.getLocationID())
         );
 
         typeView.setText(
-                IncidentDBHelper.getSingleton().getTypeName(incident.getTypeID())
+                "Type: "+IncidentDBHelper.getSingleton().getTypeName(incident.getTypeID())
         );
 
         profilePicture = findViewById(R.id.ProfileImageView);
