@@ -84,6 +84,16 @@
                 tools:layout_editor_absoluteX="106dp" />
 
             <FrameLayout
+                android:id="@+id/card_border"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/cardview_dark_background"
+                android:foregroundGravity="center"
+                android:paddingTop="4dp">
+
+
+            <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/white"
@@ -110,10 +120,12 @@
                         android:id="@+id/username"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="2dp"
                         android:layout_marginStart="28dp"
                         android:layout_marginTop="4dp"
                         android:text="name"
                         android:textSize="10sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/ProfileImageView" />
 
@@ -143,7 +155,8 @@
                         android:id="@+id/type"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginStart="16dp"
                         android:text="TextView"
                         android:textSize="10sp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -154,7 +167,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="2dp"
-                        android:layout_marginStart="12dp"
+                        android:layout_marginStart="16dp"
                         android:text="TextView"
                         android:textSize="10sp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -164,7 +177,7 @@
 
 
             </FrameLayout>
-
+            </FrameLayout>
 
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/addCommentLayout"

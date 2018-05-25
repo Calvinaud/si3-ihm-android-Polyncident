@@ -95,7 +95,7 @@ INSERT INTO users (userId, username, emailAddress, password, roles) VALUES (2, '
 INSERT INTO users (userId, username, emailAddress, password, roles, telephoneNumber) VALUES (3, 'Claudine', 'Claudine@gmail.com', 'Claudine', 'ADMINISTRATEUR','0678128214');
 
 --incident
-INSERT INTO incidents (incidentId, reporterId, locationId, typeId, importance, title, status, declarationDate) VALUES (0, 0, 3, 1, 1, 'Plus de feuilles',0, '2018-05-22 11:15:00');
+INSERT INTO incidents (incidentId, reporterId, locationId, typeId, importance, title, status, declarationDate, description) VALUES (0, 0, 3, 1, 1, 'Plus de feuilles',0, '2018-05-22 11:15:00', "description");
 INSERT INTO incidents (incidentId, reporterId, locationId, typeId, importance, title, status, declarationDate) VALUES (1, 1, 5, 1, 3, 'Plus de stylos',2, '2018-05-24 12:00:00');
 INSERT INTO incidents (incidentId, reporterId, locationId, typeId, importance, title, status, declarationDate) VALUES (2, 1, 5, 2, 3, 'Panne rétroprojecteur 3',2, '2018-05-21 15:00:00');
 

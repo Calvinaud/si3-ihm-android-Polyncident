@@ -67,6 +67,10 @@ public class DisplayDetailsIncidentActivity extends AppCompatActivity {
         }
         else imageView.setVisibility(View.GONE);
 
+        findViewById(R.id.card_border)
+                .setBackgroundColor(incident.getImportance().getColor(this));
+
+
         title = findViewById(R.id.titleDetail);
         title.setText(incident.getTitle());
 
