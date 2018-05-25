@@ -282,6 +282,11 @@ public class IncidentDBHelper extends SQLiteOpenHelper  {
         return cursor;
     }
 
+    public String getLieuName(int lieuId){
+        Cursor cursor = myDataBase.rawQuery("SELECT name FROM locations WHERE locationId="+lieuId,null);
+        cursor.moveToFirst();
+        return cursor.getString(cursor.getColumnIndexOrThrow("name"));
+    }
 
     private PlanningIncident createPlanningIncident(Cursor cursor){
 

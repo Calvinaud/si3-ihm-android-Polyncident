@@ -100,7 +100,8 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
         }
         Importance urgence = getImportance(cursor.getInt(cursor.getColumnIndex("importance")));
         String title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
-        String lieu = cursor.getString(cursor.getColumnIndex("locationId"));
+
+
         int reporterId = cursor.getInt(cursor.getColumnIndexOrThrow("reporterId"));
         int locationId = cursor.getInt(cursor.getColumnIndexOrThrow("locationId"));
         int typeId = cursor.getInt(cursor.getColumnIndexOrThrow("typeId"));
@@ -110,8 +111,12 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
         String fulldate = cursor.getString(cursor.getColumnIndexOrThrow("declarationDate"));
 
         reduceDate(holder, fulldate);
+        String urgenceS="Urgence: "+urgence.getText();
+        holder.urgence.setText(urgenceS);
 
-        holder.urgence.setText(urgence.getText());
+
+
+        String lieu = "Lieu: "+ IncidentDBHelper.getSingleton().getLieuName(locationId);
         holder.lieu.setText(lieu);
 
         holder.itemView.findViewById(R.id.card_border)
@@ -120,13 +125,16 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
         Logger.getAnonymousLogger().log(Level.WARNING,"status ="+cursor.getInt(cursor.getColumnIndexOrThrow("status")));
         switch (cursor.getInt(cursor.getColumnIndexOrThrow("status"))){
             case 0:
-                holder.status.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_visibility_off_black_24dp));
+                holder.status.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_watch_later_black_24dp));
+                holder.etat.setText("En attente");
                 break;
             case 1:
-                holder.status.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_watch_later_black_24dp));
+                holder.status.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_sync_black_24dp));
+                holder.etat.setText("En Cours");
                 break;
             case 2:
                 holder.status.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_check_circle_black_24dp));
+                    holder.etat.setText("Terminé");
                 break;
         }
     }
@@ -138,7 +146,9 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
         String[] dateParts = splittedFullDate[0].split("-");
 
         //display the month and the day
-        holder.date.setText(dateParts[1]+"-"+dateParts[2]);
+        String affichage = "Date: "+dateParts[1]+"-"+dateParts[2];
+
+        holder.date.setText(affichage);
 
 
         String[] hourParts = splittedFullDate[1].split(":");
@@ -172,6 +182,7 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
         ImageView subscribe;
         boolean subscribed = false;
 
+        TextView etat;
         TextView incident;
         TextView date;
         TextView heure;
@@ -188,6 +199,7 @@ public class VisualizationCustomAdapter extends RecyclerView.Adapter<Visualizati
             status=(ImageView) itemView.findViewById(R.id.statusView);
             subscribe=(ImageView) itemView.findViewById(R.id.subscribeView);
 
+            etat = (TextView) itemView.findViewById(R.id.etat);
             incident=(TextView) itemView.findViewById(R.id.incidentTextView);
             date=(TextView) itemView.findViewById(R.id.dateTextView);
             heure=(TextView) itemView.findViewById(R.id.timeTextView);

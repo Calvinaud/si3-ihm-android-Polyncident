@@ -11,7 +11,7 @@ import me.myapplication.R;
 
 public enum Importance {
 
-    NEGLIGIBLE("négligeable"), MINOR("mineur"), URGENT("assez urgent"), CRITICAL("très urgent");
+    NEGLIGIBLE("Négligeable"), MINOR("Mineur"), URGENT("Forte"), CRITICAL("Urgente");
 
     private String text;
     static private Color[] colors;
