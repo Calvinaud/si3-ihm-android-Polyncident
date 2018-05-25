@@ -99,6 +99,22 @@ public class DisplayDetailsIncidentActivity extends AppCompatActivity {
 
         profilePicture = findViewById(R.id.ProfileImageView);
 
+        profilePicture.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                Intent profileIntent = new Intent(getApplicationContext(), ProfileActivity.class);
+                profileIntent.putExtra("userId",incident.getReporterdID());
+
+                startActivity(profileIntent);
+
+            }
+
+
+
+        });
+
         status = (ImageView)findViewById(R.id.statusView);
         switch (incident.getStatus()){
             case 0:
